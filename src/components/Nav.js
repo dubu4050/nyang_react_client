@@ -4,9 +4,10 @@ import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core';
+import DiagnosisNav from './DiagnosisNav';
 
 const useStyles = makeStyles({
-  root: {
+  root: { 
     flexGrow: 1,
   },
   tab:{
@@ -15,6 +16,7 @@ const useStyles = makeStyles({
 });
 
 const Nav = () => {
+
   const classes = useStyles();
   const [value, setValue] = React.useState(0); 
   const handleChange = (event, newValue) => {
@@ -28,19 +30,18 @@ const Nav = () => {
 
     return (
       <MuiThemeProvider theme={theme}>
-         <Paper className={classes.root}>
-      <Tabs
-        value={value}
-        onChange={handleChange}
-        indicatorColor="primary"
-        textColor="primary"
-        centered
-      >
-        <Tab className={classes.tab} label="진단" />
-        <Tab className={classes.tab} label="게시판" />
-        <Tab className={classes.tab} label="인근 병원" />
-      </Tabs>
-    </Paper>
+      <Paper className={classes.root}>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          indicatorColor="primary"
+          textColor="primary"
+          centered
+        >
+          <Tab className={classes.tab} label="진단" value="0"/>
+          <Tab className={classes.tab} label="게시판" value="1" />
+        </Tabs>
+      </Paper>
     </MuiThemeProvider>
     )
 }

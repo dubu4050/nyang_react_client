@@ -1,15 +1,14 @@
 import React from 'react'
 import dummy from '../db/disease.json';
-import { makeStyles, Table, TableBody } from '@material-ui/core'
+import { Card, makeStyles, Table, TableBody, CardActions, CardContent, Button, Typography } from '@material-ui/core'
 import TableRow from '@material-ui/core/TableRow'
 import TableCell from '@material-ui/core/TableCell'
 
 const useStyles = makeStyles((theme)=>({
       table:{
-          marginTop:'50px',
           width:'50%',
           margin:'0 auto',
-          borderBottom:'none'
+          borderBottom:'none',
       },
       index:{
           width:'10%',
@@ -19,7 +18,7 @@ const useStyles = makeStyles((theme)=>({
       },
       circle:{
           width: '45px',
-          height:'45px',
+          height:'30px',
           borderRadius:'75px',
           backgroundColor:"rgb(0,0,0,0.25)",
           display:'table-cell',
@@ -38,14 +37,34 @@ const useStyles = makeStyles((theme)=>({
         fontWeight:'400',
         borderBottom:'none',
         paddingTop:0
-      }
+      },
+      root: {
+        width:'70%',
+        margin:'0 auto',
+        minWidth: 275,
+        marginTop: '50px',
+        borderRadius: '20px'
+      },
+      bullet: {
+        display: 'inline-block',
+        margin: '0 2px',
+        transform: 'scale(0.8)',
+      },
+      title: {
+        fontSize: 14,
+      },
+      pos: {
+        marginBottom: 12,
+      },
   }))
 
 const DiseaseList = () => {
     const classes = useStyles();
+    const bull = <span className={classes.bullet}>•</span>;
     console.log({dummy});
         return(
-        <Table className={classes.table}>
+        <div>
+            <Table className={classes.table}>
             {dummy.disease.map(disease => (
                 <TableBody>
                     <TableRow>
@@ -58,6 +77,62 @@ const DiseaseList = () => {
                 </TableBody>
             ))}  
         </Table>
+        <Card className={classes.root} variant="outlined">
+            <CardContent>
+                <Typography className={classes.title} color="textSecondary" gutterBottom>
+                    Word of the Day
+                </Typography>
+                <Typography variant="h5" component="h2">
+                    be{bull}nev{bull}o{bull}lent
+                </Typography>
+                <Typography className={classes.pos} color="textSecondary">
+                    adjective
+                 </Typography>
+                <Typography variant="body2" component="p">
+                    well meaning and kindly.
+                <br />
+                {'"a benevolent smile"'}
+                </Typography>
+            </CardContent>
+        </Card>
+        <Card className={classes.root} variant="outlined">
+            <CardContent>
+                <Typography className={classes.title} color="textSecondary" gutterBottom>
+                    Word of the Day
+                </Typography>
+                <Typography variant="h5" component="h2">
+                    be{bull}nev{bull}o{bull}lent
+                </Typography>
+                <Typography className={classes.pos} color="textSecondary">
+                    adjective
+                 </Typography>
+                <Typography variant="body2" component="p">
+                    well meaning and kindly.
+                <br />
+                {'"a benevolent smile"'}
+                </Typography>
+            </CardContent>
+        </Card>
+        <Card className={classes.root} variant="outlined">
+            <CardContent>
+                <Typography className={classes.title} color="textSecondary" gutterBottom>
+                    Word of the Day
+                </Typography>
+                <Typography variant="h5" component="h2">
+                    be{bull}nev{bull}o{bull}lent
+                </Typography>
+                <Typography className={classes.pos} color="textSecondary">
+                    adjective
+                 </Typography>
+                <Typography variant="body2" component="p">
+                    well meaning and kindly.
+                <br />
+                {'"a benevolent smile"'}
+                </Typography>
+            </CardContent>
+        </Card>
+        </div>
+
         );
 }
 export default DiseaseList

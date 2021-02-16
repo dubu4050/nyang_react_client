@@ -1,24 +1,17 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core'
-import number from '../img/number.png'
+import { Container, makeStyles, Backdrop, Modal, Fade } from '@material-ui/core'
 import DiseaseList from './DiseaseList'
-import Paper from '@material-ui/core/Paper'
-
-import TableHead from '@material-ui/core/TableHead'
-import TableBody from '@material-ui/core/TableBody'
-import TableRow from '@material-ui/core/TableRow'
-import TableCell from '@material-ui/core/TableCell'
+import mapImg from '../img/map_icon.png'
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 
 const useStyles = makeStyles((theme)=>({
     wrap:{
-        width:'100%',
-        height:'600px',
+
     },
     search:{
         margin:'0 auto',
-        marginTop:'100px',
+        marginTop:'50px',
         width: '60%',
         height:'50px',
         background:'white',  
@@ -33,11 +26,12 @@ const useStyles = makeStyles((theme)=>({
         padding: theme.spacing(0, 2),
         position: 'absolute',
         pointerEvents: 'none',
-        display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         height:"46px",
-        opacity:'0.8'
+        opacity:'0.8',
+        border:'none',
+        background:'none'
       },
       inputRoot: {
         color: 'inherit',
@@ -48,10 +42,48 @@ const useStyles = makeStyles((theme)=>({
         paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
         transition: theme.transitions.create('width'),
         width: '100%',
-        [theme.breakpoints.up('md')]: {
-          width: '20ch',
-        },
       },
+      map:{
+        overflow: 'auto'
+      },
+      modalBtn:{
+        marginRight:'230px',
+        marginTop:"20px",
+        float:'right',
+        border:'none',
+        background:'none',
+        display:'flex'
+      }
+      ,img:{
+        width:'35px',
+        opacity:'0.8',
+        marginRight:'10px',
+      },
+      modal: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+      paper: {
+        width:'1000px',
+        height:'fit-content',
+        backgroundColor: theme.palette.background.paper,
+        border: '2px solid #000',
+        boxShadow: theme.shadows[5],
+        padding: theme.spacing(2, 4, 3),
+      },
+      modalSearch:{
+        margin:'0 auto',
+        width: '60%',
+        background:'white',   
+    },
+    modalInput:{
+        width: '80%',
+        height:'50px',
+        border:"2px solid #dedede",
+        borderRadius:"10px",
+        marginLeft:'2px'
+    },
       table:{
           width:'50%',
           margin:'0 auto',
@@ -60,12 +92,18 @@ const useStyles = makeStyles((theme)=>({
 
 const Contents = () => {
     const classes = useStyles();
+    const [open, setOpen] = React.useState(false);
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
     return (
-        <Paper className={classes.wrap}>
+        <Container className={classes.wrap}>
             <div className={classes.search}>
-                <div className={classes.searchIcon}>
-                <SearchIcon />
-                </div>
                 <InputBase className={classes.input}
                     placeholder="Search…"
                     classes={{
@@ -74,9 +112,49 @@ const Contents = () => {
                     }}
                 inputProps={{ 'aria-label': 'search' }}
                 />
+                <button className={classes.searchIcon}>
+                <SearchIcon />
+                </button>
             </div>
+            <div className={classes.map}>
+            <button type="button" onClick={handleOpen} className={classes.modalBtn}>
+                <img src={mapImg} className={classes.img}></img>
+                <p>인근 병원 찾기</p>
+            </button>
+            </div>
+            <Modal
+                aria-labelledby="transition-modal-title"
+                aria-describedby="transition-modal-description"
+                className={classes.modal}
+                open={open}
+                onClose={handleClose}
+                closeAfterTransition
+                BackdropComponent={Backdrop}
+                BackdropProps={{
+                    timeout: 500,
+                }}
+            >
+                <Fade in={open}>
+                    <div className={classes.paper}>
+                        <div className={classes.modalSearch}>
+                            <InputBase className={classes.modalInput}
+                                placeholder="찾고자 하는 지역을 입력해주세요 "
+                                classes={{
+                                     root: classes.inputRoot,
+                                    input: classes.inputInput,
+                                }}
+                                inputProps={{ 'aria-label': 'search' }}
+                            />
+                        <button className={classes.searchIcon}>
+                        <SearchIcon />
+                        </button>
+                        <p>지도가 나올꺼야 반드시</p>
+                    </div>
+                    </div>
+                </Fade>
+            </Modal>   
                 <DiseaseList/>           
-        </Paper>
+        </Container>
     )
 }
 
