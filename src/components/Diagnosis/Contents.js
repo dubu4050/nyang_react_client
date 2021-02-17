@@ -1,7 +1,7 @@
 import React from 'react'
 import { Container, makeStyles, Backdrop, Modal, Fade } from '@material-ui/core'
 import DiseaseList from './DiseaseList'
-import mapImg from '../img/map_icon.png'
+import mapImg from '../../img/map_icon.png'
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 

@@ -4,7 +4,7 @@ import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core';
-import DiagnosisNav from './DiagnosisNav';
+import DiagnosisNav from '../Diagnosis/DiagnosisNav';
 
 const useStyles = makeStyles({
   root: { 

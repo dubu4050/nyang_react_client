@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles, Container } from '@material-ui/core';
-import Nav from './DiagnosisNav'
-import Content from './Contents'
+import Nav from './Diagnosis/DiagnosisNav'
+import Content from './Diagnosis/Contents'
 
 const useStyles = makeStyles({
 

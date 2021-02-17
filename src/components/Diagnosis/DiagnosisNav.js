@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles, Container } from '@material-ui/core';
-import catImg from '../img/cat_icon_125794.png'
-import dogImg from '../img/dog_icon_125586.png'
+import catImg from '../../img/cat_icon.png'
+import dogImg from '../../img/dog_icon.png'
 
 const useStyles = makeStyles({
   categoryWrapper:{

@@ -1,6 +1,6 @@
 import React from 'react'
 import { makeStyles, AppBar, Toolbar, IconButton, Typography, Menu, MenuItem } from '@material-ui/core'
-import nyangImg from '../img/nyangImg.png'
+import nyangImg from '../../img/nyangImg.png'
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
 
