@@ -2,7 +2,7 @@ import React from 'react'
 import { Container, InputBase, makeStyles } from '@material-ui/core'
 import SearchIcon from '@material-ui/icons/Search' 
 import CreateIcon from '@material-ui/icons/Create';
-import Card from '../Card/Card'
+import ListCard from '../../Card/ListCard'
 
 const useStyles = makeStyles((theme)=>({
     wrapper:{
@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme)=>({
 }));
 
 
-export default function FreeBoard(props){
+export default function FreeBoardContent(props){
     const classes = useStyles();
     return(
         <Container>
@@ -60,10 +60,10 @@ export default function FreeBoard(props){
                 <SearchIcon className={classes.icon}/>
                 <CreateIcon className={classes.icon}/>
             </Container>
-            <Card/>
-            <Card/>
-            <Card/>
-            <Card/>
+            <ListCard/>
+            <ListCard/>
+            <ListCard/>
+            <ListCard/>
 
         </Container>
     )

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Container, makeStyles, InputBase, Chip } from '@material-ui/core'
-import Card from '../Card/Card'
+import ListCard from '../../Card/ListCard'
 import SearchIcon from '@material-ui/icons/Search';
 
 const useStyles = makeStyles((theme)=>({
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme)=>({
     }
 }));
 
-export default function AnimalInfo(props){
+export default function InfoBoardContent(props){
     const classes = useStyles();
 
     return(
@@ -64,10 +64,10 @@ export default function AnimalInfo(props){
                 />
                 <SearchIcon className={classes.searchIcon}/>
             </Container>
-            <Card/>
-            <Card/>
-            <Card/>
-            <Card/>
+            <ListCard/>
+            <ListCard/>
+            <ListCard/>
+            <ListCard/>
         </Container>
     )
 }

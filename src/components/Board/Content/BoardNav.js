@@ -1,7 +1,8 @@
 import React from 'react';
+import {Link} from 'react-router-dom'
 import { makeStyles, Container, Button, Avatar } from '@material-ui/core';
-import catImg from '../../img/cat_icon.png'
-import dogImg from '../../img/dog_icon.png'
+import catImg from '../../../img/cat_icon.png'
+import dogImg from '../../../img/dog_icon.png'
 
 const useStyles = makeStyles({
     categoryWrapper:{
@@ -31,8 +32,9 @@ const useStyles = makeStyles({
         color:'white'
         },
     },
-    testing:{
-        display: 'flex',
+    link:{
+        textDecoration: 'none',
+        color: '#000000',
     },  
 });
 
@@ -45,13 +47,19 @@ export default function BoradNav(props){
         <Button
             variant="contained"
             startIcon={<Avatar src={catImg} />}
-            className={classes.btn}>
+            className={classes.btn}
+            component={Link}
+            to='/board/info'
+        >
             지식정보
         </Button>
         <Button
             variant="contained"
             startIcon={<Avatar src={dogImg} />}
-            className={classes.btn}>
+            className={classes.btn}
+            component={Link}
+            to='/board/free'
+        >
             자유게시판
         </Button>
   </Container>

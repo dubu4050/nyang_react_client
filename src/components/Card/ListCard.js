@@ -23,7 +23,7 @@ const useStyles = makeStyles({
     }
 });
 
-export default function card(props){
+export default function listCard(props){
     const classes = useStyles();
     return(
       <div className={classes.root}> 

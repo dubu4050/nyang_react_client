@@ -1,11 +1,9 @@
 import React, { useRef } from 'react';
 import { makeStyles, Container, Button, Avatar, Tabs, Tab } from '@material-ui/core';
+import DiseaseSearch from './content/DiseaseSearch'
+import QnABoard from './content/QnABoard';
 import catImg from '../../img/cat_icon.png'
 import dogImg from '../../img/dog_icon.png'
-import FreeBoardContent from './Content/FreeBoardContent'
-import InfoBoardContent from './Content/InfoBoardContent'
-
-
 
 const useStyles = makeStyles({
 
@@ -48,13 +46,13 @@ const DiagMain = props => {
   const { page } = params;
  
   const tabNameToIndex = {
-    0: "info",
-    1: "free",
+    0: "auto",
+    1: "qna",
   };
 
   const indexToTabName = {
-    "info": 0,
-    "free": 1,
+    "auto": 0,
+    'qna': 1,
   };
 
   const classes = useStyles();
@@ -81,9 +79,9 @@ const DiagMain = props => {
               icon={<Avatar src={catImg} />}
               label={
                 <Button
-                    variant="contained"
-                    className={classes.btn}>
-                    지식정보
+                  variant="contained"
+                  className={classes.btn}>
+                  자동질병진단
                 </Button>} 
             />
             <Tab
@@ -93,13 +91,13 @@ const DiagMain = props => {
                 <Button
                   variant="contained"
                   className={classes.btn}>
-                  자유게시판
+                  공개QnA
                 </Button>} 
             />
           </Tabs>
         </Container>
-        {selectedTab === 0 && <InfoBoardContent />}
-        {selectedTab === 1 && <FreeBoardContent />}
+        {selectedTab === 0 && <DiseaseSearch />}
+        {selectedTab === 1 && <QnABoard />}
       </>
     </Container>
   )

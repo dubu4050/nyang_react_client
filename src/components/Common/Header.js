@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 import { makeStyles, AppBar, Toolbar, IconButton, Typography, Menu, MenuItem } from '@material-ui/core'
 import nyangImg from '../../img/nyangImg.png'
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -15,6 +16,10 @@ const useStyles = makeStyles((theme) => ({
   nyangImg: {
     marginRight: theme.spacing(2),
     width:"60px",
+  },
+  link:{
+    textDecoration: 'none',
+    color: "#000000",
   },
   title: {
     fontWeight:'600',
@@ -106,10 +111,14 @@ function Header() {
     <div className={classes.grow}>
     <AppBar className={classes.muiAppBar} position="static">
       <Toolbar>
-      <img src={nyangImg} className={classes.nyangImg}></img>
-        <Typography className={classes.title} variant="h6" noWrap>
-          개아프냥
-        </Typography>
+        <Link to="/" className={classes.link}>
+          <img src={nyangImg} className={classes.nyangImg}/>
+        </Link>
+        <Link to="/" className={classes.link}>
+          <Typography className={classes.title} variant="h6" noWrap>
+            개아프냥
+          </Typography>
+        </Link>
         <div className={classes.grow} />
         <div className={classes.sectionDesktop}>
           <IconButton

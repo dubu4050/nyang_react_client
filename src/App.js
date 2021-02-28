@@ -1,27 +1,22 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core'
-import nyangImg from './img/nyangImg.png'
 import './App.css';
 import Header from './components/Common/Header'
-import Content1 from './components/Content_1'
 import Nav from './components/Common/Nav'
-import {BrowserRouter,Route,Switch}from 'react-router-dom'
-import BoardMain from 'components/Board/BoardMain';
+import Home from './components/Common/Home'
+import DiagMain from './components/Diagnosis/DiagMain'
+import BoardMain from './components/Board/BoardMain'
+import {Redirect, BrowserRouter,Route,Switch}from 'react-router-dom'
 
 
 function App() {
   return (
     <BrowserRouter>
       <div className="App">
-        <Header/>
-        <Nav/>
         <Switch>
-          <Route exact path="/">
-            <Content1/>
-          </Route>
-          <Route path="/board">
-            <BoardMain/>
-          </Route>
+          <Redirect exact from="/" to="/main"/>
+          <Route exact path ="/:page?" render = {props => <Home {...props} />} />
+          <Route exact path ="/main/:page?" render = {props => <DiagMain {...props} />} />
+          <Route exact path ="/board/:page?" render = {props => <BoardMain {...props}/>}/>
         </Switch>    
       </div>
     </BrowserRouter>

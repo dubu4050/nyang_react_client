@@ -1,10 +1,10 @@
 import React from 'react';
+import {Link} from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core';
-import DiagnosisNav from '../Diagnosis/DiagnosisNav';
 
 const useStyles = makeStyles({
   root: { 
@@ -12,8 +12,14 @@ const useStyles = makeStyles({
   },
   tab:{
     fontWeight:"bold",
+  },
+  link:{
+    color: '#000000',
+    textDecoration: 'none'
   }
 });
+
+
 
 const Nav = () => {
 
@@ -27,23 +33,38 @@ const Nav = () => {
       primary:{main:'#49D7F0',}
     }
   });
+    
+  const checkPathnameValue = () => {
+    const { pathname } = window.location;
+    switch (pathname) {
+      case '/diagnosis/auto':
+      case '/board/info':
+      break;
+    default:
+      return false;
+    }
+    return pathname;
+  }
 
-    return (
-      <MuiThemeProvider theme={theme}>
-      <Paper className={classes.root}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          indicatorColor="primary"
-          textColor="primary"
-          centered
-        >
-          <Tab className={classes.tab} label="진단" value="0"/>
-          <Tab className={classes.tab} label="게시판" value="1" />
-        </Tabs>
-      </Paper>
-    </MuiThemeProvider>
-    )
+  const tabValue = checkPathnameValue();
+  return (
+    <MuiThemeProvider theme={theme}>
+    <Paper className={classes.root}>
+      <Tabs
+        value={tabValue}
+        onChange={handleChange}
+        indicatorColor="primary"
+        textColor="primary"
+        centered
+      >
+        <Tab className={classes.tab} label="진단" value={'/diagnosis/auto'}
+            to='/diagnosis/auto' component={Link}/>
+        <Tab className={classes.tab} label="게시판" value={'/board/info'}
+          to='/board/info' component={Link}/>
+      </Tabs>
+    </Paper>
+  </MuiThemeProvider>
+  )
 }
 
 export default Nav
