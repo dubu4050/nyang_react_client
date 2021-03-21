@@ -3,7 +3,7 @@ import Header from './Header';
 import { makeStyles } from '@material-ui/core/styles';
 import {MuiThemeProvider, createMuiTheme, Paper, Tabs, Tab} from '@material-ui/core';
 import DiasnosisMain from '../Diagnosis/DiagMain';
-import QnABoard from '../Diagnosis/QnABoard';
+import BoardMain from '../Board/BoardMain';
 
 const useStyles = makeStyles({
     root: { 
@@ -61,7 +61,7 @@ const Home = props => {
                         </Tabs>
                     </Paper>
                     {selectedTab === 0 && <DiasnosisMain {...props}/>}
-                    {selectedTab === 1 && <QnABoard />}
+                    {selectedTab === 1 && <BoardMain {...props} />}
                 </MuiThemeProvider>
             </>
         </div>

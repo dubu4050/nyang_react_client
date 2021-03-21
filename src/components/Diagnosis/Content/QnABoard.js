@@ -2,7 +2,7 @@ import React from 'react'
 import { Container, InputBase, makeStyles } from '@material-ui/core'
 import SearchIcon from '@material-ui/icons/Search' 
 import CreateIcon from '@material-ui/icons/Create';
-import Card from '../Card/Card'
+import Card from '../../Card/Card'
 
 const useStyles = makeStyles((theme)=>({
     wrapper:{

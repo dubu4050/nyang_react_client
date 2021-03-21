@@ -1,5 +1,5 @@
 import React from 'react'
-import dummy from '../../db/disease.json';
+import dummy from '../../../db/disease.json';
 import { Card, makeStyles, Table, TableBody, CardActions, CardContent, Button, Typography, Badge, MuiThemeProvider, createMuiTheme, Fab, IconButton, Collapse, } from '@material-ui/core'
 import TableRow from '@material-ui/core/TableRow'
 import TableCell from '@material-ui/core/TableCell'

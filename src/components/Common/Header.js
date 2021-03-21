@@ -1,5 +1,5 @@
 import React from 'react'
-import { makeStyles, AppBar, Toolbar, IconButton, Typography, Menu, MenuItem } from '@material-ui/core'
+import { makeStyles, AppBar, Toolbar, IconButton, Typography, Menu, MenuItem, Link} from '@material-ui/core'
 import nyangImg from '../../img/nyangImg.png'
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
@@ -106,9 +106,9 @@ function Header() {
     <div className={classes.grow}>
     <AppBar className={classes.muiAppBar} position="static">
       <Toolbar>
-      <img src={nyangImg} className={classes.nyangImg}></img>
+      <Link href ="/"><img src={nyangImg} className={classes.nyangImg}></img></Link>
         <Typography className={classes.title} variant="h6" noWrap>
-          개아프냥
+          <Link href ='/' color="inherit">개아프냥</Link>
         </Typography>
         <div className={classes.grow} />
         <div className={classes.sectionDesktop}>

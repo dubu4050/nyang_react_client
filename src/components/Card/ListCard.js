@@ -3,10 +3,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import catImg from '../../img/cat_icon.png'
+import cat_icon from '../../img/cat_icon.png'
 import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles({
+
     root: {
         alignItems: 'center',
     },
@@ -22,14 +23,14 @@ const useStyles = makeStyles({
     }
 });
 
-export default function Cards(props){
+export default function ListCard(props){
     const classes = useStyles();
     return(
       <div className={classes.root}> 
         <Card align="left" className={classes.card}  variant="outlined">
             <CardMedia
                 className = {classes.cover}
-                image={catImg}
+                image={cat_icon}
                 title="card_cover"
             />
             <CardContent>
@@ -45,4 +46,3 @@ export default function Cards(props){
       </div>
     )
 }
-
