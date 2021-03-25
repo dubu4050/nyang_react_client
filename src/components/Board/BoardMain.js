@@ -1,14 +1,20 @@
 import React, { useRef } from 'react';
-import { makeStyles, Container, Button, Avatar, Tabs, Tab } from '@material-ui/core';
+import Header from '../Common/Header';
+import { makeStyles } from '@material-ui/core/styles';
+import { MuiThemeProvider, createMuiTheme, Paper, BottomNavigationAction, BottomNavigation, Container, Button, Avatar, Tabs, Tab } from '@material-ui/core';
 import catImg from '../../img/cat_icon.png'
 import dogImg from '../../img/dog_icon.png'
 import FreeBoardContent from './Content/FreeBoardContent'
 import InfoBoardContent from './Content/InfoBoardContent'
 
-
-
 const useStyles = makeStyles({
-
+  root: {
+    flexGrow: 1,
+  },
+  nav: {
+    fontWeight: "bold",
+    fontSize: "15px"
+  },
   'category-inner': {
     margin: '0 auto',
     borderBottom: '1px'
@@ -41,32 +47,46 @@ const useStyles = makeStyles({
   }
 });
 
-const DiagMain = props => {
+const BoardMain = props => {
 
   const { match, history } = props;
   const { params } = match;
   const { page } = params;
- 
+
+
+  
   const tabNameToIndex = {
     0: "info",
     1: "free",
   };
-
   const indexToTabName = {
-    "info": 0,
-    "free": 1,
+    info: 0,
+    free: 1,
   };
-
-  const classes = useStyles();
   const [selectedTab, setSelectedTab] = React.useState(indexToTabName[page]);
   const handleChange = (event, newValue) => {
-    history.push(`/${tabNameToIndex[newValue]}`);
+    history.push(`/board/${tabNameToIndex[newValue]}`);
     setSelectedTab(newValue);
   };
-  
-
+  const classes = useStyles();
+  const theme = createMuiTheme({
+    palette: {
+      primary: { main: '#49D7F0', }
+    }
+  });
   return (
-    <Container>
+    <div>
+   <Header />
+      <MuiThemeProvider theme={theme}>
+        <Paper className={classes.root}>
+          <BottomNavigation
+            value="board"
+            showLabels
+          >
+            <BottomNavigationAction label="진단" value="diagnosis" href="/diagnosis" className={classes.nav} />
+            <BottomNavigationAction label="게시판" value="board" href="/board" className={classes.nav} />
+          </BottomNavigation>
+        </Paper>
       <>
         <Container className={classes.categoryWrapper}>
           <Tabs
@@ -101,8 +121,9 @@ const DiagMain = props => {
         {selectedTab === 0 && <InfoBoardContent />}
         {selectedTab === 1 && <FreeBoardContent />}
       </>
-    </Container>
+    </MuiThemeProvider>
+    </div>
   )
 }
 
-export default DiagMain
+export default BoardMain

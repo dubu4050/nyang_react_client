@@ -9,12 +9,6 @@ const useStyles = makeStyles((theme)=>({
         alignItems: 'center',
         marginBottom: '2%',
     },
-    chipList:{
-        display: 'flex'
-    },
-    chip:{
-        marginRight: '10px'
-    },
     input:{
         height:'50px',
         border:"2px solid #dedede",
