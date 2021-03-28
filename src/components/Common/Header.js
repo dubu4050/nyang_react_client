@@ -1,6 +1,15 @@
-import React from 'react'
-import { makeStyles, AppBar, Toolbar, IconButton, Typography, Menu, MenuItem, Link} from '@material-ui/core'
-import nyangImg from '../../img/nyangImg.png'
+import React from 'react';
+import {
+  makeStyles,
+  AppBar,
+  Toolbar,
+  IconButton,
+  Typography,
+  Menu,
+  MenuItem,
+  Link,
+} from '@material-ui/core';
+import nyangImg from '../../img/nyangImg.png';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
 
@@ -8,16 +17,16 @@ const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
   },
-  muiAppBar:{
-    color:"black",
-    backgroundColor:"white",
+  muiAppBar: {
+    color: 'black',
+    backgroundColor: 'white',
   },
   nyangImg: {
     marginRight: theme.spacing(2),
-    width:"60px",
+    width: '60px',
   },
   title: {
-    fontWeight:'600',
+    fontWeight: '600',
     [theme.breakpoints.up('sm')]: {
       display: 'block',
     },
@@ -35,7 +44,6 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-
 
 function Header() {
   const classes = useStyles();
@@ -104,42 +112,45 @@ function Header() {
   );
   return (
     <div className={classes.grow}>
-    <AppBar className={classes.muiAppBar} position="static">
-      <Toolbar>
-      <Link href ="/"><img src={nyangImg} className={classes.nyangImg}></img></Link>
-        <Typography className={classes.title} variant="h6" noWrap>
-          <Link href ='/' color="inherit">개아프냥</Link>
-        </Typography>
-        <div className={classes.grow} />
-        <div className={classes.sectionDesktop}>
-          <IconButton
-            edge="end"
-            aria-label="account of current user"
-            aria-controls={menuId}
-            aria-haspopup="true"
-            onClick={handleProfileMenuOpen}
-            color="inherit"
-          >
-            <AccountCircle />
-          </IconButton>
-        </div>
-        <div className={classes.sectionMobile}>
-          <IconButton
-            aria-label="show more"
-            aria-controls={mobileMenuId}
-            aria-haspopup="true"
-            onClick={handleMobileMenuOpen}
-            color="inherit"
-          >
-            <MoreIcon />
-          </IconButton>
-        </div>
-      </Toolbar>
-    </AppBar>
-    {renderMobileMenu}
-    {renderMenu}
-  </div>
-
+      <AppBar className={classes.muiAppBar} position="static">
+        <Toolbar>
+          <Link href="/">
+            <img src={nyangImg} className={classes.nyangImg}></img>
+          </Link>
+          <Typography className={classes.title} variant="h6" noWrap>
+            <Link href="/" color="inherit">
+              개아프냥
+            </Link>
+          </Typography>
+          <div className={classes.grow} />
+          <div className={classes.sectionDesktop}>
+            <IconButton
+              edge="end"
+              aria-label="account of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={handleProfileMenuOpen}
+              color="inherit"
+            >
+              <AccountCircle />
+            </IconButton>
+          </div>
+          <div className={classes.sectionMobile}>
+            <IconButton
+              aria-label="show more"
+              aria-controls={mobileMenuId}
+              aria-haspopup="true"
+              onClick={handleMobileMenuOpen}
+              color="inherit"
+            >
+              <MoreIcon />
+            </IconButton>
+          </div>
+        </Toolbar>
+      </AppBar>
+      {renderMobileMenu}
+      {renderMenu}
+    </div>
   );
 }
 

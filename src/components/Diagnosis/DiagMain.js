@@ -1,15 +1,21 @@
 import React, { useRef } from 'react';
-import { makeStyles, Container, Button, Avatar, Tabs, Tab } from '@material-ui/core';
-import DiseaseSearch from './Content/DiseaseSearch'
+import {
+  makeStyles,
+  Container,
+  Button,
+  Avatar,
+  Tabs,
+  Tab,
+} from '@material-ui/core';
+import DiseaseSearch from './Content/DiseaseSearch';
 import QnABoard from './Content/QnABoard';
-import catImg from '../../img/cat_icon.png'
-import dogImg from '../../img/dog_icon.png'
+import catImg from '../../img/cat_icon.png';
+import dogImg from '../../img/dog_icon.png';
 
 const useStyles = makeStyles({
-
   'category-inner': {
     margin: '0 auto',
-    borderBottom: '1px'
+    borderBottom: '1px',
   },
   categoryWrapper: {
     display: 'flex',
@@ -30,24 +36,23 @@ const useStyles = makeStyles({
     opacity: '0.8',
     '&:focus': {
       background: '#49D7F0',
-      color: 'white'
+      color: 'white',
     },
     '&:selected': {
       background: '#49D7F0',
-      color: 'white'
+      color: 'white',
     },
-  }
+  },
 });
 
-const DiagMain = props => {
-
+const DiagMain = (props) => {
   const { match, history } = props;
   const { params } = match;
   const { page } = params;
- 
+
   const tabNameToIndex = {
-    0: "main",
-    1: "qna",
+    0: 'main',
+    1: 'qna',
   };
 
   const indexToTabName = {
@@ -61,7 +66,6 @@ const DiagMain = props => {
     history.push(`/${tabNameToIndex[newValue]}`);
     setSelectedTab(newValue);
   };
-  
 
   return (
     <Container>
@@ -78,27 +82,27 @@ const DiagMain = props => {
               className={classes.tab}
               icon={<Avatar src={catImg} />}
               label={
-                <Button
-                  variant="contained"
-                  className={classes.btn}>
+                <Button variant="contained" className={classes.btn}>
                   자동질병진단
-          </Button>} />
+                </Button>
+              }
+            />
             <Tab
               className={classes.tab}
               icon={<Avatar src={dogImg} />}
               label={
-                <Button
-                  variant="contained"
-                  className={classes.btn}>
+                <Button variant="contained" className={classes.btn}>
                   공개QnA
-          </Button>} />
+                </Button>
+              }
+            />
           </Tabs>
         </Container>
-        {selectedTab === 0 && <DiseaseSearch {...props}/>}
+        {selectedTab === 0 && <DiseaseSearch {...props} />}
         {selectedTab === 1 && <QnABoard {...props} />}
       </>
     </Container>
-  )
-}
+  );
+};
 
-export default DiagMain
+export default DiagMain;
