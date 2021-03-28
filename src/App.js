@@ -8,11 +8,21 @@ import BoardMain from './components/Board/BoardMain';
 import InfoBoardContent from './components/Board/Content/InfoBoardContent';
 import FreeBoardContent from './components/Board/Content/FreeBoardContent';
 import ReadBoard from './components/Board/Content/ReadBoard';
+import Login from './components/Member/Login';
+import EnrollMember from './components/Member/EnrollMember';
+import FindId from './components/Member/FindId';
+import FindPw from './components/Member/FindPw';
+import UpdatePw from './components/Member/UpdatePw';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 function App() {
   return (
     <div className="App">
+      <Route path="/login" component={Login} exact />
+      <Route path="/enroll" component={EnrollMember} exact />
+      <Route path="/findId" component={FindId} exact />
+      <Route path="/findPw" component={FindPw} exact />
+      <Route path="/updatePw" component={UpdatePw} exact />
       <Switch>
         <Redirect exact from="/" to="/diagnosis/" exact />
         <Redirect exact from="/diagnosis" to="/diagnosis/search" exact />

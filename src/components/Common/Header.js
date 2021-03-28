@@ -131,6 +131,7 @@ function Header() {
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
               color="inherit"
+              href="/login"
             >
               <AccountCircle />
             </IconButton>
