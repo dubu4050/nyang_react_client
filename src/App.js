@@ -7,18 +7,32 @@ import QnAWrite from './components/Diagnosis/QnAWrite';
 import BoardMain from './components/Board/BoardMain';
 import InfoBoardContent from './components/Board/Content/InfoBoardContent';
 import FreeBoardContent from './components/Board/Content/FreeBoardContent';
+import ReadBoard from './components/Board/Content/ReadBoard';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 function App() {
   return (
     <div className="App">
       <Switch>
-        <Redirect exact from="/" to="/diagnosis" exact />
+        <Redirect exact from="/" to="/diagnosis/" exact />
+        <Redirect exact from="/diagnosis" to="/diagnosis/search" exact />
         <Route
           exact
           path="/diagnosis/:page?"
           render={(props) => <Home {...props} />}
         />
+        <Route
+          exact
+          path="/diagnosis/search/:page?"
+          render={(props) => <DiseaseSearch {...props} />}
+        />
+        <Route
+          exact
+          path="/diagnosis/qna/:page?"
+          render={(props) => <QnABoard {...props} />}
+        />
+        <Route path="/write" component={QnAWrite} exact />
+        <Route path="/detail" component={ReadBoard} exact />
       </Switch>
       <Switch>
         <Redirect exact from="/board" to="/board/info" exact />
@@ -37,20 +51,6 @@ function App() {
           path="/board/free/:page?"
           render={(props) => <FreeBoardContent {...props} />}
         />
-      </Switch>
-      <Switch>
-        <Redirect exact from="/diagnosis" to="/diagnosis/search" exact />
-        <Route
-          exact
-          path="/diagnosis/search/:page?"
-          render={(props) => <DiseaseSearch {...props} />}
-        />
-        <Route
-          exact
-          path="/diagnosis/qna/:page?"
-          render={(props) => <QnABoard {...props} />}
-        />
-        <Route exact path="/write" component={QnAWrite} />
       </Switch>
     </div>
   );

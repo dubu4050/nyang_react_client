@@ -183,11 +183,25 @@ class EditComp extends React.Component {
 
   render() {
     const classes = {
-      btn: {
+      btnbox: {
+        width: '100%',
+        height: 'fit-content',
+        textAlign: 'center',
+      },
+      okbtn: {
+        width: '130px',
+        height: '50px',
         color: 'white',
         background: '#49D7F0',
-        float: 'right',
-        marginTop: '2%',
+        marginTop: '20px',
+      },
+      canclebtn: {
+        width: '130px',
+        height: '50px',
+        color: 'white',
+        background: '#B7B7B7',
+        marginTop: '20px',
+        marginInlineEnd: '10%',
       },
     };
     return (
@@ -199,15 +213,26 @@ class EditComp extends React.Component {
             ref={this.editorRef}
           />
         </>
-        <Button
-          variant="contained"
-          size="large"
-          onClick={this.handleClick}
-          style={classes.btn}
-        >
-          {' '}
-          Save{' '}
-        </Button>
+        <div style={classes.btnbox}>
+          <Button
+            variant="contained"
+            size="large"
+            href="/diagnosis/qna"
+            style={classes.canclebtn}
+          >
+            {' '}
+            취소{' '}
+          </Button>
+          <Button
+            variant="contained"
+            size="large"
+            onClick={this.handleClick}
+            style={classes.okbtn}
+          >
+            {' '}
+            등록{' '}
+          </Button>
+        </div>
         <div id="toatUIEditor">
           <div id="button">
             <textarea
