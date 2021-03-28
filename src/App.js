@@ -3,6 +3,7 @@ import './App.css';
 import Home from './components/Common/Home';
 import DiseaseSearch from './components/Diagnosis/Content/DiseaseSearch';
 import QnABoard from './components/Diagnosis/Content/QnABoard';
+import QnAWrite from './components/Diagnosis/QnAWrite';
 import BoardMain from './components/Board/BoardMain';
 import InfoBoardContent from './components/Board/Content/InfoBoardContent';
 import FreeBoardContent from './components/Board/Content/FreeBoardContent';
@@ -49,6 +50,7 @@ function App() {
           path="/diagnosis/qna/:page?"
           render={(props) => <QnABoard {...props} />}
         />
+        <Route exact path="/write" component={QnAWrite} />
       </Switch>
     </div>
   );

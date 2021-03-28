@@ -1,8 +1,14 @@
 import React from 'react';
-import { Container, InputBase, makeStyles } from '@material-ui/core';
+import {
+  Container,
+  IconButton,
+  InputBase,
+  makeStyles,
+} from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import CreateIcon from '@material-ui/icons/Create';
 import Card from '../../Card/Card';
+import { Button } from 'react-scroll';
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -58,7 +64,9 @@ export default function QnABoard(props) {
           inputProps={{ 'aria-label': 'search' }}
         />
         <SearchIcon className={classes.icon} />
-        <CreateIcon className={classes.icon} />
+        <IconButton href="/write">
+          <CreateIcon className={classes.icon} />
+        </IconButton>
       </Container>
       <Card />
       <Card />
