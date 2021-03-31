@@ -69,6 +69,7 @@ function EnrollMember() {
   };
   const onCheckId = () => {
     // id 중복 확인
+    alert('사용가능');
   };
   const onCheckEmail = () => {
     // emial 인증 요청
@@ -95,7 +96,7 @@ function EnrollMember() {
       <Header />
       <form className={classes.root} noValidate autoComplete="off">
         <div className={classes.table}>
-          <h2 className={classes.item}>회원 가입</h2>
+          <h1 className={classes.item}>회원 가입</h1>
           <div className={classes.item}>
             <TextField
               required
@@ -104,7 +105,7 @@ function EnrollMember() {
               value={id}
               onChange={onChangeId}
             />
-            <Button variant="contained" onClick={onCheckId}>
+            <Button variant="contained" onClick={onCheckId} color="primary">
               중복 확인
             </Button>
           </div>
@@ -134,7 +135,7 @@ function EnrollMember() {
               value={email}
               onChange={onChangeEmail}
             />
-            <Button variant="contained" onClick={onCheckEmail}>
+            <Button variant="contained" onClick={onCheckEmail} color="primary">
               인증요청
             </Button>
           </div>
@@ -146,7 +147,11 @@ function EnrollMember() {
               value={certNumber}
               onChange={onChangeCertNumber}
             />
-            <Button variant="contained" onClick={onCheckEmailCertNumber}>
+            <Button
+              variant="contained"
+              onClick={onCheckEmailCertNumber}
+              color="primary"
+            >
               확인
             </Button>
           </div>
@@ -185,7 +190,11 @@ function EnrollMember() {
             />
           </form>
           <div className={classes.item}>
-            <Button variant="contained" onClick={EnrollMemberInfo}>
+            <Button
+              variant="contained"
+              onClick={EnrollMemberInfo}
+              color="primary"
+            >
               회원 가입
             </Button>
           </div>

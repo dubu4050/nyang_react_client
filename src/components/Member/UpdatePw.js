@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import Header from '../Common/Header';
+import Header from '../Common/Header.js';
 import { SettingsInputSvideo } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
@@ -46,7 +46,7 @@ function MemberInfo() {
       <Header />
       <form className={classes.root} noValidate autoComplete="off">
         <div className={classes.table}>
-          <h2>비밀번호 변경</h2>
+          <h1>비밀번호 변경</h1>
           <div>
             <TextField disabled id="id" label="아이디" defaultValue={'1234'} />
           </div>
@@ -68,7 +68,11 @@ function MemberInfo() {
               onChange={onChangeCheckPw}
             />
           </div>
-          <Button variant="contained" onClick={UpdateMemberPassword}>
+          <Button
+            variant="contained"
+            onClick={UpdateMemberPassword}
+            color="primary"
+          >
             변경
           </Button>
         </div>

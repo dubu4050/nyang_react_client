@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import Header from '../Common/Header';
 import { SettingsInputSvideo } from '@material-ui/icons';
+import Header from '../Common/Header';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -57,10 +57,9 @@ function MemberInfo() {
   return (
     <div>
       <Header />
-
       <form className={classes.root} noValidate autoComplete="off">
         <div className={classes.table}>
-          <h2>계정 찾기</h2>
+          <h1>계정 찾기</h1>
           <div>
             <TextField
               required
@@ -90,7 +89,7 @@ function MemberInfo() {
               onChange={onChangeEmail}
             />
           </div>
-          <Button variant="contained" onClick={FindMemberId}>
+          <Button variant="contained" onClick={FindMemberId} color="primary">
             아이디 찾기
           </Button>
         </div>

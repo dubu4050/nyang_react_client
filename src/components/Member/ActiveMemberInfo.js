@@ -5,11 +5,10 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-
 import { DataGrid } from '@material-ui/data-grid';
-import Button from '@material-ui/core/Button';
 import Header from '../Common/Header';
+import Box from '@material-ui/core/Box';
+import member from '../../db/member.json';
 
 // tab
 function TabPanel(props) {
@@ -81,9 +80,6 @@ const postRows = [
   { id: 2, title: 'Snow', createDate: 'Jon', category: 35 },
   { id: 3, title: 'Snow', createDate: 'Jon', category: 35 },
   { id: 4, title: 'Snow', createDate: 'Jon', category: 35 },
-  { id: 5, title: 'Snow', createDate: 'Jon', category: 35 },
-  { id: 5, title: 'Snow', createDate: 'Jon', category: 35 },
-  { id: 5, title: 'Snow', createDate: 'Jon', category: 35 },
   { id: 5, title: 'Snow', createDate: 'Jon', category: 35 },
 ];
 
@@ -172,50 +168,52 @@ function ActiveMemberInfo() {
     alert(checkedItems);
   };
   return (
-    <form className={classes.root} noValidate autoComplete="off">
+    <div>
       <Header />
-      <div className={classes.table}>
-        <h2>회원 활동 조회</h2>
-        <h3>아이디 : 1234 </h3>
-        <AppBar classNabe={classes.tab} position="static" color="default">
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            indicatorColor="primary"
-            variant="scrollable"
-            scrollButtons="auto"
-            aria-label="scrollable auto tabs example"
-          >
-            <Tab label="작성 글" {...a11yProps(0)} />
-            <Tab label="공개QA 댓글" {...a11yProps(1)} />
-            <Tab label="자유게시판 댓글" {...a11yProps(2)} />
-          </Tabs>
-        </AppBar>
-        <TabPanel value={value} index={0}>
-          <div style={{ height: 400, width: '100%' }}>
-            <DataGrid rows={postRows} columns={postColumns} onpageSize={5} />
-          </div>
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <div style={{ height: 400, width: '100%' }}>
-            <DataGrid
-              rows={qaContentRows}
-              columns={qaContentColumns}
-              pageSize={5}
-            />
-          </div>
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          <div style={{ height: 400, width: '100%' }}>
-            <DataGrid
-              rows={freeContentRows}
-              columns={freeContentColumns}
-              pageSize={5}
-            />
-          </div>
-        </TabPanel>
-      </div>
-    </form>
+      <form className={classes.root} noValidate autoComplete="off">
+        <div className={classes.table}>
+          <h1>회원 활동 조회</h1>
+          <h2>아이디 : 1234 </h2>
+          <AppBar classNabe={classes.tab} position="static" color="default">
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              indicatorColor="primary"
+              variant="scrollable"
+              scrollButtons="auto"
+              aria-label="scrollable auto tabs example"
+            >
+              <Tab label="작성 글" {...a11yProps(0)} />
+              <Tab label="공개QA 댓글" {...a11yProps(1)} />
+              <Tab label="자유게시판 댓글" {...a11yProps(2)} />
+            </Tabs>
+          </AppBar>
+          <TabPanel value={value} index={0}>
+            <div style={{ height: 400, width: '100%' }}>
+              <DataGrid rows={postRows} columns={postColumns} onpageSize={5} />
+            </div>
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <div style={{ height: 400, width: '100%' }}>
+              <DataGrid
+                rows={qaContentRows}
+                columns={qaContentColumns}
+                pageSize={5}
+              />
+            </div>
+          </TabPanel>
+          <TabPanel value={value} index={2}>
+            <div style={{ height: 400, width: '100%' }}>
+              <DataGrid
+                rows={freeContentRows}
+                columns={freeContentColumns}
+                pageSize={5}
+              />
+            </div>
+          </TabPanel>
+        </div>
+      </form>
+    </div>
   );
 }
 

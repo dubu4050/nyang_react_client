@@ -2,7 +2,8 @@ import React, { useState, useRef, useContext } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import Header from '../Common/Header';
+import member from '../../db/member.json';
+import Header from '../Common/Header.js';
 import { SettingsInputSvideo } from '@material-ui/icons';
 import DatePicker from 'react-datepicker';
 
@@ -54,68 +55,92 @@ function MemberInfo() {
     setPhoneNumber('');
   };
   const updateMemberInfo = () => {
-    if (member.id == id && member.nickName == nickName) {
-      alert('변경된 정보가 없어 변경을 하지 않는다.');
+    if (member.nickName == nickName && member.phoneNumber == phoneNumber) {
+      alert('변경된 정보가 없습니다.');
+    } else if (
+      member.nickName != nickName &&
+      member.phoneNumber != phoneNumber
+    ) {
+      alert('닉네임 번호');
     } else {
-      alert(nickName + ' ' + phoneNumber);
+      if (member.nickName != nickName) {
+        alert('닉네임');
+      } else {
+        alert('전화번호');
+      }
     }
   };
   return (
-    <form className={classes.root} noValidate autoComplete="off">
+    <div>
       <Header />
-      <div className={classes.table}>
-        <h2 className={classes.item}>회원 정보 조회</h2>
-        <div className={classes.item}>
-          <TextField disabled id="id" label="아이디" defaultValue={id} />
+      <form className={classes.root} noValidate autoComplete="off">
+        <div className={classes.table}>
+          <h1 className={classes.item}>회원 정보 조회</h1>
+          <div className={classes.item}>
+            <TextField disabled id="id" label="아이디" defaultValue={id} />
+          </div>
+          <div className={classes.item}>
+            <TextField
+              required
+              id="nickName"
+              label="닉네임"
+              value={nickName}
+              onChange={onChangeNickName}
+            />
+            <Button variant="contained" onClick={nickNameReset} color="primary">
+              닉네임 수정
+            </Button>
+          </div>
+          <div className={classes.item}>
+            <TextField
+              disabled
+              id="email"
+              label="이메일"
+              defaultValue={email}
+            />
+          </div>
+          <div className={classes.item}>
+            <TextField
+              required
+              id="phoneNumber"
+              label="연락처"
+              value={phoneNumber}
+              onChange={onChangePhoneNumber}
+            />
+            <Button
+              variant="contained"
+              onClick={phoneNumberReset}
+              color="primary"
+            >
+              연락처 수정
+            </Button>
+          </div>
+          <div className={classes.item}>
+            <TextField disabled id="grade" label="등급" defaultValue={grade} />
+          </div>
+          <div className={classes.item}>
+            <TextField disabled id="name" label="이름" defaultValue={name} />
+          </div>
+          <div className={classes.item}>
+            <TextField
+              disabled
+              id="birthday"
+              label="생년월일"
+              defaultValue={birth}
+            />
+          </div>
+          <div className={classes.item}>
+            <Button
+              variant="contained"
+              onClick={updateMemberInfo}
+              color="primary"
+            >
+              수정
+            </Button>
+          </div>
         </div>
-        <div className={classes.item}>
-          <TextField
-            required
-            id="nickName"
-            label="닉네임"
-            value={nickName}
-            onChange={onChangeNickName}
-          />
-          <Button variant="contained" onClick={nickNameReset}>
-            닉네임 수정
-          </Button>
-        </div>
-        <div className={classes.item}>
-          <TextField disabled id="email" label="이메일" defaultValue={email} />
-        </div>
-        <div className={classes.item}>
-          <TextField
-            required
-            id="phoneNumber"
-            label="연락처"
-            value={phoneNumber}
-            onChange={onChangePhoneNumber}
-          />
-          <Button variant="contained" onClick={phoneNumberReset}>
-            연락처 수정
-          </Button>
-        </div>
-        <div className={classes.item}>
-          <TextField disabled id="grade" label="등급" defaultValue={grade} />
-        </div>
-        <div className={classes.item}>
-          <TextField disabled id="name" label="이름" defaultValue={name} />
-        </div>
-        <div className={classes.item}>
-          <TextField
-            disabled
-            id="birthday"
-            label="생년월일"
-            defaultValue={birth}
-          />
-        </div>
-        <div className={classes.item}>
-          <Button variant="contained" onClick={updateMemberInfo}>
-            수정
-          </Button>
-        </div>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 }
 

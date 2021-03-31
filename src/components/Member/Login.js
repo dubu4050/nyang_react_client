@@ -4,7 +4,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
 import nyangImg from '../../img/nyangImg.png';
-import { CenterFocusStrong } from '@material-ui/icons';
+import { CallMissedSharp, CenterFocusStrong } from '@material-ui/icons';
+import Header from '../Common/Header.js';
+import { Container, Typography } from '@material-ui/core';
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;
@@ -22,40 +24,39 @@ function getModalStyle() {
 }
 
 const useStyles = makeStyles((theme) => ({
-  paper: {
-    position: 'absolute',
-    width: 400,
-    backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
+  wrapper: {
+    height: '500px',
+    alignItems: 'center',
+    marginBottom: '2%',
   },
   header: {
-    width: '70%',
-    margin: '0 auto',
-    borderBottom: 'none',
-    padding: '3px 0px 0px 0px',
+    overflow: 'hidden',
+    textAlign: 'center',
+    verticalAlign: 'middle',
   },
   nyangImg: {
     marginRight: theme.spacing(2),
-    width: '70px',
-    float: 'left',
+    marginBottom: theme.spacing(4),
   },
   loginInfo: {
-    width: '80%',
     margin: '0 auto',
-    padding: '0px 0px 20px 40px',
     borderBottom: 'none',
+    verticalAlign: 'middle',
+    marginTop: '8%',
   },
+  title: {},
+  pw: {},
+  textfield: { width: '300px' },
   loginButton: {
-    width: '70%',
     margin: '0 auto',
-    padding: '0px 0px 0px 14px',
+    marginTop: '2%',
+    padding: '0px 0px 0px 0px',
     borderBottom: 'none',
     '& > *': {
       margin: theme.spacing(1),
     },
   },
+  btn: { width: '300px' },
 }));
 
 function Login() {
@@ -88,52 +89,49 @@ function Login() {
       alert(id + ' ' + password);
     }
   };
-  const body = (
-    <div style={modalStyle} className={classes.paper}>
-      <div className={classes.header}>
-        <img src={nyangImg} className={classes.nyangImg}></img>
-        <h1>개아프냥</h1>
-      </div>
-      <div className={classes.loginInfo}>
-        <TextField
-          required
-          id="id"
-          label="아이디"
-          value={id}
-          onChange={onChangeId}
-        />
-        <TextField
-          required
-          id="pw"
-          label="비밀번호"
-          value={password}
-          onChange={onChangePassword}
-        />
-      </div>
-      <div className={classes.loginButton}>
-        <Button variant="contained" onClick={LoginClick}>
-          로그인
-        </Button>
-        <Button variant="contained" href="/enroll">
-          회원 가입
-        </Button>
-      </div>
-    </div>
-  );
 
   return (
     <div>
-      <button type="button" onClick={handleOpen}>
-        Open Modal
-      </button>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-      >
-        {body}
-      </Modal>
+      <Header />
+      <Container align="center" className={classes.wrapper}>
+        <div className={classes.loginInfo}>
+          <div className={classes.header}>
+            <img src={nyangImg} align="middle" className={classes.nyangImg} />
+          </div>
+          <div className={classes.id}>
+            <TextField
+              required
+              id="id"
+              label="아이디"
+              value={id}
+              className={classes.textfield}
+              onChange={onChangeId}
+            />
+          </div>
+          <div className={classes.pw}>
+            <TextField
+              required
+              id="pw"
+              label="비밀번호"
+              value={password}
+              className={classes.textfield}
+              onChange={onChangePassword}
+            />
+          </div>
+          <div className={classes.loginButton}>
+            <Button
+              variant="contained"
+              onClick={LoginClick}
+              className={classes.btn}
+            >
+              로그인
+            </Button>
+          </div>
+          <Button href="/findId">계정 찾기</Button>
+          <Button href="/findPw">비밀번호 찾기</Button>
+          <Button href="/enroll">회원 가입</Button>
+        </div>
+      </Container>
     </div>
   );
 }

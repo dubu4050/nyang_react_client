@@ -1,0 +1,10 @@
+{
+    "id": "user",
+    "nickName": "너비아니",
+    "email": "asdf@naver.com",
+    "phoneNumber": "010-1234-5678",
+    "grade": "회원",
+    "name": "홍길동",
+    "joined": "2021-03-23",
+    "birth": "2021-03-23"
+}
