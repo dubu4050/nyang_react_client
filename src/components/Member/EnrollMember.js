@@ -1,18 +1,19 @@
 import React, { useState, useRef, useContext } from 'react';
+import axios from 'axios';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Header from '../Common/Header';
-import { SettingsInputSvideo } from '@material-ui/icons';
+import nyangImg from '../../images/nyangImg.png';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     '& .MuiTextField-root': {
-      margin: theme.spacing(1),
-      width: '25ch',
+      margin: theme.spacing(2),
+      width: '50ch',
     },
     '& > *': {
-      margin: theme.spacing(1),
+      margin: theme.spacing(2),
     },
   },
   table: {
@@ -21,16 +22,31 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: 'none',
     padding: '30px 0px 0px 0px',
   },
+  title: {
+    width: '80%',
+    margin: '0 auto',
+    textAlign: 'center',
+    marginBottom: '3%',
+  },
   item: {
-    width: '50%',
+    width: '80%',
     margin: '0 auto',
     borderBottom: 'none',
+    textAlign: 'center',
+  },
+  btn: {
+    margin: theme.spacing(2.5),
+    width: '12ch',
+  },
+  okbtn: {
+    width: '85%',
+    marginTop: theme.spacing(4),
+    marginBottom: theme.spacing(8),
   },
 }));
 
-function EnrollMember() {
+function EnrollMember(props) {
   const classes = useStyles();
-
   // EnrollMember 관련 변수
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
@@ -78,7 +94,6 @@ function EnrollMember() {
     // email 인증 번호 일치 확인
   };
   const EnrollMemberInfo = () => {
-    // 회원 가입 처리
     if (
       id == '' ||
       password == '' ||
@@ -90,13 +105,36 @@ function EnrollMember() {
     ) {
       alert('필수 항목을 모두 입력하지 않았습니다.');
     }
+    const body = {
+      account: id,
+      password: password,
+      name: name,
+      nickname: nickName,
+      email: email,
+      phone_number: phoneNumber,
+      date_birth: birth,
+    };
+    const ip = 'http://haejun.iptime.org:8090'; // ip address
+    axios
+      .post(ip + '/member', body)
+      .then(() => {
+        alert('회원 가입에 성공하였습니다.');
+      })
+      .catch((err) => {
+        console.log(err);
+        alert('회원 가입에 실패하였습니다.');
+      });
   };
+
   return (
     <div>
       <Header />
       <form className={classes.root} noValidate autoComplete="off">
         <div className={classes.table}>
-          <h1 className={classes.item}>회원 가입</h1>
+          <div className={classes.title}>
+            {' '}
+            <img src={nyangImg} align="middle" className={classes.nyangImg} />
+          </div>
           <div className={classes.item}>
             <TextField
               required
@@ -104,8 +142,14 @@ function EnrollMember() {
               label="아이디"
               value={id}
               onChange={onChangeId}
+              variant="outlined"
             />
-            <Button variant="contained" onClick={onCheckId} color="primary">
+            <Button
+              variant="contained"
+              onClick={onCheckId}
+              size="small"
+              className={classes.btn}
+            >
               중복 확인
             </Button>
           </div>
@@ -116,7 +160,9 @@ function EnrollMember() {
               label="비밀번호"
               value={password}
               onChange={onChangePassword}
+              variant="outlined"
             />
+            <Button disabled size="small" className={classes.btn} />
           </div>
           <div className={classes.item}>
             <TextField
@@ -125,7 +171,9 @@ function EnrollMember() {
               label="닉네임"
               value={nickName}
               onChange={onChangeNickName}
+              variant="outlined"
             />
+            <Button disabled size="small" className={classes.btn} />
           </div>
           <div className={classes.item}>
             <TextField
@@ -134,8 +182,14 @@ function EnrollMember() {
               label="이메일"
               value={email}
               onChange={onChangeEmail}
+              variant="outlined"
             />
-            <Button variant="contained" onClick={onCheckEmail} color="primary">
+            <Button
+              variant="contained"
+              onClick={onCheckEmail}
+              size="small"
+              className={classes.btn}
+            >
               인증요청
             </Button>
           </div>
@@ -146,11 +200,13 @@ function EnrollMember() {
               label="인증번호"
               value={certNumber}
               onChange={onChangeCertNumber}
+              variant="outlined"
             />
             <Button
               variant="contained"
               onClick={onCheckEmailCertNumber}
-              color="primary"
+              size="small"
+              className={classes.btn}
             >
               확인
             </Button>
@@ -164,7 +220,9 @@ function EnrollMember() {
               label="연락처('-' 제외)"
               value={phoneNumber}
               onChange={onChangePhoneNumber}
+              variant="outlined"
             />
+            <Button disabled size="small" className={classes.btn} />
           </div>
           <div className={classes.item}>
             <TextField
@@ -172,8 +230,11 @@ function EnrollMember() {
               id="name"
               label="이름"
               value={name}
+              size="small"
               onChange={onChangeName}
+              variant="outlined"
             />
+            <Button disabled size="small" className={classes.btn} />
           </div>
           <form className={classes.item} noValidate>
             <TextField
@@ -183,17 +244,19 @@ function EnrollMember() {
               defaultValue="2021-01-01"
               className={classes.textField}
               value={birth}
+              variant="outlined"
               onChange={onChangeBirth}
               InputLabelProps={{
                 shrink: true,
               }}
             />
+            <Button disabled size="small" className={classes.btn} />
           </form>
           <div className={classes.item}>
             <Button
               variant="contained"
               onClick={EnrollMemberInfo}
-              color="primary"
+              className={classes.okbtn}
             >
               회원 가입
             </Button>

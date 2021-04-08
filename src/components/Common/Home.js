@@ -15,8 +15,8 @@ import {
 } from '@material-ui/core';
 import DiseaseSearch from '../Diagnosis/Content/DiseaseSearch';
 import QnABoard from '../Diagnosis/Content/QnABoard';
-import catImg from '../../img/cat_icon.png';
-import dogImg from '../../img/dog_icon.png';
+import catImg from '../../images/cat_icon.png';
+import dogImg from '../../images/dog_icon.png';
 const useStyles = makeStyles({
   root: {
     flexGrow: 1,

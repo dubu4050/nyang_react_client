@@ -14,6 +14,7 @@
     "@toast-ui/react-editor": "^2.5.1",
     "ag-grid-community": "^25.1.0",
     "ag-grid-react": "^25.1.0",
+    "axios": "^0.21.1",
     "create-react-app": "^4.0.3",
     "react": "^17.0.1",
     "react-data-grid": "^7.0.0-canary.38",

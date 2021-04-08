@@ -64,7 +64,7 @@ export default function QnABoard(props) {
           inputProps={{ 'aria-label': 'search' }}
         />
         <SearchIcon className={classes.icon} />
-        <IconButton href="/write">
+        <IconButton href="/qnaWrite">
           <CreateIcon className={classes.icon} />
         </IconButton>
       </Container>

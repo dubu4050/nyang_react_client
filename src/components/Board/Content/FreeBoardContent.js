@@ -1,5 +1,10 @@
 import React from 'react';
-import { Container, InputBase, makeStyles } from '@material-ui/core';
+import {
+  Container,
+  InputBase,
+  makeStyles,
+  IconButton,
+} from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import CreateIcon from '@material-ui/icons/Create';
 import ListCard from '../../Card/ListCard';
@@ -58,7 +63,9 @@ export default function FreeBoardContent(props) {
           inputProps={{ 'aria-label': 'search' }}
         />
         <SearchIcon className={classes.icon} />
-        <CreateIcon className={classes.icon} />
+        <IconButton href="/boardWrite">
+          <CreateIcon className={classes.icon} />
+        </IconButton>
       </Container>
       <ListCard />
       <ListCard />

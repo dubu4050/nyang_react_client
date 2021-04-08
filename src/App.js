@@ -3,10 +3,11 @@ import './App.css';
 import Home from './components/Common/Home';
 import DiseaseSearch from './components/Diagnosis/Content/DiseaseSearch';
 import QnABoard from './components/Diagnosis/Content/QnABoard';
-import QnAWrite from './components/Diagnosis/QnAWrite';
+import QnAWrite from './components/Diagnosis/Content/QnAWrite';
 import BoardMain from './components/Board/BoardMain';
 import InfoBoardContent from './components/Board/Content/InfoBoardContent';
 import FreeBoardContent from './components/Board/Content/FreeBoardContent';
+import BoardWrite from './components/Board/Content/BoardWrite';
 import ReadBoard from './components/Board/Content/ReadBoard';
 import Login from './components/Member/Login';
 import EnrollMember from './components/Member/EnrollMember';
@@ -78,7 +79,7 @@ function App() {
           path="/diagnosis/qna/:page?"
           render={(props) => <QnABoard {...props} />}
         />
-        <Route path="/write" component={QnAWrite} exact />
+        <Route path="/qnaWrite" component={QnAWrite} exact />
         <Route path="/detail" component={ReadBoard} exact />
       </Switch>
       <Switch>
@@ -98,6 +99,7 @@ function App() {
           path="/board/free/:page?"
           render={(props) => <FreeBoardContent {...props} />}
         />
+        <Route path="/boardWrite" component={BoardWrite} exact />
       </Switch>
     </div>
   );

@@ -8,22 +8,27 @@ import Header from '../Common/Header';
 const useStyles = makeStyles((theme) => ({
   root: {
     '& .MuiTextField-root': {
-      margin: theme.spacing(1),
-      width: '30ch',
+      margin: theme.spacing(2),
+      width: '50ch',
     },
     '& > *': {
-      margin: theme.spacing(1),
+      margin: theme.spacing(2),
     },
   },
   table: {
-    width: '20%',
+    width: '50%',
     margin: '0 auto',
     borderBottom: 'none',
-    padding: '0px 0px 30px 0px',
+    padding: '30px 0px 0px 0px',
+    textAlign: 'center',
   },
   result: {
     position: 'relative',
     left: '38%',
+  },
+  okbtn: {
+    width: '50ch',
+    marginTop: theme.spacing(4),
   },
 }));
 
@@ -89,7 +94,11 @@ function MemberInfo() {
               onChange={onChangeEmail}
             />
           </div>
-          <Button variant="contained" onClick={FindMemberId} color="primary">
+          <Button
+            variant="contained"
+            onClick={FindMemberId}
+            className={classes.okbtn}
+          >
             아이디 찾기
           </Button>
         </div>

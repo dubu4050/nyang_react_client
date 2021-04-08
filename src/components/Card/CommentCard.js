@@ -4,7 +4,7 @@ import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import IU from '../../img/IU.jpg';
+import IU from '../../images/IU.jpg';
 
 const useStyles = makeStyles({
   root: {

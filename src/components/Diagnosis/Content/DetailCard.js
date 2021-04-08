@@ -2,7 +2,10 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import CardHeader from '@material-ui/core/CardHeader';
 import Typography from '@material-ui/core/Typography';
+import Avatar from '@material-ui/core/Avatar';
+import nyangImg from '../../../images/nyangImg.png';
 
 const useStyles = makeStyles({
   root: {
@@ -63,8 +66,8 @@ const useStyles = makeStyles({
       fontWeight: 'bold',
     },
   },
-  writer: {
-    fontWeight: 'bold',
+  img: {
+    width: '40px',
   },
 });
 
@@ -100,20 +103,15 @@ export default function ComplexGrid() {
                 </Typography>
               </Grid>
               <Grid item>
-                <Typography
-                  variant="body2"
-                  className={classes.writer}
-                  gutterBottom
-                >
-                  dubu4050
-                </Typography>
-                <Typography
-                  variant="body2"
-                  className={classes.writerInfo}
-                  color="textSecondary"
-                >
-                  @dubu4050 고양이 키워본적 없습니다.
-                </Typography>
+                <CardHeader
+                  avatar={
+                    <Avatar aria-label="recipe" className={classes.avatar}>
+                      <img src={nyangImg} className={classes.img} />
+                    </Avatar>
+                  }
+                  title="dubu4050"
+                  subheader=" @dubu4050 고양이 키워본적 없습니다."
+                ></CardHeader>
               </Grid>
             </Grid>
             <Grid item>

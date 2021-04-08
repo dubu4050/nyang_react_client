@@ -3,7 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
-import nyangImg from '../../img/nyangImg.png';
+import nyangImg from '../../images/nyangImg.png';
 import { CallMissedSharp, CenterFocusStrong } from '@material-ui/icons';
 import Header from '../Common/Header.js';
 import { Container, Typography } from '@material-ui/core';

@@ -7,11 +7,14 @@ import {
   Typography,
   IconButton,
   ButtonBase,
+  CardHeader,
+  Avatar,
 } from '@material-ui/core';
 import AddCommentOutlinedIcon from '@material-ui/icons/AddCommentOutlined';
 import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined';
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
 import DoneAllOutlinedIcon from '@material-ui/icons/DoneAllOutlined';
+import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
 const useStyles = makeStyles({
   root: {
     flexGrow: 1,
@@ -67,6 +70,11 @@ const useStyles = makeStyles({
   writer: {
     fontWeight: 'bold',
   },
+  img: { width: '40px' },
+  check: {
+    color: 'red',
+    width: '40px',
+  },
   icon: {
     float: 'right',
     fontSize: '14px',
@@ -94,14 +102,21 @@ export default function ComplexGrid() {
             <Grid item xs={12} sm container>
               <Grid item xs container direction="column" spacing={2}>
                 <Grid item xs>
-                  <Typography
-                    variant="body2"
-                    className={classes.writer}
-                    gutterBottom
-                  >
-                    {' '}
-                    {reviews.writer}
-                  </Typography>
+                  <CardHeader
+                    avatar={
+                      <Avatar aria-label="recipe" className={classes.avatar}>
+                        <img src={reviews.img} className={classes.img} />
+                      </Avatar>
+                    }
+                    title={reviews.writer}
+                    subheader={'채택횟수: ' + reviews.adoption}
+                    action={
+                      <CheckOutlinedIcon
+                        fontSize="large"
+                        style={{ color: '#49D7F0' }}
+                      />
+                    }
+                  ></CardHeader>
                   <Typography variant="body1" className={classes.text}>
                     {reviews.text}
                   </Typography>

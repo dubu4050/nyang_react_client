@@ -8,17 +8,23 @@ import { SettingsInputSvideo } from '@material-ui/icons';
 const useStyles = makeStyles((theme) => ({
   root: {
     '& .MuiTextField-root': {
-      margin: theme.spacing(1),
-      width: '30ch',
+      margin: theme.spacing(2),
+      width: '50ch',
     },
     '& > *': {
-      margin: theme.spacing(1),
+      margin: theme.spacing(2),
     },
   },
   table: {
-    width: '20%',
+    width: '50%',
     margin: '0 auto',
     borderBottom: 'none',
+    padding: '30px 0px 0px 0px',
+    textAlign: 'center',
+  },
+  okbtn: {
+    width: '50ch',
+    marginTop: theme.spacing(4),
   },
 }));
 
@@ -83,7 +89,7 @@ function MemberInfo() {
           <Button
             variant="contained"
             onClick={FindMemberPassword}
-            color="primary"
+            className={classes.okbtn}
           >
             비밀번호 찾기
           </Button>

@@ -13,8 +13,8 @@ import {
   Tabs,
   Tab,
 } from '@material-ui/core';
-import catImg from '../../img/cat_icon.png';
-import dogImg from '../../img/dog_icon.png';
+import catImg from '../../images/cat_icon.png';
+import dogImg from '../../images/dog_icon.png';
 import FreeBoardContent from './Content/FreeBoardContent';
 import InfoBoardContent from './Content/InfoBoardContent';
 

@@ -10,11 +10,11 @@ import DatePicker from 'react-datepicker';
 const useStyles = makeStyles((theme) => ({
   root: {
     '& .MuiTextField-root': {
-      margin: theme.spacing(1),
-      width: '25ch',
+      margin: theme.spacing(2),
+      width: '50ch',
     },
     '& > *': {
-      margin: theme.spacing(1),
+      margin: theme.spacing(2),
     },
   },
   table: {
@@ -24,9 +24,19 @@ const useStyles = makeStyles((theme) => ({
     padding: '30px 0px 0px 0px',
   },
   item: {
-    width: '50%',
+    width: '80%',
     margin: '0 auto',
     borderBottom: 'none',
+    textAlign: 'center',
+  },
+  btn: {
+    margin: theme.spacing(2.5),
+    width: '15ch',
+  },
+  okbtn: {
+    width: '85%',
+    marginTop: theme.spacing(4),
+    marginBottom: theme.spacing(8),
   },
 }));
 
@@ -78,6 +88,7 @@ function MemberInfo() {
           <h1 className={classes.item}>회원 정보 조회</h1>
           <div className={classes.item}>
             <TextField disabled id="id" label="아이디" defaultValue={id} />
+            <Button disabled size="small" className={classes.btn} />
           </div>
           <div className={classes.item}>
             <TextField
@@ -87,7 +98,12 @@ function MemberInfo() {
               value={nickName}
               onChange={onChangeNickName}
             />
-            <Button variant="contained" onClick={nickNameReset} color="primary">
+            <Button
+              variant="contained"
+              onClick={nickNameReset}
+              size="small"
+              className={classes.btn}
+            >
               닉네임 수정
             </Button>
           </div>
@@ -98,6 +114,7 @@ function MemberInfo() {
               label="이메일"
               defaultValue={email}
             />
+            <Button disabled size="small" className={classes.btn} />
           </div>
           <div className={classes.item}>
             <TextField
@@ -110,16 +127,19 @@ function MemberInfo() {
             <Button
               variant="contained"
               onClick={phoneNumberReset}
-              color="primary"
+              size="small"
+              className={classes.btn}
             >
               연락처 수정
             </Button>
           </div>
           <div className={classes.item}>
             <TextField disabled id="grade" label="등급" defaultValue={grade} />
+            <Button disabled size="small" className={classes.btn} />
           </div>
           <div className={classes.item}>
             <TextField disabled id="name" label="이름" defaultValue={name} />
+            <Button disabled size="small" className={classes.btn} />
           </div>
           <div className={classes.item}>
             <TextField
@@ -128,12 +148,13 @@ function MemberInfo() {
               label="생년월일"
               defaultValue={birth}
             />
+            <Button disabled size="small" className={classes.btn} />
           </div>
           <div className={classes.item}>
             <Button
               variant="contained"
               onClick={updateMemberInfo}
-              color="primary"
+              className={classes.okbtn}
             >
               수정
             </Button>

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { makeStyles, Container, Button, Avatar } from '@material-ui/core';
-import catImg from '../../../img/cat_icon.png';
-import dogImg from '../../../img/dog_icon.png';
+import catImg from '../../../images/cat_icon.png';
+import dogImg from '../../../images/dog_icon.png';
 
 const useStyles = makeStyles({
   categoryWrapper: {
