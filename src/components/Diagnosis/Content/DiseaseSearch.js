@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Container,
   makeStyles,
@@ -11,6 +11,19 @@ import DiseaseList from './DiseaseList';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import MapOutlinedIcon from '@material-ui/icons/MapOutlined';
+import MapContainer from './MapContainer';
+
+function getModalStyle() {
+  const top = 50;
+  const left = 50;
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+  };
+}
+
 const useStyles = makeStyles((theme) => ({
   wrap: {},
   search: {
@@ -53,48 +66,20 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: '20px',
     paddingBottom: '20px',
   },
-  modal: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   paper: {
-    width: '1000px',
-    height: 'fit-content',
     backgroundColor: theme.palette.background.paper,
+    width: '60%',
+    margin: '0 auto',
+    textAlign: 'center',
+    marginBottom: '3%',
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-  },
-  modalSearch: {
-    margin: '0 auto',
-    display: 'flex',
-    alignItems: 'center',
-    marginBottom: '2%',
-  },
-  modalInput: {
-    height: '50px',
-    width: '80%',
-    border: '2px solid #dedede',
-    borderRadius: '25px',
-  },
-  modalSearchIcon: {
-    pointerEvents: 'none',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '46px',
-    opacity: '0.8',
-    border: 'none',
-    background: 'none',
-    marginRight: '0.5%',
-    marginLeft: '0.5%',
   },
 }));
-
 const Contents = () => {
   const classes = useStyles();
+  const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
-
   const handleOpen = () => {
     setOpen(true);
   };
@@ -102,6 +87,12 @@ const Contents = () => {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const mapModal = (
+    <div className={classes.paper}>
+      <MapContainer />
+    </div>
+  );
   return (
     <Container className={classes.wrap}>
       <div className={classes.search}>
@@ -123,33 +114,8 @@ const Contents = () => {
           <strong>인근 병원 찾기</strong>
         </Button>
       </div>
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        className={classes.modal}
-        open={open}
-        onClose={handleClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
-      >
-        <Fade in={open}>
-          <div className={classes.paper}>
-            <div className={classes.modalSearch}>
-              <InputBase
-                className={classes.modalInput}
-                placeholder="찾고자 하는 지역을 입력해주세요 "
-                classes={{
-                  input: classes.placeholderStyle,
-                }}
-                inputProps={{ 'aria-label': 'search' }}
-              />
-              <SearchIcon className={classes.modalSearchIcon} />
-            </div>
-          </div>
-        </Fade>
+      <Modal open={open} onClose={handleClose}>
+        {mapModal}
       </Modal>
       <DiseaseList />
     </Container>
