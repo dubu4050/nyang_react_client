@@ -37,25 +37,18 @@ function MemberInfo() {
   // 아이디 찾기 관련 변수
   const [name, setName] = useState('');
   const [id, setId] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
   const onChangeName = (e) => {
     setName(e.target.value);
-  };
-  const onChangePhoneNumber = (e) => {
-    const regex = /^[0-9\b -]{0,13}$/;
-    if (regex.test(e.target.value)) {
-      setPhoneNumber(e.target.value);
-    }
   };
   const onChangeEmail = (e) => {
     setEmail(e.target.value);
   };
   const FindMemberId = () => {
-    if (name == '' || phoneNumber == '' || email == '') {
+    if (name == '' || email == '') {
       alert('필수 항목을 모두 입력하지 않았습니다.');
     } else {
-      alert(name + ' ' + phoneNumber + ' ' + email);
+      alert(name + ' ' + +email);
       setId('회원님의 아이디는 ' + name + ' 입니다.');
     }
   };
@@ -76,17 +69,6 @@ function MemberInfo() {
           </div>
           <div>
             <TextField
-              type="text"
-              numberOnly
-              required
-              id="phoneNumber"
-              label="연락처('-' 제외)"
-              value={phoneNumber}
-              onChange={onChangePhoneNumber}
-            />
-          </div>
-          <div>
-            <TextField
               required
               id="email"
               label="이메일"
@@ -102,7 +84,7 @@ function MemberInfo() {
             아이디 찾기
           </Button>
         </div>
-        <h2 className={classes.result}> {id} </h2>
+        <h2 className={classes.table}> {id} </h2>
       </form>
     </div>
   );
