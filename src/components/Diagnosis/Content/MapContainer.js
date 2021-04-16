@@ -9,8 +9,8 @@ const MapContainer = () => {
   useEffect(() => {
     const container = document.getElementById('myMap');
     const options = {
-      center: new kakao.maps.LatLng(33.450701, 126.570667),
-      level: 3,
+      center: new kakao.maps.LatLng(36.145655284849624, 128.39252554686814),
+      level: 7,
     };
     const map = new kakao.maps.Map(container, options);
 
@@ -58,12 +58,15 @@ const MapContainer = () => {
       // 지도 중심좌표를 접속위치로 변경합니다
       map.setCenter(locPosition);
     }
+    function getInfo() {
+      const center = map.get;
+    }
+    const bounds = map.getBounds();
     // 장소 검색 객체를 생성합니다
     const ps = new kakao.maps.services.Places();
 
     // 키워드로 장소를 검색합니다
-    ps.keywordSearch('동물병원', placesSearchCB);
-
+    ps.keywordSearch('동물병원', placesSearchCB, { bounds: bounds });
     // 키워드 검색 완료 시 호출되는 콜백함수 입니다
     function placesSearchCB(data, status, pagination) {
       if (status === kakao.maps.services.Status.OK) {
