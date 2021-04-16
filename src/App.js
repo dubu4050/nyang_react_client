@@ -16,6 +16,7 @@ import FindPw from './components/Member/FindPw';
 import UpdatePw from './components/Member/UpdatePw';
 import MemberInfo from './components/Member/MemberInfo';
 import ActiveMemberInfo from './components/Member/ActiveMemberInfo';
+import Admin from './components/Member/Admin';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -60,7 +61,7 @@ function App() {
       <Route path="/updatePw" component={UpdatePw} exact />
       <Route path="/memberInfo" component={MemberInfo} exact />
       <Route path="/activeMemberInfo" component={ActiveMemberInfo} exact />
-
+      <Route path="/admin" component={Admin} exact />
       <Switch>
         <Redirect exact from="/" to="/diagnosis/" exact />
         <Redirect exact from="/diagnosis" to="/diagnosis/search" exact />

@@ -5,6 +5,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Header from '../Common/Header';
 import nyangImg from '../../images/nyangImg.png';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,6 +48,14 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(4),
     marginBottom: theme.spacing(8),
   },
+  paper: {
+    position: 'absolute',
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
 }));
 
 function EnrollMember(props) {
@@ -56,6 +69,24 @@ function EnrollMember(props) {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [name, setName] = useState('');
   const [birth, setBirth] = useState('');
+  const [certState, setCertState] = useState('false');
+  // dialog창 관련 변수
+  const [read, setRead] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const OkBtn = (value) => {
+    setOpen(false);
+    setCertState(true);
+  };
+
+  // ip address
+  const ip = 'http://haejun.iptime.org:8090';
+
   const onChangeId = (e) => {
     setId(e.target.value);
   };
@@ -87,11 +118,13 @@ function EnrollMember(props) {
     // id 중복 확인
     alert('사용가능');
   };
-  const onCheckEmail = () => {
-    // emial 인증 요청
-  };
   const onCheckEmailCertNumber = () => {
     // email 인증 번호 일치 확인
+    if (certNumber == '1234') {
+      alert('일치합니다.');
+      setCertState('true');
+      handleClose();
+    }
   };
   const EnrollMemberInfo = () => {
     if (
@@ -114,7 +147,6 @@ function EnrollMember(props) {
       phone_number: phoneNumber,
       date_birth: birth,
     };
-    const ip = 'http://haejun.iptime.org:8090'; // ip address
     axios
       .post(ip + '/member', body)
       .then(() => {
@@ -177,7 +209,7 @@ function EnrollMember(props) {
           </div>
           <div className={classes.item}>
             <TextField
-              required
+              disabled={certState == 'true' ? true : false}
               id="email"
               label="이메일"
               value={email}
@@ -186,31 +218,14 @@ function EnrollMember(props) {
             />
             <Button
               variant="contained"
-              onClick={onCheckEmail}
+              onClick={handleClickOpen}
               size="small"
               className={classes.btn}
             >
               인증요청
             </Button>
           </div>
-          <div className={classes.item}>
-            <TextField
-              required
-              id="certNumber"
-              label="인증번호"
-              value={certNumber}
-              onChange={onChangeCertNumber}
-              variant="outlined"
-            />
-            <Button
-              variant="contained"
-              onClick={onCheckEmailCertNumber}
-              size="small"
-              className={classes.btn}
-            >
-              확인
-            </Button>
-          </div>
+
           <div className={classes.item}>
             <TextField
               type="text"
@@ -263,6 +278,28 @@ function EnrollMember(props) {
           </div>
         </div>
       </form>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle id="title">이메일 인증</DialogTitle>
+        <DialogContent>
+          <DialogContentText>인증번호를 아래 입력하세요</DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            type="text"
+            style={{ width: '400px' }}
+            fullWidth
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            취소
+          </Button>
+          <Button onClick={OkBtn} color="primary">
+            확인
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

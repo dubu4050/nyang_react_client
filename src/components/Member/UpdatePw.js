@@ -48,9 +48,6 @@ function MemberInfo() {
         <div className={classes.table}>
           <h1>비밀번호 변경</h1>
           <div>
-            <TextField disabled id="id" label="아이디" defaultValue={'1234'} />
-          </div>
-          <div>
             <TextField
               required
               id="changePw"
