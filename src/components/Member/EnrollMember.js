@@ -85,7 +85,7 @@ function EnrollMember(props) {
   };
 
   // ip address
-  const ip = 'http://haejun.iptime.org:8090';
+  const ip = process.env.REACT_APP_API_IP;
 
   const onChangeId = (e) => {
     setId(e.target.value);
