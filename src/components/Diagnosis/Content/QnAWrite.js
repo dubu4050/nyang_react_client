@@ -116,8 +116,8 @@ function FunComp() {
             </option>
           ))}
         </TextField>
-        <TextField id="species" label="품종" size="small" variant="outlined" />
         <br />
+        <TextField id="species" label="품종" size="small" variant="outlined" />
         <TextField
           id="age"
           label="나이"
@@ -129,7 +129,6 @@ function FunComp() {
             shrink: true,
           }}
         />
-        <TextField id="state" label="상태" size="small" variant="outlined" />
       </form>
     </div>
   );
