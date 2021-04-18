@@ -5,8 +5,10 @@ import Paper from '@material-ui/core/Paper';
 import CardHeader from '@material-ui/core/CardHeader';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
+import IconButton from '@material-ui/core/IconButton';
 import nyangImg from '../../../images/nyangImg.png';
-
+import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined';
+import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
 const useStyles = makeStyles({
   root: {
     flexGrow: 1,
@@ -69,6 +71,16 @@ const useStyles = makeStyles({
   img: {
     width: '40px',
   },
+  icon: {
+    float: 'right',
+    fontSize: '14px',
+    '&:focus': {
+      color: '#49D7F0',
+    },
+    '&:selected': {
+      color: '#49D7F0',
+    },
+  },
 });
 
 export default function ComplexGrid() {
@@ -79,7 +91,7 @@ export default function ComplexGrid() {
       <Paper className={classes.paper}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm container>
-            <Grid item xs container direction="column" spacing={2}>
+            <Grid item xs={12} sm={11} container direction="column" spacing={2}>
               <Grid item xs>
                 <Typography className={classes.title}>
                   우리 애가 자꾸 물어요... 팁 없을까요?
@@ -102,22 +114,34 @@ export default function ComplexGrid() {
                   역사를 꾸며 내려온
                 </Typography>
               </Grid>
-              <Grid item>
-                <CardHeader
-                  avatar={
-                    <Avatar aria-label="recipe" className={classes.avatar}>
-                      <img src={nyangImg} className={classes.img} />
-                    </Avatar>
-                  }
-                  title="dubu4050"
-                  subheader=" @dubu4050 고양이 키워본적 없습니다."
-                ></CardHeader>
-              </Grid>
             </Grid>
-            <Grid item>
+            <Grid item xs={12} sm={1}>
               <Typography variant="subtitle1" className={classes.date}>
                 2021.02.24
               </Typography>
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <CardHeader
+                avatar={
+                  <Avatar aria-label="recipe" className={classes.avatar}>
+                    <img src={nyangImg} className={classes.img} />
+                  </Avatar>
+                }
+                title="dubu4050"
+                subheader=" @dubu4050 고양이 키워본적 없습니다."
+                action={
+                  <>
+                    <IconButton className={classes.icon}>
+                      <DeleteForeverOutlinedIcon />
+                      삭제
+                    </IconButton>
+                    <IconButton className={classes.icon}>
+                      <CreateOutlinedIcon />
+                      수정
+                    </IconButton>
+                  </>
+                }
+              ></CardHeader>
             </Grid>
           </Grid>
         </Grid>
