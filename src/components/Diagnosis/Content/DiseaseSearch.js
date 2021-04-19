@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import {
   Container,
   makeStyles,
@@ -12,6 +13,9 @@ import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import MapOutlinedIcon from '@material-ui/icons/MapOutlined';
 import MapContainer from './MapContainer';
+import Icon from '@material-ui/core/Icon';
+import { AddAlertRounded, PagesSharp } from '@material-ui/icons';
+import item from './DiseaseList';
 
 function getModalStyle() {
   const top = 50;
@@ -31,10 +35,9 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '50px',
     width: '60%',
     height: '50px',
-    background: 'white',
   },
   input: {
-    width: '100%',
+    width: '85%',
     height: '50px',
     border: '2px solid #dedede',
     borderRadius: '10px',
@@ -75,11 +78,19 @@ const useStyles = makeStyles((theme) => ({
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
   },
+  button: {
+    margin: theme.spacing(1),
+  },
 }));
-const Contents = () => {
+function Contents(props) {
+  const ip = process.env.REACT_APP_API_IP;
   const classes = useStyles();
+  const [question, setQuestion] = useState('');
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
+  var [searchResult, setSearchResult] = useState([]);
+  const [resultShowState, setResultShowState] = useState('false');
+
   const handleOpen = () => {
     setOpen(true);
   };
@@ -93,21 +104,54 @@ const Contents = () => {
       <MapContainer />
     </div>
   );
+  const onChangeQuestion = (e) => {
+    setQuestion(e.target.value);
+  };
+  const RequestQuestion = () => {
+    if (question == '') {
+      alert('증상을 입력해주세요');
+    } else {
+      const body = {
+        content: question,
+      };
+      axios
+        .post(ip + '/board', body)
+        .then((res) => {
+          alert('검색 성공');
+          setSearchResult(res.data.pet_disease_search_info);
+          setResultShowState('true');
+        })
+        .catch((err) => {
+          console.log(err);
+          alert('검색 실패');
+        });
+    }
+  };
+  useEffect(() => {
+    console.log(searchResult);
+  }, [searchResult]);
   return (
     <Container className={classes.wrap}>
       <div className={classes.search}>
         <InputBase
           className={classes.input}
-          placeholder="Search…"
+          placeholder="동물의 증상을 입력해주세요"
           classes={{
             input: classes.placeholderStyle,
           }}
           inputProps={{ 'aria-label': 'search' }}
+          onChange={onChangeQuestion}
         />
-        <button className={classes.searchIcon}>
-          <SearchIcon />
-        </button>
+        <Button
+          variant="contained"
+          color="default"
+          className={classes.button}
+          onClick={RequestQuestion}
+        >
+          검색
+        </Button>
       </div>
+
       <div className={classes.map}>
         <Button className={classes.modalBtn} onClick={handleOpen}>
           <MapOutlinedIcon style={{ fontSize: 35 }} />
@@ -117,9 +161,9 @@ const Contents = () => {
       <Modal open={open} onClose={handleClose}>
         {mapModal}
       </Modal>
-      <DiseaseList />
+      {resultShowState == 'true' && <DiseaseList list={searchResult} />}
     </Container>
   );
-};
+}
 
 export default Contents;
