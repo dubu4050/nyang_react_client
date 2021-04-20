@@ -8,6 +8,7 @@ import BoardMain from './components/Board/BoardMain';
 import InfoBoardContent from './components/Board/Content/InfoBoardContent';
 import FreeBoardContent from './components/Board/Content/FreeBoardContent';
 import BoardWrite from './components/Board/Content/BoardWrite';
+import ReadQnA from './components/Diagnosis/Content/ReadQnA';
 import ReadBoard from './components/Board/Content/ReadBoard';
 import Login from './components/Member/Login';
 import EnrollMember from './components/Member/EnrollMember';
@@ -81,7 +82,7 @@ function App() {
           render={(props) => <QnABoard {...props} />}
         />
         <Route path="/qnaWrite" component={QnAWrite} exact />
-        <Route path="/detail" component={ReadBoard} exact />
+        <Route path="/detailQnA" component={ReadQnA} exact />
       </Switch>
       <Switch>
         <Redirect exact from="/board" to="/board/info" exact />
@@ -101,6 +102,7 @@ function App() {
           render={(props) => <FreeBoardContent {...props} />}
         />
         <Route path="/boardWrite" component={BoardWrite} exact />
+        <Route path="/detailBoard" component={ReadBoard} exact />
       </Switch>
     </div>
   );

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import BoardDetailCard from '../../Card/BoardDetailCard';
+import QnADetailCard from '../../Card/QnADetailCard';
 import CommentList from '../../Common/CommentList';
 import CommentWrite from '../../Common/CommentWrite';
 import Header from '../../Common/Header';
@@ -15,7 +15,7 @@ export default function ReadQnA(props) {
   return (
     <div className={classes.root}>
       <Header />
-      <BoardDetailCard />
+      <QnADetailCard />
       <CommentList />
       <CommentWrite />
     </div>

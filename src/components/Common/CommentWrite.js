@@ -96,32 +96,6 @@ export default function ReviewWrite() {
             color="primary"
           />
           <div className={classes.writerInfo}>
-            <OutlinedInput
-              placeholder="작성자"
-              value={values.writer}
-              className={classes.input}
-              color="primary"
-            />
-            <OutlinedInput
-              className={classes.input}
-              type={values.showPassword ? 'text' : 'password'}
-              value={values.password}
-              onChange={handleChange('password')}
-              placeholder="비밀번호"
-              color="primary"
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  >
-                    {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
             <Button
               className={classes.btn}
               variant="contained"

@@ -1,18 +1,26 @@
 import React from 'react';
-import { Container, makeStyles, InputBase, Chip } from '@material-ui/core';
-import ListCard from '../../Card/ListCard';
+import {
+  Container,
+  makeStyles,
+  InputBase,
+  IconButton,
+} from '@material-ui/core';
+import BoardCard from '../../Card/BoardCard';
 import SearchIcon from '@material-ui/icons/Search';
+import CreateIcon from '@material-ui/icons/Create';
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'flex-end',
     marginBottom: '2%',
   },
   input: {
     height: '50px',
     border: '2px solid #dedede',
     borderRadius: '25px',
+    marginLeft: '0.5%',
     marginRight: '0.5%',
   },
   placeholderStyle: {
@@ -22,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     transition: theme.transitions.create('width'),
     width: '100%',
   },
-  searchIcon: {
+  icon: {
     pointerEvents: 'none',
     alignItems: 'center',
     justifyContent: 'center',
@@ -50,12 +58,15 @@ export default function InfoBoardContent(props) {
           }}
           inputProps={{ 'aria-label': 'search' }}
         />
-        <SearchIcon className={classes.searchIcon} />
+        <SearchIcon className={classes.icon} />
+        <IconButton href="/boardWrite">
+          <CreateIcon className={classes.icon} />
+        </IconButton>
       </Container>
-      <ListCard />
-      <ListCard />
-      <ListCard />
-      <ListCard />
+      <BoardCard />
+      <BoardCard />
+      <BoardCard />
+      <BoardCard />
     </Container>
   );
 }

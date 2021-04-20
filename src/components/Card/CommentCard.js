@@ -1,75 +1,137 @@
-import React, { useState } from 'react';
+import React from 'react';
+import dummy from '../../db/review.json';
 import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
-import IU from '../../images/IU.jpg';
-
+import {
+  Grid,
+  Paper,
+  Typography,
+  IconButton,
+  ButtonBase,
+  CardHeader,
+  Avatar,
+} from '@material-ui/core';
+import AddCommentOutlinedIcon from '@material-ui/icons/AddCommentOutlined';
+import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined';
+import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
+import DoneAllOutlinedIcon from '@material-ui/icons/DoneAllOutlined';
+import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
 const useStyles = makeStyles({
   root: {
     alignItems: 'center',
   },
-  card: {
-    borderColor: 'rgb(131, 131, 131)',
-    display: 'flex',
-    alignItems: 'center',
-    marginBottom: '2%',
-    border: '1px solid',
-    borderRadius: '25px',
-    paddingLeft: '0.5%',
-    paddingRight: '0.5%',
+  paper: {
+    boxShadow: 'none',
+    borderBottom: '0.8px solid #dedede',
+    '@media (min-device-width: 481px)': {
+      // PC
+
+      padding: '10px',
+      margin: 'auto',
+      padding: '16px',
+      marginBottom: '30px',
+      borderRadius: '20px',
+      width: '70%',
+    },
+    '@media (min-device-width: 320px) and (max-device-width: 480px)': {
+      // Mobile
+      padding: '10px',
+      width: '100%',
+      marginBottom: '15px',
+      borderRadius: '25px',
+      border: '0.8px solid',
+    },
   },
-  cover: {
-    height: '7em',
-    width: '7em',
-    border: '1px solid',
-    borderRadius: '25%',
-  },
-  title: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  nickname: {
-    fontSize: '1.4em',
+  count: {
+    overflow: 'auto',
+    width: '70%',
+    margin: '0 auto',
+    padding: '15px 0px 15px 0px',
   },
   date: {
-    fontSize: '1em',
+    '@media (min-device-width: 481px)': {
+      // PC
+      fontWeight: 'bold',
+    },
+    '@media (min-device-width: 320px) and (max-device-width: 480px)': {
+      // Mobile
+      fontSize: '0.7rem',
+      fontWeight: 'bold',
+    },
   },
-  content: {
-    minHeight: '3em',
+  writer: {
+    fontWeight: 'bold',
   },
-  contentWrapper: {
-    width: '100%',
+  img: { width: '40px' },
+  check: {
+    color: 'red',
+    width: '40px',
+  },
+  icon: {
+    float: 'right',
+    fontSize: '14px',
+    '&:focus': {
+      color: '#49D7F0',
+    },
+    '&:selected': {
+      color: '#49D7F0',
+    },
   },
 });
 
 export default function commentCard(props) {
   const classes = useStyles();
+  const reviews = {
+    id: 1,
+    writer: 'djh20',
+    text:
+      '그것은 웅대한 관현악이며 미묘한 교향악이다 뼈 끝에 스며들어 가는 열락의 소리다이것은 피어나기 전인 유소년에게서 구하지 못할 바이며 시들어 가는 노년에게서 구하지 못할 바이며 오직 우리 청춘에서만 구할 수 있는 것이다 청춘은 인생의 듣기만 하여도 가슴이 설레는 말이다 청춘! 너의 두손을 가슴에 대고 물방아 같은 심장의 고동을 들어 보라 청춘의 피는 끓는다 끓는 피에 뛰노는 심장은 거선의 기관과 같이 힘있다 이것이다 인류의 역사를 꾸며 내려온',
+    password: '1234',
+    date: '2021.02.01',
+    img: '/src/images/nyangImg.png',
+    adoption: '32회',
+  };
   return (
-    <Card className={classes.card}>
-      <div>
-        <CardMedia
-          className={classes.cover}
-          image={IU}
-          title="Live from space album cover"
-        />
-      </div>
-      <div className={classes.contentWrapper}>
-        <CardContent>
-          <div className={classes.title}>
-            <Typography className={classes.nickname}>dubu4050</Typography>
-            <Typography className={classes.date}>2021.02.23</Typography>
-          </div>
-          <div className={classes.content}>
-            <Typography variant="body2" color="textSecondary">
-              Lizards are a widespread group of squamate reptiles, with over
-              6,000 species, ranging across all continents except Antarctica
-            </Typography>
-          </div>
-        </CardContent>
-      </div>
-    </Card>
+    <Paper className={classes.paper}>
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm container>
+          <Grid item xs container direction="column" spacing={2}>
+            <Grid item xs>
+              <CardHeader
+                avatar={
+                  <Avatar aria-label="recipe" className={classes.avatar}>
+                    <img src={reviews.img} className={classes.img} />
+                  </Avatar>
+                }
+                title={reviews.writer}
+                subheader={'채택횟수: ' + reviews.adoption}
+                action={
+                  <CheckOutlinedIcon
+                    fontSize="large"
+                    style={{ color: '#49D7F0' }}
+                  />
+                }
+              ></CardHeader>
+              <Typography variant="body1" className={classes.text}>
+                {reviews.text}
+              </Typography>
+            </Grid>
+            <Grid item>
+              <IconButton className={classes.icon}>
+                <DeleteForeverOutlinedIcon />
+                삭제
+              </IconButton>
+              <IconButton className={classes.icon}>
+                <CreateOutlinedIcon />
+                수정
+              </IconButton>
+              <IconButton className={classes.icon}>
+                <DoneAllOutlinedIcon />
+                채택
+              </IconButton>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+    </Paper>
   );
 }

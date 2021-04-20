@@ -37,7 +37,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Cards(props) {
+export default function QnACards(props) {
   const classes = useStyles();
   const message =
     'Lizards are a widespread group of squamate reptiles, with over 6,000species, ranging across all continents except Antarctica';

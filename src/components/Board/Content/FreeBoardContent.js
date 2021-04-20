@@ -7,7 +7,7 @@ import {
 } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import CreateIcon from '@material-ui/icons/Create';
-import ListCard from '../../Card/ListCard';
+import BoardCard from '../../Card/BoardCard';
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -15,12 +15,6 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'flex-end',
     marginBottom: '2%',
-  },
-  chipList: {
-    display: 'flex',
-  },
-  chip: {
-    marginRight: '10px',
   },
   input: {
     height: '50px',
@@ -67,10 +61,10 @@ export default function FreeBoardContent(props) {
           <CreateIcon className={classes.icon} />
         </IconButton>
       </Container>
-      <ListCard />
-      <ListCard />
-      <ListCard />
-      <ListCard />
+      <BoardCard />
+      <BoardCard />
+      <BoardCard />
+      <BoardCard />
     </Container>
   );
 }
