@@ -174,7 +174,7 @@ class EditComp extends React.Component {
           <Button
             variant="contained"
             size="large"
-            href="/diagnosis/qna"
+            href="/board/info"
             style={classes.canclebtn}
           >
             {' '}

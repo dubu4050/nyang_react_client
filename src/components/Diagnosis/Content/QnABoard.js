@@ -7,7 +7,7 @@ import {
 } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import CreateIcon from '@material-ui/icons/Create';
-import Card from '../../Card/Card';
+import QnACard from '../../Card/QnACard';
 import { Button } from 'react-scroll';
 
 const useStyles = makeStyles((theme) => ({
@@ -68,10 +68,10 @@ export default function QnABoard(props) {
           <CreateIcon className={classes.icon} />
         </IconButton>
       </Container>
-      <Card />
-      <Card />
-      <Card />
-      <Card />
+      <QnACard />
+      <QnACard />
+      <QnACard />
+      <QnACard />
     </Container>
   );
 }
