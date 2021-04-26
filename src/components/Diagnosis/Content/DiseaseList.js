@@ -101,7 +101,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DiseaseList = () => {
+function DiseaseList(props) {
   const classes = useStyles();
   const theme = createMuiTheme({
     palette: {
@@ -110,24 +110,26 @@ const DiseaseList = () => {
     },
   });
   const [open, setOpen] = React.useState(true);
+
   return (
     <div>
       <MuiThemeProvider theme={theme}>
         <Table className={classes.table}>
-          {dummy.disease.map((disease) => (
+          {props.list.map((resultData) => (
             <TableBody>
               <TableRow>
                 <TableCell className={classes.index} rowspan="2">
-                  <Badge color="secondary" badgeContent={disease.id}></Badge>
+                  <Badge color="secondary" badgeContent={resultData.no}></Badge>
                 </TableCell>
-                <TableCell className={classes.name}>{disease.name}</TableCell>
-                <TableCell className={classes.name}>{disease.score}</TableCell>
+                <TableCell className={classes.name}>
+                  {resultData.answer_ner}
+                </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell className={classes.explan} colspan="2">
                   {' '}
-                  <Link to={disease.id} smooth={true} duration={500}>
-                    {disease.explan}
+                  <Link to={resultData.title} smooth={true} duration={500}>
+                    {resultData.sentence_info}
                   </Link>
                 </TableCell>
               </TableRow>
@@ -165,9 +167,9 @@ const DiseaseList = () => {
         </div>
 
         <div className={classes.cardWrap}>
-          {dummy.disease.map((disease) => (
-            <div className={classes.cardId} id={disease.id}>
-              <Badge color="secondary" badgeContent={disease.id}></Badge>
+          {props.list.map((resultData) => (
+            <div className={classes.cardId} id={resultData.no}>
+              <Badge color="secondary" badgeContent={resultData.no}></Badge>
               <Card className={classes.card} variant="outlined">
                 <CardContent>
                   <Typography
@@ -175,16 +177,16 @@ const DiseaseList = () => {
                     variant="h1"
                     gutterBottom
                   >
-                    {disease.title}
+                    {resultData.title}
                   </Typography>
-                  <Typography className={classes.pos}>
+                  {/* <Typography className={classes.pos}>
                     {disease.writer}
-                  </Typography>
+                  </Typography> */}
                   <Typography variant="h5" component="h2">
                     Q
                   </Typography>
                   <Typography className={classes.pos} color="textSecondary">
-                    {disease.question}
+                    {resultData.question}
                   </Typography>
                   <br />
                   <hr />
@@ -193,14 +195,20 @@ const DiseaseList = () => {
                     A
                   </Typography>
                   <Typography className={classes.pos} color="textSecondary">
-                    {disease.answer}
+                    {resultData.answer}
                   </Typography>
-                  <Typography className={classes.pos}>
+                  {/* <Typography className={classes.pos}>
                     {disease.doctor}
-                  </Typography>
+                  </Typography> */}
                 </CardContent>
                 <CardActions>
-                  <Button size="small">더보기</Button>
+                  {/* <Button size="small">더보기</Button> */}
+                  <Button
+                    size="small"
+                    onClick={() => window.open(resultData.url, '_blank')}
+                  >
+                    더보기
+                  </Button>
                 </CardActions>
               </Card>
             </div>
@@ -209,5 +217,5 @@ const DiseaseList = () => {
       </MuiThemeProvider>
     </div>
   );
-};
+}
 export default DiseaseList;
