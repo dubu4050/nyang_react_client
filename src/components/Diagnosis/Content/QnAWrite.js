@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, createRef } from 'react';
 import 'codemirror/lib/codemirror.css';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import { Editor } from '@toast-ui/react-editor';
@@ -13,7 +13,15 @@ import {
   FormLabel,
   makeStyles,
 } from '@material-ui/core';
+import axios from 'axios';
+import editor from '@toast-ui/editor';
 
+//종, 품종, 나이, 제목, 게시글 전역 변수 지정
+var { genus } = '';
+var { kind } = '';
+var { age } = '';
+var { title } = '';
+var { content } = '';
 const useStyles = makeStyles((theme) => ({
   wrap: {
     marginTop: '3%',
@@ -39,6 +47,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const genuses = [
+  {
+    value: '선택',
+    label: '선택',
+  },
   {
     value: '강아지',
     label: '강아지',
@@ -68,7 +80,7 @@ function QnAWrite() {
     <ThemeProvider theme={theme}>
       <Header />
       <Container className={classes.wrap}>
-        <FunComp></FunComp>
+        <FunComp />
         <EditComp></EditComp>
       </Container>
     </ThemeProvider>
@@ -77,10 +89,15 @@ function QnAWrite() {
 
 function FunComp() {
   const classes = useStyles();
-  const [genus, setGenus] = React.useState();
 
-  const handleSelector = (event) => {
-    setGenus(event.target.value);
+  const onChangeGenus = (e) => {
+    genus = e.target.value;
+  };
+  const onChangeKind = (e) => {
+    kind = e.target.value;
+  };
+  const onChangeAge = (e) => {
+    age = e.target.value;
   };
 
   return (
@@ -98,7 +115,7 @@ function FunComp() {
           label="종"
           size="small"
           value={genus}
-          onChange={handleSelector}
+          onChange={onChangeGenus}
           className={classes.genus}
           SelectProps={{
             native: true,
@@ -117,14 +134,22 @@ function FunComp() {
           ))}
         </TextField>
         <br />
-        <TextField id="species" label="품종" size="small" variant="outlined" />
         <TextField
-          id="age"
-          label="나이"
-          type="number"
-          min="0"
+          id="species"
+          label="품종"
           size="small"
           variant="outlined"
+          value={kind}
+          onChange={onChangeKind}
+        />
+        <TextField
+          type="number"
+          label="나이"
+          InputProps={{ inputProps: { min: 0, max: 99 } }}
+          size="small"
+          variant="outlined"
+          value={age}
+          onChange={onChangeAge}
           InputLabelProps={{
             shrink: true,
           }}
@@ -143,10 +168,6 @@ class EditComp extends React.Component {
       selectedValue: 'a',
     };
   }
-
-  handleClick = () => {
-    this.setState({ content: this.editorRef.current.getInstance().getHtml() });
-  };
 
   render() {
     const classes = {
@@ -178,6 +199,32 @@ class EditComp extends React.Component {
         fontWeight: 'bold',
       },
     };
+    const onChangeTitle = (e) => {
+      title = e.target.value;
+    };
+
+    const insertQnaBoard = () => {
+      if (
+        genus == undefined ||
+        kind == '' ||
+        age == '' ||
+        title == '' ||
+        content == ''
+      ) {
+        alert('모든 항목 채우지 않았습니다.');
+      } else {
+        if (age >= 100) {
+          alert('나이가 그렇게 많나요?');
+        } else {
+          alert('게시글 등록 요청');
+          console.log(genus);
+          console.log(kind);
+          console.log(age);
+          console.log(title);
+          console.log(this.editorRef.current.getInstance().getHtml());
+        }
+      }
+    };
     return (
       <div>
         <TextField
@@ -186,6 +233,7 @@ class EditComp extends React.Component {
           size="small"
           style={classes.title}
           placeholder="제목을 입력하세요"
+          onChange={onChangeTitle}
           InputProps={{
             classes: {
               underline: classes.underline,
@@ -194,6 +242,7 @@ class EditComp extends React.Component {
         />
         <>
           <Editor
+            editorState={content}
             height="500px"
             initialEditType="wysiwyg"
             ref={this.editorRef}
@@ -212,21 +261,12 @@ class EditComp extends React.Component {
           <Button
             variant="contained"
             size="large"
-            onClick={this.handleClick}
+            onClick={insertQnaBoard}
             style={classes.okbtn}
           >
             {' '}
             등록{' '}
           </Button>
-        </div>
-        <div id="toatUIEditor">
-          <div id="button">
-            <textarea
-              className="result"
-              value={this.state.content}
-              readOnly="readOnly"
-            ></textarea>
-          </div>
         </div>
       </div>
     );

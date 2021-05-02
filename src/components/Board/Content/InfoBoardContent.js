@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Container,
   makeStyles,
   InputBase,
   IconButton,
+  Button,
 } from '@material-ui/core';
 import BoardCard from '../../Card/BoardCard';
 import SearchIcon from '@material-ui/icons/Search';
@@ -47,6 +48,46 @@ const useStyles = makeStyles((theme) => ({
 export default function InfoBoardContent(props) {
   const classes = useStyles();
 
+  const ip = process.env.REACT_APP_API_IP;
+  const [question, setQuestion] = useState('');
+  var [infoBoardList, setInfoBoardList] = useState([]);
+  const onChangeQuestion = (e) => {
+    setQuestion(e.target.value);
+  };
+
+  // 지식정보 게시판 전체 조회
+  const totalInfoBoard = () => {
+    // axios
+    //   .get(ip + '/board')
+    //   .then((res) => {
+    //     alert('요청 성공');
+    //     setInfoBoardList();
+    //   })
+    //   .catch((err) => {
+    //     alert('요청 실패');
+    //   });
+  };
+
+  totalInfoBoard();
+  const searchInfoBoard = () => {
+    if (question == '') {
+      alert('글 제목을 입력해주세요');
+    } else {
+      const body = {
+        content: question,
+      };
+      alert(question);
+      // axios
+      //   .get(ip + '/board', body)
+      //   .then((res) => {
+      //     alert('검색 성공');
+      //     setInfoBoardList();
+      //   })
+      //   .catch((err) => {
+      //     alert('검색 실패');
+      //   });
+    }
+  };
   return (
     <Container>
       <Container className={classes.wrapper}>
@@ -57,16 +98,22 @@ export default function InfoBoardContent(props) {
             input: classes.placeholderStyle,
           }}
           inputProps={{ 'aria-label': 'search' }}
+          onChange={onChangeQuestion}
         />
-        <SearchIcon className={classes.icon} />
+        <Button
+          variant="contained"
+          color="default"
+          className={classes.button}
+          onClick={searchInfoBoard}
+        >
+          검색
+        </Button>
         <IconButton href="/boardWrite">
           <CreateIcon className={classes.icon} />
         </IconButton>
       </Container>
       <BoardCard />
-      <BoardCard />
-      <BoardCard />
-      <BoardCard />
+      {/* <BoardCard list={infoBoardList}/> */}
     </Container>
   );
 }

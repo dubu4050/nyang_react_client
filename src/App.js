@@ -9,6 +9,7 @@ import InfoBoardContent from './components/Board/Content/InfoBoardContent';
 import FreeBoardContent from './components/Board/Content/FreeBoardContent';
 import BoardWrite from './components/Board/Content/BoardWrite';
 import ReadQnA from './components/Diagnosis/Content/ReadQnA';
+import QnAModify from './components/Diagnosis/Content/QnaModify';
 import ReadBoard from './components/Board/Content/ReadBoard';
 import Login from './components/Member/Login';
 import EnrollMember from './components/Member/EnrollMember';
@@ -82,6 +83,7 @@ function App() {
           render={(props) => <QnABoard {...props} />}
         />
         <Route path="/qnaWrite" component={QnAWrite} exact />
+        <Route path="/qnaModify" component={QnAModify} exact />
         <Route path="/detailQnA" component={ReadQnA} exact />
       </Switch>
       <Switch>

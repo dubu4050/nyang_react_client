@@ -1,6 +1,7 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import Header from '../Common/Header';
 import { makeStyles } from '@material-ui/core/styles';
+import axios from 'axios';
 import {
   MuiThemeProvider,
   createMuiTheme,
@@ -82,6 +83,7 @@ const BoardMain = (props) => {
       primary: { main: '#49D7F0' },
     },
   });
+
   return (
     <div>
       <Header />

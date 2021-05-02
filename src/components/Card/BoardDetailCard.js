@@ -9,6 +9,8 @@ import IconButton from '@material-ui/core/IconButton';
 import nyangImg from '../../images/nyangImg.png';
 import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined';
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
+import { Link } from '@material-ui/core';
+
 const useStyles = makeStyles({
   root: {
     flexGrow: 1,
@@ -86,6 +88,17 @@ const useStyles = makeStyles({
 export default function ComplexGrid() {
   const classes = useStyles();
 
+  const ip = process.env.REACT_APP_API_IP;
+  // 게시글 삭제(권한 검사는 이미 완료된 상태)
+  const deletePostBoard = () => {
+    // axios.delete(ip+'/question/'+'게시글id').then((res) => {
+    //   alert('삭제 완료');
+    //   <Link href='/diagnosis/qna'></Link>
+    // }).catch((err) => {
+    //   alert('삭제 실패');
+    // });
+    alert('삭제 완료');
+  };
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -135,13 +148,15 @@ export default function ComplexGrid() {
                   </Avatar>
                 }
                 title="dubu4050"
-                subheader=" @dubu4050 고양이 키워본적 없습니다."
+                subheader=" @dubu4050 고양이 키워본적 없습니다.111111"
                 action={
                   <>
-                    <IconButton className={classes.icon}>
-                      <DeleteForeverOutlinedIcon />
-                      삭제
-                    </IconButton>
+                    <Link href="/board/info">
+                      <IconButton className={classes.icon}>
+                        <DeleteForeverOutlinedIcon />
+                        삭제
+                      </IconButton>
+                    </Link>
                     <IconButton className={classes.icon}>
                       <CreateOutlinedIcon />
                       수정
