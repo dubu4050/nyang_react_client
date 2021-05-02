@@ -3,6 +3,8 @@ import 'codemirror/lib/codemirror.css';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import { Editor } from '@toast-ui/react-editor';
 import Header from '../../Common/Header';
+import { Link } from 'react-router-dom';
+
 import {
   Container,
   withStyles,
@@ -170,6 +172,7 @@ class EditComp extends React.Component {
   }
 
   render() {
+    const ip = process.env.REACT_APP_API_IP;
     const classes = {
       title: {
         marginTop: '2%',
@@ -216,12 +219,29 @@ class EditComp extends React.Component {
         if (age >= 100) {
           alert('나이가 그렇게 많나요?');
         } else {
+          content = this.editorRef.current.getInstance().getHtml();
           alert('게시글 등록 요청');
           console.log(genus);
           console.log(kind);
           console.log(age);
           console.log(title);
           console.log(this.editorRef.current.getInstance().getHtml());
+          const body = {
+            genus: genus,
+            species: kind,
+            age: age,
+            title: title,
+            content: content,
+          };
+          console.log(body);
+          // axios
+          //   .post(ip + '/question', body)
+          //   .then((res) => {
+          //     alert('글 등록에 성공했습니다.');
+          //   })
+          //   .catch((err) => {
+          //     alert('글 등록에 실패했습니다.');
+          //   });
         }
       }
     };
@@ -261,6 +281,7 @@ class EditComp extends React.Component {
           <Button
             variant="contained"
             size="large"
+            href="/diagnosis/qna"
             onClick={insertQnaBoard}
             style={classes.okbtn}
           >

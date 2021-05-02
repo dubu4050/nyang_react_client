@@ -22,6 +22,7 @@ var { kind } = '';
 var { age } = '';
 var { title } = '';
 var { content } = '';
+var { qnaNo } = '';
 const useStyles = makeStyles((theme) => ({
   wrap: {
     marginTop: '3%',
@@ -81,6 +82,7 @@ function QnAModify(props) {
   kind = props.location.state.kind;
   content = props.location.state.question;
   age = props.location.state.age;
+  qnaNo = props.location.state.no;
   return (
     <ThemeProvider theme={theme}>
       <Header />
@@ -168,7 +170,7 @@ class EditComp extends React.Component {
   constructor() {
     super();
     this.state = {
-      content: 'sadas',
+      content: '',
       selectedValue: 'a',
     };
   }
@@ -226,6 +228,22 @@ class EditComp extends React.Component {
           console.log(age);
           console.log(title);
           console.log(this.editorRef.current.getInstance().getHtml());
+          const body = {
+            genus: genus,
+            species: kind,
+            age: age,
+            title: title,
+            content: content,
+          };
+          console.log(body);
+          // axios
+          //   .put(ip + '/question' + '/qnaNo', body)
+          //   .then((res) => {
+          //     alert('글 등록에 성공했습니다.');
+          //   })
+          //   .catch((err) => {
+          //     alert('글 등록에 실패했습니다.');
+          //   });
         }
       }
     };
@@ -248,7 +266,6 @@ class EditComp extends React.Component {
         <>
           <Editor
             initialValue={title}
-            // editorState={this.state.title}
             defaultEditorState={title}
             height="500px"
             initialEditType="wysiwyg"

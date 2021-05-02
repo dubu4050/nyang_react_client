@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
 import catImg from '../../images/cat_icon.png';
 import Typography from '@material-ui/core/Typography';
 import qnaboard from '../../db/qna.json';
-import Link from '@material-ui/core/Link';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
   root: {
@@ -52,7 +51,7 @@ export default function BoradCards(props) {
           />
           <CardContent className={classes.contentWrap}>
             <Grid item className={classes.title}>
-              <Link href={`/detailBoard/${qna.no}`} color="inherit">
+              <Link to={`/detailBoard/${qna.no}`} color="inherit">
                 <Typography variant="h6">{qna.title}</Typography>
               </Link>
             </Grid>

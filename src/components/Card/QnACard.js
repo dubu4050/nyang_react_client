@@ -8,7 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import catImg from '../../images/cat_icon.png';
 import Typography from '@material-ui/core/Typography';
 import qnaboard from '../../db/qna.json';
-import Link from '@material-ui/core/Link';
+import { Link } from 'react-router-dom';
 import ReadQnA from '../Diagnosis/Content/ReadQnA';
 const useStyles = makeStyles({
   root: {
@@ -53,7 +53,7 @@ export default function QnACards(props) {
           />
           <CardContent className={classes.contentWrap}>
             <Grid item className={classes.title}>
-              <Link href={`/detailQnA/${qna.no}`} color="inherit">
+              <Link to={`/detailQnA/${qna.no}`} color="inherit">
                 <Typography variant="h6">{qna.title}</Typography>
               </Link>
             </Grid>

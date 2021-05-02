@@ -55,15 +55,15 @@ export default function FreeBoardContent(props) {
 
   // 전체 자유게시판 리스트 조회
   const totalFreeBoard = () => {
-    axios
-      .get(ip + '/board')
-      .then((res) => {
-        alert('요청 성공');
-        setFreeBoardList();
-      })
-      .catch((err) => {
-        alert('요청 실패');
-      });
+    // axios
+    //   .get(ip + '/board')
+    //   .then((res) => {
+    //     alert('요청 성공');
+    //     setFreeBoardList();
+    //   })
+    //   .catch((err) => {
+    //     alert('요청 실패');
+    //   });
   };
 
   // 자유게시판 검색
@@ -86,7 +86,7 @@ export default function FreeBoardContent(props) {
       //   });
     }
   };
-
+  totalFreeBoard();
   return (
     <Container>
       <Container className={classes.wrapper}>

@@ -13,12 +13,13 @@ import {
   FormLabel,
   makeStyles,
 } from '@material-ui/core';
-import axios from 'axios';
+import { AlarmRounded } from '@material-ui/icons';
 
 // 카테고리, 제목, 내용
 var { category } = '';
 var { title } = '';
 var { content } = '';
+var { postNo } = '';
 
 const useStyles = makeStyles((theme) => ({
   wrap: {
@@ -46,10 +47,6 @@ const useStyles = makeStyles((theme) => ({
 
 const fieldes = [
   {
-    value: 'select',
-    label: '선택',
-  },
-  {
     value: 'free',
     label: '자유 게시판',
   },
@@ -59,13 +56,18 @@ const fieldes = [
   },
 ];
 
-function BoardWrite() {
+function BoardModify(props) {
   const classes = useStyles();
   const theme = createMuiTheme({
     palette: {
       primary: { main: '#666' },
     },
   });
+
+  console.log(props.location.state);
+  title = props.location.state.title;
+  content = props.location.state.content;
+  postNo = props.location.state.no;
   return (
     <ThemeProvider theme={theme}>
       <Header />
@@ -79,13 +81,13 @@ function BoardWrite() {
 
 function FunComp() {
   const classes = useStyles();
-
   const onChangeCategory = (e) => {
     category = e.target.value;
   };
   const onChangeTitle = (e) => {
     title = e.target.value;
   };
+
   return (
     <div className={classes.infoWrap}>
       <div className={classes.listTilte}>
@@ -146,7 +148,6 @@ class EditComp extends React.Component {
   }
 
   render() {
-    const ip = process.env.REACT_APP_API_IP;
     const classes = {
       btnbox: {
         width: '100%',
@@ -171,7 +172,7 @@ class EditComp extends React.Component {
         fontWeight: 'bold',
       },
     };
-    const EnrollPostBoard = () => {
+    const modifyPostBoard = () => {
       if (category == undefined || title == '' || content == '') {
         alert('모든 항목을 채우지 않았습니다.');
       } else {
@@ -183,7 +184,7 @@ class EditComp extends React.Component {
         };
         console.log(body);
         // axios
-        //   .post(ip + '/board', body)
+        //   .put(ip + '/board/' + postNo, body)
         //   .then((res) => {
         //     alert('글 등록에 성공했습니다.');
         //   })
@@ -196,6 +197,7 @@ class EditComp extends React.Component {
       <div>
         <>
           <Editor
+            initialValue={content}
             height="500px"
             initialEditType="wysiwyg"
             ref={this.editorRef}
@@ -215,15 +217,15 @@ class EditComp extends React.Component {
             variant="contained"
             size="large"
             href="/board/info"
-            onClick={EnrollPostBoard}
+            onClick={modifyPostBoard}
             style={classes.okbtn}
           >
             {' '}
-            등록{' '}
+            수정{' '}
           </Button>
         </div>
       </div>
     );
   }
 }
-export default BoardWrite;
+export default BoardModify;

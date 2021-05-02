@@ -10,10 +10,7 @@ import nyangImg from '../../images/nyangImg.png';
 import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined';
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import detailqnaboard from '../../db/detailQna.json';
-import { Route } from 'react-router-dom';
-import QnAWrite from '../Diagnosis/Content/QnAWrite';
 
 const useStyles = makeStyles({
   root: {
@@ -91,25 +88,13 @@ const useStyles = makeStyles({
 
 export default function ComplexGrid() {
   const classes = useStyles();
-  const ip = process.env.REACT_APP_API_IP;
-  const temp =
-    '<p>개아프냥<br>말티즈<br><strong>123</strong>세<br>취소부탁드립니다.</p>';
   const modifyData = detailqnaboard.qnaboard[0];
+  const questionContent = modifyData.question;
   console.log(modifyData);
-  // 게시글 삭제(권한 검사는 이미 완료된 상태)
-  const deleteQnaBoard = () => {
-    // axios.delete(ip+'/question/'+'게시글id').then((res) => {
-    //   alert('삭제 완료');
-    //   <Link href='/diagnosis/qna'></Link>
-    // }).catch((err) => {
-    //   alert('삭제 실패');
-    // });
-    alert('삭제 완료');
-  };
 
-  const modiftyQnaBoard = () => {
-    alert('수정');
-  };
+  const currentAccessId = 'dubu4050';
+  const postWriterId = modifyData.writer;
+
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -118,23 +103,26 @@ export default function ComplexGrid() {
             <Grid item xs={12} sm={11} container direction="column" spacing={2}>
               <Grid item xs>
                 <Typography className={classes.title}>
-                  우리 애가 자꾸 물어요... 팁 없을까요?
+                  {modifyData.title}
                 </Typography>
                 <Typography variant="body2" color="textSecondary" gutterBottom>
-                  공개 QnA / 고양이
+                  공개 QnA / 동물 :{modifyData.genus} / 종 : {modifyData.kind} /
+                  나이 : {modifyData.age}
                 </Typography>
                 <Typography
                   variant="body1"
                   className={classes.text}
                   gutterBottom
                 >
-                  <div dangerouslySetInnerHTML={{ __html: temp }}></div>
+                  <div
+                    dangerouslySetInnerHTML={{ __html: questionContent }}
+                  ></div>
                 </Typography>
               </Grid>
             </Grid>
             <Grid item xs={12} sm={1}>
               <Typography variant="subtitle1" className={classes.date}>
-                2021.02.24
+                작성일 : {modifyData.comment_num}
               </Typography>
             </Grid>
             <Grid item xs={12} sm={12}>
@@ -144,47 +132,59 @@ export default function ComplexGrid() {
                     <img src={nyangImg} className={classes.img} />
                   </Avatar>
                 }
-                title="dubu4050"
-                subheader=" @dubu4050 고양이 키워본적 없습니다."
+                title={modifyData.writer}
+                // subheader=" @dubu4050 고양이 키워본적 없습니다."
                 action={
-                  <>
-                    <Link to="/diagnosis/qna">
-                      <IconButton
-                        className={classes.icon}
-                        onClick={deleteQnaBoard}
-                      >
-                        <DeleteForeverOutlinedIcon />
-                        삭제
-                      </IconButton>
-                    </Link>
-                    <Link
-                      to={{
-                        pathname: '/qnaModify',
-                        state: {
-                          no: modifyData.no,
-                          genus: modifyData.genus,
-                          kind: modifyData.kind,
-                          age: modifyData.age,
-                          title: modifyData.title,
-                          question: modifyData.question,
-                        },
-                      }}
-                    >
-                      <IconButton
-                        className={classes.icon}
-                        onClick={modiftyQnaBoard}
-                      >
-                        <CreateOutlinedIcon />
-                        수정
-                      </IconButton>
-                    </Link>
-                  </>
+                  <>{currentAccessId == postWriterId && <PostFuncButton />}</>
                 }
               ></CardHeader>
             </Grid>
           </Grid>
         </Grid>
       </Paper>
+    </div>
+  );
+}
+
+function PostFuncButton() {
+  const classes = useStyles();
+  const modifyData = detailqnaboard.qnaboard[0];
+  // 게시글 삭제(권한 검사는 이미 완료된 상태)
+  const deleteQnaBoard = () => {
+    // axios.delete(ip+'/question/'+'게시글id').then((res) => {
+    //   alert('삭제 완료');
+    // <Link to="/diagnosis/qna"></Link>;
+    // }).catch((err) => {
+    //   alert('삭제 실패');
+    // });
+    alert('삭제 완료');
+  };
+  return (
+    <div>
+      <Link to="/diagnosis/qna">
+        <IconButton className={classes.icon} onClick={deleteQnaBoard}>
+          <DeleteForeverOutlinedIcon />
+          삭제
+        </IconButton>
+      </Link>
+      <Link
+        to={{
+          pathname: '/qnaModify',
+          state: {
+            no: modifyData.no,
+            genus: modifyData.genus,
+            kind: modifyData.kind,
+            age: modifyData.age,
+            title: modifyData.title,
+            question: modifyData.question,
+          },
+        }}
+      >
+        <IconButton className={classes.icon}>
+          <CreateOutlinedIcon />
+          수정
+        </IconButton>
+      </Link>
     </div>
   );
 }
