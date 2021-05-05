@@ -1,4 +1,4 @@
-# 동물 질병 진단 시스템: 개아프냥 [API Server]
+# 동물 질병 진단 시스템: 개아프냥 [Client Server]
 
 ## 개요
 사용자로부터 반려동물의 이상 행동에 대한 상태(문장)를 입력받는다.
@@ -15,6 +15,5 @@
 ![image](https://user-images.githubusercontent.com/51086651/116774425-7387df00-aa97-11eb-92f1-c5e44c37b9a1.png)
 
 ## 사용 기술
-- NestJS(Express)
-- TypeORM
-- MySQL
+- React
+- Mobx || Redux
