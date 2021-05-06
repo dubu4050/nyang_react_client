@@ -10,7 +10,7 @@ import nyangImg from '../../images/nyangImg.png';
 import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined';
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
 import { Link } from 'react-router-dom';
-import detailqnaboard from '../../db/detailQna.json';
+import detailqnaboard from '../../db/detailBoard.json';
 
 const useStyles = makeStyles({
   root: {
@@ -100,7 +100,9 @@ export default function ComplexGrid() {
           <Grid item xs={12} sm container>
             <Grid item xs={12} sm={11} container direction="column" spacing={2}>
               <Grid item xs>
-                <Typography className={classes.title}>게시판제목</Typography>
+                <Typography className={classes.title}>
+                  {BoardData.title}
+                </Typography>
                 <Typography variant="body2" color="textSecondary" gutterBottom>
                   {BoardData.comment_num}
                 </Typography>

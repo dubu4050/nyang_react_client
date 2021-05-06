@@ -233,7 +233,7 @@ class EditComp extends React.Component {
             species: kind,
             age: age,
             title: title,
-            content: content,
+            content: this.editorRef.current.getInstance().getHtml(),
           };
           console.log(body);
           // axios
@@ -265,7 +265,7 @@ class EditComp extends React.Component {
         />
         <>
           <Editor
-            initialValue={title}
+            initialValue={content}
             defaultEditorState={title}
             height="500px"
             initialEditType="wysiwyg"

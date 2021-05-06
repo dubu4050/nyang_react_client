@@ -1,5 +1,6 @@
 /*global kakao*/
 import { makeStyles } from '@material-ui/core';
+import { AlertTitle } from '@material-ui/lab';
 import React, { useEffect } from 'react';
 
 const { kakao } = window;
@@ -13,14 +14,12 @@ const MapContainer = () => {
       level: 7,
     };
     const map = new kakao.maps.Map(container, options);
-
     // HTML5의 geolocation으로 사용할 수 있는지 확인합니다
     if (navigator.geolocation) {
       // GeoLocation을 이용해서 접속 위치를 얻어옵니다
       navigator.geolocation.getCurrentPosition(function (position) {
-        const lat = position.coords.latitude,
+        const lat = position.coords.latitude, // 위도
           lon = position.coords.longitude; // 경도
-
         const locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
           message = '<div style="padding:5px;">현재 위치</div>'; // 인포윈도우에 표시될 내용입니다
 

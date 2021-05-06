@@ -33,7 +33,6 @@ export default function ComplexGrid() {
         <strong>3</strong>
       </div>
       <CommentCard />
-      <CommentCard />
     </div>
   );
 }

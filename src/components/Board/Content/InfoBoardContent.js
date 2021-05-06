@@ -74,11 +74,12 @@ export default function InfoBoardContent(props) {
       alert('글 제목을 입력해주세요');
     } else {
       const body = {
+        type: "지식정보",
         content: question,
       };
       alert(question);
       // axios
-      //   .get(ip + '/board', body)
+      //   .post(ip + '/board', body)
       //   .then((res) => {
       //     alert('검색 성공');
       //     setInfoBoardList();

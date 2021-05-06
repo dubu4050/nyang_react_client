@@ -6,7 +6,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
 import catImg from '../../images/cat_icon.png';
 import Typography from '@material-ui/core/Typography';
-import qnaboard from '../../db/qna.json';
+import qnaboard from '../../db/info.json';
 import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
