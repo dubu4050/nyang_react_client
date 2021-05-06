@@ -74,7 +74,6 @@ export default function InfoBoardContent(props) {
       alert('글 제목을 입력해주세요');
     } else {
       const body = {
-        type: "지식정보",
         content: question,
       };
       alert(question);

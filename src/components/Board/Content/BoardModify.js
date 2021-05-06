@@ -99,7 +99,7 @@ function FunComp() {
           select
           preventValue="free"
           size="small"
-          value={category}
+          defaultValue={category}
           onChange={onChangeCategory}
           className={classes.field}
           SelectProps={{
@@ -123,8 +123,8 @@ function FunComp() {
           variant="outlined"
           size="small"
           className={classes.title}
+          defaultValue={title}
           placeholder="제목을 입력하세요"
-          value={title}
           onChange={onChangeTitle}
           InputProps={{
             classes: {
@@ -186,7 +186,7 @@ class EditComp extends React.Component {
         // axios
         //   .put(ip + '/board/' + postNo, body)
         //   .then((res) => {
-        //     alert('글 등록에 성공했습니다.');
+        //     alert('글 수정에 성공했습니다.');
         //   })
         //   .catch((err) => {
         //     alert('글 등록에 실패했습니다.');

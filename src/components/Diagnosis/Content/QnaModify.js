@@ -144,17 +144,17 @@ function FunComp(props) {
           id="species"
           label="품종"
           size="small"
+          defaultValue={kind}
           variant="outlined"
-          value={kind}
           onChange={onChangeKind}
         />
         <TextField
           type="number"
           label="나이"
+          defaultValue={age}
           InputProps={{ inputProps: { min: 0, max: 99 } }}
           size="small"
           variant="outlined"
-          value={age}
           onChange={onChangeAge}
           InputLabelProps={{
             shrink: true,
@@ -222,7 +222,7 @@ class EditComp extends React.Component {
         if (age >= 100) {
           alert('나이가 그렇게 많나요?');
         } else {
-          alert('게시글 등록 요청');
+          alert('게시글 수정 요청');
           console.log(genus);
           console.log(kind);
           console.log(age);
@@ -254,6 +254,7 @@ class EditComp extends React.Component {
           variant="outlined"
           size="small"
           style={classes.title}
+          defaultValue={title}
           placeholder="제목을 입력하세요"
           onChange={onChangeTitle}
           InputProps={{
@@ -261,7 +262,6 @@ class EditComp extends React.Component {
               underline: classes.underline,
             },
           }}
-          value={title}
         />
         <>
           <Editor
