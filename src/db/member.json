@@ -1,10 +1,10 @@
 {
-   "member":[{ "id": "user",
+   "id": "user",
     "password": "1234",
     "nickName": "너비아니",
     "email": "asdf@naver.com",
     "charNumber":"1234",
     "phoneNumber": "010-1234-5678",
     "name": "홍길동",
-    "birth": "2021-03-23"}]
+    "birth": "2021-03-23"
 }

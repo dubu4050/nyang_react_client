@@ -86,8 +86,7 @@ export default class App extends Component {
             render={(props) => <QnABoard {...props} />}
           />
           <Route path="/qnaWrite" component={QnAWrite} exact />
-          <Route path="/qnaModify" component={QnAModify} exact />
-          <Route path="/detailQnA/:no" component={ReadQnA} exact />
+          <Route path="/detailQnA" component={ReadQnA} exact />
         </Switch>
         <Switch>
           <Redirect exact from="/board" to="/board/info" exact />
@@ -107,8 +106,7 @@ export default class App extends Component {
             render={(props) => <FreeBoardContent {...props} />}
           />
           <Route path="/boardWrite" component={BoardWrite} exact />
-          <Route path="/detailBoard/:no" component={ReadBoard} exact />
-          <Route path="/boardModify" component={BoardModify} exact />
+          <Route path="/detailBoard" component={ReadBoard} exact />
         </Switch>
       </div>
     );

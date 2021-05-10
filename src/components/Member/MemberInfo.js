@@ -5,6 +5,8 @@ import Button from '@material-ui/core/Button';
 import member from '../../db/member.json';
 import Header from '../Common/Header.js';
 import Modal from '@material-ui/core/Modal';
+import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 
 function getModalStyle() {
   const top = 50;
@@ -33,6 +35,11 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: 'none',
     padding: '30px 0px 0px 0px',
   },
+  header: {
+    width: '80%',
+    margin: '0 auto',
+    borderBottom: '1px solid grey',
+  },
   item: {
     width: '80%',
     margin: '0 auto',
@@ -44,9 +51,9 @@ const useStyles = makeStyles((theme) => ({
     width: '15ch',
   },
   okbtn: {
-    width: '40%',
     marginTop: theme.spacing(4),
     marginBottom: theme.spacing(8),
+    marginRight: theme.spacing(4),
   },
   paper: {
     position: 'absolute',
@@ -56,14 +63,25 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
+  profilewrap: {
+    width: '60%',
+    margin: '0 auto',
+  },
   profile: {
     width: '150px',
     height: '150px',
+    marginTop: '20px',
+    marginRight: '20px',
   },
 }));
 
-function MemberInfo() {
+function MemberInfo(props) {
   const classes = useStyles();
+  // ip address
+  const ip = process.env.REACT_APP_API_IP;
+  const user = props.user;
+  const history = useHistory();
+  console.log(user);
   // MemberInfo 관련 변수
   const [id, setId] = useState(member.id);
   const [nickName, setNickname] = useState(member.nickName);
@@ -108,11 +126,44 @@ function MemberInfo() {
       member.phoneNumber != phoneNumber
     ) {
       alert('닉네임 번호');
+      const body = {
+        name: name,
+        nickname: nickName,
+        phone_number: phoneNumber,
+        date_birth: birth,
+      };
+      axios
+        .put(ip + '/member/' + id, body)
+        .then(() => {
+          alert('프로필을 수정 완료');
+        })
+        .catch((err) => {
+          console.log(err);
+          alert('프로필을 수정 실패');
+        });
     } else {
       if (member.nickName != nickName) {
         alert('닉네임');
+        axios
+          .put(ip + '/member/' + id, { nickname: nickName })
+          .then(() => {
+            alert('프로필을 수정 완료');
+          })
+          .catch((err) => {
+            console.log(err);
+            alert('프로필을 수정 실패');
+          });
       } else {
         alert('전화번호');
+        axios
+          .put(ip + '/member/' + id, { phone_number: phoneNumber })
+          .then(() => {
+            alert('프로필을 수정 완료');
+          })
+          .catch((err) => {
+            console.log(err);
+            alert('프로필을 수정 실패');
+          });
       }
     }
   };
@@ -128,6 +179,16 @@ function MemberInfo() {
 
   const deleteMemberInfo = () => {
     alert('회원 탈퇴 정보 전송');
+    axios
+      .delete(ip + '/member/' + id)
+      .then(() => {
+        alert('탈퇴 완료');
+        history.push('/');
+      })
+      .catch((err) => {
+        console.log(err);
+        alert('탈퇴 실패');
+      });
   };
 
   const modalBody = (
@@ -146,14 +207,11 @@ function MemberInfo() {
   );
   return (
     <div>
-      <Header />
       <form className={classes.root} noValidate autoComplete="off">
         <div className={classes.table}>
-          <h1 className={classes.item}>회원 정보 조회</h1>
-          <div className={classes.item}>
+          <h2 className={classes.header}>회원 정보 조회/수정</h2>
+          <div className={classes.profilewrap}>
             <img className={classes.profile} src={previewURL}></img>
-          </div>
-          <div className={classes.item}>
             <input
               type="file"
               name="imgFile"
@@ -162,6 +220,7 @@ function MemberInfo() {
               onChange={handleChangeFile}
             />
           </div>
+
           <div className={classes.item}>
             <TextField disabled id="id" label="아이디" defaultValue={id} />
             <Button disabled size="small" className={classes.btn} />
@@ -216,7 +275,7 @@ function MemberInfo() {
           <div className={classes.item}>
             <TextField
               disabled
-              id="birthday"
+              id="birth"
               label="생년월일"
               defaultValue={birth}
             />
@@ -228,7 +287,14 @@ function MemberInfo() {
               onClick={updateMemberInfo}
               className={classes.okbtn}
             >
-              수정
+              프로필 수정
+            </Button>
+            <Button
+              variant="contained"
+              href="/updatePW"
+              className={classes.okbtn}
+            >
+              비밀번호 수정
             </Button>
             <Button
               variant="contained"
