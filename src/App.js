@@ -11,6 +11,8 @@ import BoardWrite from './components/Board/Content/BoardWrite';
 import ReadQnA from './components/Diagnosis/Content/ReadQnA';
 import ReadBoard from './components/Board/Content/ReadBoard';
 import Login from './components/Member/Login';
+import BoardModify from './components/Board/Content/BoardModify';
+import QnAModify from './components/Diagnosis/Content/QnaModify';
 import EnrollMember from './components/Member/EnrollMember';
 import FindId from './components/Member/FindId';
 import FindPw from './components/Member/FindPw';

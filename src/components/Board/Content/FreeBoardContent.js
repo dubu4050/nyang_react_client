@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Container,
   InputBase,
   makeStyles,
   IconButton,
+  Button,
 } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import CreateIcon from '@material-ui/icons/Create';
@@ -45,6 +46,47 @@ const useStyles = makeStyles((theme) => ({
 
 export default function FreeBoardContent(props) {
   const classes = useStyles();
+  const ip = process.env.REACT_APP_API_IP;
+  const [question, setQuestion] = useState('');
+  var [freeBoardList, setFreeBoardList] = useState([]);
+  const onChangeQuestion = (e) => {
+    setQuestion(e.target.value);
+  };
+
+  // 전체 자유게시판 리스트 조회
+  const totalFreeBoard = () => {
+    // axios
+    //   .get(ip + '/board')
+    //   .then((res) => {
+    //     alert('요청 성공');
+    //     setFreeBoardList();
+    //   })
+    //   .catch((err) => {
+    //     alert('요청 실패');
+    //   });
+  };
+
+  // 자유게시판 검색
+  const searchFreeBoard = () => {
+    if (question == '') {
+      alert('글 제목을 입력해주세요');
+    } else {
+      const body = {
+        content: question,
+      };
+      alert(question);
+      // axios
+      //   .get(ip + '/board', body)
+      //   .then((res) => {
+      //     alert('검색 성공');
+      //     setFreeBoardList();
+      //   })
+      //   .catch((err) => {
+      //     alert('검색 실패');
+      //   });
+    }
+  };
+  totalFreeBoard();
   return (
     <Container>
       <Container className={classes.wrapper}>
@@ -55,16 +97,22 @@ export default function FreeBoardContent(props) {
             input: classes.placeholderStyle,
           }}
           inputProps={{ 'aria-label': 'search' }}
+          onChange={onChangeQuestion}
         />
-        <SearchIcon className={classes.icon} />
+        <Button
+          variant="contained"
+          color="default"
+          className={classes.button}
+          onClick={searchFreeBoard}
+        >
+          검색
+        </Button>
         <IconButton href="/boardWrite">
           <CreateIcon className={classes.icon} />
         </IconButton>
       </Container>
       <BoardCard />
-      <BoardCard />
-      <BoardCard />
-      <BoardCard />
+      {/* <BoardCard list={freeBoardList} /> */}
     </Container>
   );
 }

@@ -3,8 +3,6 @@ import 'codemirror/lib/codemirror.css';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import { Editor } from '@toast-ui/react-editor';
 import Header from '../../Common/Header';
-import { Link } from 'react-router-dom';
-
 import {
   Container,
   withStyles,
@@ -24,6 +22,7 @@ var { kind } = '';
 var { age } = '';
 var { title } = '';
 var { content } = '';
+var { qnaNo } = '';
 const useStyles = makeStyles((theme) => ({
   wrap: {
     marginTop: '3%',
@@ -71,16 +70,21 @@ const genuses = [
   },
 ];
 
-function QnAWrite() {
+function QnAModify(props) {
   const classes = useStyles();
   const theme = createMuiTheme({
     palette: {
       primary: { main: '#666' },
     },
   });
+  console.log(props.location.state);
+  title = props.location.state.title;
+  kind = props.location.state.kind;
+  content = props.location.state.question;
+  age = props.location.state.age;
+  qnaNo = props.location.state.no;
   return (
     <ThemeProvider theme={theme}>
-      <Header />
       <Container className={classes.wrap}>
         <FunComp />
         <EditComp></EditComp>
@@ -89,7 +93,7 @@ function QnAWrite() {
   );
 }
 
-function FunComp() {
+function FunComp(props) {
   const classes = useStyles();
 
   const onChangeGenus = (e) => {
@@ -101,7 +105,6 @@ function FunComp() {
   const onChangeAge = (e) => {
     age = e.target.value;
   };
-
   return (
     <div className={classes.infoWrap}>
       <div className={classes.listTilte}>
@@ -140,17 +143,17 @@ function FunComp() {
           id="species"
           label="품종"
           size="small"
+          defaultValue={kind}
           variant="outlined"
-          value={kind}
           onChange={onChangeKind}
         />
         <TextField
           type="number"
           label="나이"
+          defaultValue={age}
           InputProps={{ inputProps: { min: 0, max: 99 } }}
           size="small"
           variant="outlined"
-          value={age}
           onChange={onChangeAge}
           InputLabelProps={{
             shrink: true,
@@ -172,7 +175,6 @@ class EditComp extends React.Component {
   }
 
   render() {
-    const ip = process.env.REACT_APP_API_IP;
     const classes = {
       title: {
         marginTop: '2%',
@@ -206,7 +208,7 @@ class EditComp extends React.Component {
       title = e.target.value;
     };
 
-    const insertQnaBoard = () => {
+    const modifyQnaBoard = () => {
       if (
         genus == undefined ||
         kind == '' ||
@@ -219,8 +221,7 @@ class EditComp extends React.Component {
         if (age >= 100) {
           alert('나이가 그렇게 많나요?');
         } else {
-          content = this.editorRef.current.getInstance().getHtml();
-          alert('게시글 등록 요청');
+          alert('게시글 수정 요청');
           console.log(genus);
           console.log(kind);
           console.log(age);
@@ -231,11 +232,11 @@ class EditComp extends React.Component {
             species: kind,
             age: age,
             title: title,
-            content: content,
+            content: this.editorRef.current.getInstance().getHtml(),
           };
           console.log(body);
           // axios
-          //   .post(ip + '/question', body)
+          //   .put(ip + '/question' + '/qnaNo', body)
           //   .then((res) => {
           //     alert('글 등록에 성공했습니다.');
           //   })
@@ -252,6 +253,7 @@ class EditComp extends React.Component {
           variant="outlined"
           size="small"
           style={classes.title}
+          defaultValue={title}
           placeholder="제목을 입력하세요"
           onChange={onChangeTitle}
           InputProps={{
@@ -262,7 +264,8 @@ class EditComp extends React.Component {
         />
         <>
           <Editor
-            editorState={content}
+            initialValue={content}
+            defaultEditorState={title}
             height="500px"
             initialEditType="wysiwyg"
             ref={this.editorRef}
@@ -281,16 +284,15 @@ class EditComp extends React.Component {
           <Button
             variant="contained"
             size="large"
-            href="/diagnosis/qna"
-            onClick={insertQnaBoard}
+            onClick={modifyQnaBoard}
             style={classes.okbtn}
           >
             {' '}
-            등록{' '}
+            수정{' '}
           </Button>
         </div>
       </div>
     );
   }
 }
-export default QnAWrite;
+export default QnAModify;
