@@ -61,7 +61,7 @@ const Home = (props) => {
   const { match, history } = props;
   const { params } = match;
   const { page } = params;
-
+  console.log(match, history);
   const classes = useStyles();
 
   const theme = createMuiTheme({
@@ -88,7 +88,6 @@ const Home = (props) => {
 
   return (
     <div>
-      <Header />
       <MuiThemeProvider theme={theme}>
         <Paper className={classes.root}>
           <BottomNavigation value="diagnosis" showLabels>

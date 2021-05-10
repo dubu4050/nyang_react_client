@@ -140,7 +140,7 @@ const freeContentRows = [
   { id: 6, qaTitleNo: '순대', content: '매일', createDate: '2020-01-01' },
 ];
 
-function ActiveMemberInfo() {
+function ActiveMemberInfo(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
@@ -163,17 +163,16 @@ function ActiveMemberInfo() {
     setChecked(!bChecked);
     checkedItemHandler(postRows.id, target.checked);
   };
-
-  const DeleteSelectInfo = () => {
+  console.log(props.user);
+  const DeleteSelectInfo = (props) => {
     alert(checkedItems);
   };
   return (
     <div>
-      <Header />
       <form className={classes.root} noValidate autoComplete="off">
         <div className={classes.table}>
           <h1>회원 활동 조회</h1>
-          <h2>아이디 : 1234 </h2>
+          <h2>아이디 : {props.user} </h2>
           <AppBar classNabe={classes.tab} position="static" color="default">
             <Tabs
               value={value}

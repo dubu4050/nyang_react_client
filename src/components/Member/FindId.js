@@ -3,7 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { SettingsInputSvideo } from '@material-ui/icons';
-import Header from '../Common/Header';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,9 +35,12 @@ const useStyles = makeStyles((theme) => ({
 function MemberInfo() {
   const classes = useStyles();
   // 아이디 찾기 관련 변수
+  // ip address
+  const ip = process.env.REACT_APP_API_IP;
   const [name, setName] = useState('');
   const [id, setId] = useState('');
   const [email, setEmail] = useState('');
+
   const onChangeName = (e) => {
     setName(e.target.value);
   };
@@ -48,13 +51,25 @@ function MemberInfo() {
     if (name == '' || email == '') {
       alert('필수 항목을 모두 입력하지 않았습니다.');
     } else {
-      alert(name + ' ' + +email);
-      setId('회원님의 아이디는 ' + name + ' 입니다.');
+      const body = {
+        email: email,
+        name: name,
+      };
+      axios
+        .post(ip + '/member/find/account/', body)
+        .then((res) => {
+          setId(res.data[0].account);
+          alert(res.data[0].account);
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+          alert('회원 정보를 다시 확인 해 보세요');
+        });
     }
   };
   return (
     <div>
-      <Header />
       <form className={classes.root} noValidate autoComplete="off">
         <div className={classes.table}>
           <h1>계정 찾기</h1>

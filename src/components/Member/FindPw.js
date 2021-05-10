@@ -1,9 +1,11 @@
+/* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Header from '../Common/Header.js';
 import { SettingsInputSvideo } from '@material-ui/icons';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,12 +30,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function MemberInfo() {
+function FindPw() {
   const classes = useStyles();
+   // ip address
+   const ip = process.env.REACT_APP_API_IP;
   // 비밀번호 찾기 관련 변수
   const [id, setId] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+
   const onChangeId = (e) => {
     setId(e.target.value);
   };
@@ -47,12 +52,24 @@ function MemberInfo() {
     if (id == '' || name == '' || email == '') {
       alert('필수 항목을 모두 입력하지 않았습니다.');
     } else {
-      alert('Wait');
+      const body = {
+        account: id,
+        name: name,
+        email: email,
+      };
+      axios
+        .post(ip + '/member/find/password/', body)
+        .then((res) => {
+          alert('비밀번호는 ' + res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+          alert('못 찾았어요 비밀번호');
+        });
     }
   };
   return (
     <div>
-      <Header />
       <form className={classes.root} noValidate autoComplete="off">
         <div className={classes.table}>
           <h1>비밀번호 찾기</h1>
@@ -96,4 +113,4 @@ function MemberInfo() {
   );
 }
 
-export default MemberInfo;
+export default FindPw;

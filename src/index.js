@@ -6,7 +6,9 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import axios from 'axios';
 
+axios.defaults.headers.head['token'] = localStorage.getItem('token');
 const theme = createMuiTheme({
   typographys: {
     fontFamily: '"Noto Sans KR",serif',
