@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './App.css';
 import Home from './components/Common/Home';
 import DiseaseSearch from './components/Diagnosis/Content/DiseaseSearch';
@@ -8,11 +8,11 @@ import BoardMain from './components/Board/BoardMain';
 import InfoBoardContent from './components/Board/Content/InfoBoardContent';
 import FreeBoardContent from './components/Board/Content/FreeBoardContent';
 import BoardWrite from './components/Board/Content/BoardWrite';
-import BoardModify from './components/Board/Content/BoardModify';
 import ReadQnA from './components/Diagnosis/Content/ReadQnA';
-import QnAModify from './components/Diagnosis/Content/QnaModify';
 import ReadBoard from './components/Board/Content/ReadBoard';
 import Login from './components/Member/Login';
+import BoardModify from './components/Board/Content/BoardModify';
+import QnAModify from './components/Diagnosis/Content/QnaModify';
 import EnrollMember from './components/Member/EnrollMember';
 import FindId from './components/Member/FindId';
 import FindPw from './components/Member/FindPw';
@@ -20,96 +20,97 @@ import UpdatePw from './components/Member/UpdatePw';
 import MemberInfo from './components/Member/MemberInfo';
 import ActiveMemberInfo from './components/Member/ActiveMemberInfo';
 import Admin from './components/Member/Admin';
+import Header from './components/Common/Header';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
+import axios from 'axios';
 
-const useStyle = makeStyles((theme) => ({
-  '@global': {
-    'body, html': {
-      padding: 0,
-      margin: 0,
-      minWidth: '100vw',
-      minHeight: '100vh',
-      maxWidth: '100vw',
-      maxHeight: '100vh',
-    },
-    '*::-webkit-scrollbar': {
-      width: '0.5rem',
-    },
-    '*::-webkit-scrollbar-track': {
-      '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.00)',
-    },
-    '*::-webkit-scrollbar-thumb': {
-      outline: '1px solid slategrey',
-    },
-    '*::-webkit-scrollbar:horizontal': {
-      display: 'none',
-    },
-  },
-  root: {
-    width: '100%',
-    height: '100%',
-    margin: 0,
-    overflowY: 'hidden',
-  },
-}));
-function App() {
-  const classes = useStyle();
-  return (
-    <div className={classes.root}>
-      <Route path="/login" component={Login} exact />
-      <Route path="/enroll" component={EnrollMember} exact />
-      <Route path="/findId" component={FindId} exact />
-      <Route path="/findPw" component={FindPw} exact />
-      <Route path="/updatePw" component={UpdatePw} exact />
-      <Route path="/memberInfo" component={MemberInfo} exact />
-      <Route path="/activeMemberInfo" component={ActiveMemberInfo} exact />
-      <Route path="/admin" component={Admin} exact />
-      <Switch>
-        <Redirect exact from="/" to="/diagnosis/" exact />
-        <Redirect exact from="/diagnosis" to="/diagnosis/search" exact />
-        <Route
-          exact
-          path="/diagnosis/:page?"
-          render={(props) => <Home {...props} />}
-        />
-        <Route
-          exact
-          path="/diagnosis/search/:page?"
-          render={(props) => <DiseaseSearch {...props} />}
-        />
-        <Route
-          exact
-          path="/diagnosis/qna/:page?"
-          render={(props) => <QnABoard {...props} />}
-        />
-        <Route path="/qnaWrite" component={QnAWrite} exact />
-        <Route path="/qnaModify" component={QnAModify} exact />
-        <Route path="/detailQnA/:no" component={ReadQnA} exact />
-      </Switch>
-      <Switch>
-        <Redirect exact from="/board" to="/board/info" exact />
-        <Route
-          exact
-          path="/board/:page?"
-          render={(props) => <BoardMain {...props} />}
-        />
-        <Route
-          exact
-          path="/board/info/:page?"
-          render={(props) => <InfoBoardContent {...props} />}
-        />
-        <Route
-          exact
-          path="/board/free/:page?"
-          render={(props) => <FreeBoardContent {...props} />}
-        />
-        <Route path="/boardWrite" component={BoardWrite} exact />
-        <Route path="/detailBoard/:no" component={ReadBoard} exact />
-        <Route path="/boardModify" component={BoardModify} exact />
-      </Switch>
-    </div>
-  );
+export default class App extends Component {
+  render() {
+    const classes = {
+      '@global': {
+        'body, html': {
+          padding: 0,
+          margin: 0,
+          minWidth: '100vw',
+          minHeight: '100vh',
+          maxWidth: '100vw',
+          maxHeight: '100vh',
+        },
+        '*::-webkit-scrollbar': {
+          width: '0.5rem',
+        },
+        '*::-webkit-scrollbar-track': {
+          '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.00)',
+        },
+        '*::-webkit-scrollbar-thumb': {
+          outline: '1px solid slategrey',
+        },
+        '*::-webkit-scrollbar:horizontal': {
+          display: 'none',
+        },
+      },
+      root: {
+        width: '100%',
+        height: '100%',
+        margin: 0,
+        overflowY: 'hidden',
+      },
+    };
+    return (
+      <div style={classes.root}>
+        <Header />
+        <Route path="/enroll" component={EnrollMember} exact />
+        <Route path="/findId" component={FindId} exact />
+        <Route path="/findPw" component={FindPw} exact />
+        <Route path="/updatePw" component={UpdatePw} exact />
+        <Route path="/memberInfo" render={() => <MemberInfo />} />
+        <Route path="/activeMemberInfo" render={() => <ActiveMemberInfo />} />
+        <Route path="/admin" component={Admin} exact />
+        <Switch>
+          <Redirect exact from="/" to="/diagnosis/" exact />
+          <Redirect exact from="/diagnosis" to="/diagnosis/search" exact />
+          <Route
+            exact
+            path="/diagnosis/:page?"
+            render={(props) => <Home {...props} />}
+          />
+          <Route
+            exact
+            path="/diagnosis/search/:page?"
+            render={(props) => <DiseaseSearch {...props} />}
+          />
+          <Route
+            exact
+            path="/diagnosis/qna/:page?"
+            render={(props) => <QnABoard {...props} />}
+          />
+          <Route path="/qnaWrite" component={QnAWrite} exact />
+          <Route path="/qnaModify" component={QnAModify} exact />
+          <Route path="/detailQnA/:no" component={ReadQnA} exact />
+        </Switch>
+        <Switch>
+          <Redirect exact from="/board" to="/board/info" exact />
+          <Route
+            exact
+            path="/board/:page?"
+            render={(props) => <BoardMain {...props} />}
+          />
+          <Route
+            exact
+            path="/board/info/:page?"
+            render={(props) => <InfoBoardContent {...props} />}
+          />
+          <Route
+            exact
+            path="/board/free/:page?"
+            render={(props) => <FreeBoardContent {...props} />}
+          />
+          <Route path="/boardWrite" component={BoardWrite} exact />
+          <Route path="/detailBoard/:no" component={ReadBoard} exact />
+          <Route path="/boardModify" component={BoardModify} exact />
+        </Switch>
+      </div>
+    );
+  }
 }
-
-export default App;

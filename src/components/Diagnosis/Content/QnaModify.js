@@ -85,7 +85,6 @@ function QnAModify(props) {
   qnaNo = props.location.state.no;
   return (
     <ThemeProvider theme={theme}>
-      <Header />
       <Container className={classes.wrap}>
         <FunComp />
         <EditComp></EditComp>

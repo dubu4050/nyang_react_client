@@ -89,7 +89,6 @@ const Home = (props) => {
 
   return (
     <div>
-      <Header />
       <MuiThemeProvider theme={theme}>
         <Paper className={classes.root}>
           <BottomNavigation value="diagnosis" showLabels>

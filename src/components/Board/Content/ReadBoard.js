@@ -37,7 +37,6 @@ export default function ReadQnA(props) {
 
   return (
     <div className={classes.root}>
-      <Header />
       <BoardDetailCard />
       {/* <CommentCard /> */}
       <CommentWrite />

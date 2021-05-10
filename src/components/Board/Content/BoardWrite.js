@@ -68,7 +68,6 @@ function BoardWrite() {
   });
   return (
     <ThemeProvider theme={theme}>
-      <Header />
       <Container className={classes.wrap}>
         <FunComp></FunComp>
         <EditComp></EditComp>

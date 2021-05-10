@@ -36,7 +36,6 @@ export default function ReadQnA(props) {
   detailQnaBoard();
   return (
     <div className={classes.root}>
-      <Header />
       <QnADetailCard />
       <CommentCard />
       <CommentWrite />

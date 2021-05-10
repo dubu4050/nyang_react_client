@@ -70,7 +70,6 @@ function BoardModify(props) {
   postNo = props.location.state.no;
   return (
     <ThemeProvider theme={theme}>
-      <Header />
       <Container className={classes.wrap}>
         <FunComp></FunComp>
         <EditComp></EditComp>

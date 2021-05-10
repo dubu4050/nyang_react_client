@@ -114,10 +114,10 @@ function Contents(props) {
       const body = {
         content: question,
       };
+      console.log(body);
       axios
-        .post(ip + '/board', body)
+        .post(ip + '/impression', body)
         .then((res) => {
-          alert('검색 성공');
           setSearchResult(res.data.pet_disease_search_info);
           setResultShowState('true');
         })
