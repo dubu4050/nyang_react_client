@@ -12,7 +12,9 @@ import {
 import nyangImg from '../../images/nyangImg.png';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
-
+import Login from '../Member/Login';
+import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
@@ -49,10 +51,13 @@ function Header() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  // ip address
+  const ip = process.env.REACT_APP_API_IP;
+  //로그인 확인
 
+  const history = useHistory();
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -70,6 +75,18 @@ function Header() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const memberInfo = () => {
+    window.location.replace('/memberInfo');
+  };
+  const activeMemberInfo = () => {
+    window.location.replace('/activeMemberInfo');
+  };
+  const logout = () => {
+    localStorage.clear();
+    history.push('/');
+    handleMenuClose();
+  };
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -81,11 +98,19 @@ function Header() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      {localStorage.getItem('token') != null ? (
+        <>
+          <MenuItem onClick={memberInfo}>내 정보</MenuItem>
+          <MenuItem onClick={activeMemberInfo}>활동 조회</MenuItem>
+          <MenuItem onClick={logout}>로그아웃</MenuItem>
+        </>
+      ) : (
+        <MenuItem onClick={handleMenuClose} component={Login} />
+      )}
     </Menu>
   );
 
+  //모바일일때
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
     <Menu
@@ -98,15 +123,15 @@ function Header() {
       onClose={handleMobileMenuClose}
     >
       <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
+        {localStorage.getItem('token') != null ? (
+          <>
+            <MenuItem onClick={memberInfo}>내 정보</MenuItem>
+            <MenuItem onClick={activeMemberInfo}>활동 조회</MenuItem>
+            <MenuItem onClick={logout}>로그아웃</MenuItem>
+          </>
+        ) : (
+          <MenuItem onClick={handleMobileMenuClose} component={Login} />
+        )}
       </MenuItem>
     </Menu>
   );
@@ -131,7 +156,6 @@ function Header() {
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
               color="inherit"
-              href="/login"
             >
               <AccountCircle />
             </IconButton>

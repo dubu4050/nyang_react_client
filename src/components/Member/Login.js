@@ -7,21 +7,7 @@ import nyangImg from '../../images/nyangImg.png';
 import { CallMissedSharp, CenterFocusStrong } from '@material-ui/icons';
 import Header from '../Common/Header.js';
 import { Container, Typography } from '@material-ui/core';
-
-function rand() {
-  return Math.round(Math.random() * 20) - 10;
-}
-
-function getModalStyle() {
-  const top = 50;
-  const left = 50;
-
-  return {
-    top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`,
-  };
-}
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -60,39 +46,45 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Login() {
+  // ip address
+  const ip = process.env.REACT_APP_API_IP;
   const classes = useStyles();
-  // getModalStyle is not a pure function, we roll the style only on the first render
-  const [modalStyle] = React.useState(getModalStyle);
-  const [open, setOpen] = React.useState(false);
 
   // Login 관련 변수
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
   const onChangeId = (e) => {
     setId(e.target.value);
   };
   const onChangePassword = (e) => {
     setPassword(e.target.value);
   };
-  const LoginClick = () => {
+
+  const LoginClick = (e) => {
+    e.preventDefault();
     if (id == '' || password == '') {
       alert('아이디 또는 비밀번호를 입력하지 않았습니다.');
     } else {
-      alert(id + ' ' + password);
+      const body = {
+        account: id,
+        password: password,
+      };
+      axios
+        .post(ip + '/auth/login', body)
+        .then((res) => {
+          localStorage.setItem('token', res.data);
+          window.location.replace('/');
+        })
+        .catch((err) => {
+          console.log(err);
+          alert('로그인 실패');
+        });
     }
   };
 
   return (
     <div>
-      <Header />
       <Container align="center" className={classes.wrapper}>
         <div className={classes.loginInfo}>
           <div className={classes.header}>

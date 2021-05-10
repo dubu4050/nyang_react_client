@@ -3,7 +3,6 @@ import axios from 'axios';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import Header from '../Common/Header';
 import nyangImg from '../../images/nyangImg.png';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -59,6 +58,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function EnrollMember(props) {
+  // ip address
+  const ip = process.env.REACT_APP_API_IP;
   const classes = useStyles();
   // EnrollMember 관련 변수
   const [id, setId] = useState('');
@@ -69,23 +70,48 @@ function EnrollMember(props) {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [name, setName] = useState('');
   const [birth, setBirth] = useState('');
-  const [certState, setCertState] = useState('false');
+  const [certState, setCertState] = useState(false);
   // dialog창 관련 변수
   const [read, setRead] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
-    setOpen(true);
+    if (certState == true) {
+      alert('인증을 완료하였습니다.');
+    } else {
+      setOpen(true);
+      axios
+        .get(ip + '/member/cert/email/' + email)
+        .then(() => {
+          alert('인증번호 요청');
+        })
+        .catch((err) => {
+          console.log(err);
+          alert('인증번호 요청 실패');
+        });
+    }
   };
   const handleClose = () => {
     setOpen(false);
   };
-  const OkBtn = (value) => {
-    setOpen(false);
-    setCertState(true);
+  const OkBtn = () => {
+    const body = { certnumber: certNumber };
+    /*axios
+      .post(ip + '/member/cert/email', body)
+      .then(() => {
+        setCertState(true);
+        handleClose();
+      })
+      .catch((err) => {
+        console.log(err);
+        alert('인증번호 확인 실패');
+      });*/
+    if (certNumber == '1234') {
+      setCertState(true);
+      console.log(certNumber);
+      console.log(certState);
+      handleClose();
+    }
   };
-
-  // ip address
-  const ip = process.env.REACT_APP_API_IP;
 
   const onChangeId = (e) => {
     setId(e.target.value);
@@ -116,15 +142,18 @@ function EnrollMember(props) {
   };
   const onCheckId = () => {
     // id 중복 확인
-    alert('사용가능');
-  };
-  const onCheckEmailCertNumber = () => {
-    // email 인증 번호 일치 확인
-    if (certNumber == '1234') {
-      alert('일치합니다.');
-      setCertState('true');
-      handleClose();
-    }
+    const body = {
+      account: id,
+    };
+    axios
+      .post(ip + '/member/duplicate', body)
+      .then(() => {
+        alert('사용가능');
+      })
+      .catch((err) => {
+        console.log(err);
+        alert('사용 불 가능');
+      });
   };
   const EnrollMemberInfo = () => {
     if (
@@ -160,11 +189,9 @@ function EnrollMember(props) {
 
   return (
     <div>
-      <Header />
       <form className={classes.root} noValidate autoComplete="off">
         <div className={classes.table}>
           <div className={classes.title}>
-            {' '}
             <img src={nyangImg} align="middle" className={classes.nyangImg} />
           </div>
           <div className={classes.item}>
@@ -208,14 +235,25 @@ function EnrollMember(props) {
             <Button disabled size="small" className={classes.btn} />
           </div>
           <div className={classes.item}>
-            <TextField
-              disabled={certState == 'true' ? true : false}
-              id="email"
-              label="이메일"
-              value={email}
-              onChange={onChangeEmail}
-              variant="outlined"
-            />
+            {certState == true ? (
+              <TextField
+                disabled
+                id="email"
+                label="이메일"
+                value={email}
+                onChange={onChangeEmail}
+                variant="outlined"
+              />
+            ) : (
+              <TextField
+                id="email"
+                label="이메일"
+                value={email}
+                onChange={onChangeEmail}
+                variant="outlined"
+              />
+            )}
+
             <Button
               variant="contained"
               onClick={handleClickOpen}
@@ -283,11 +321,13 @@ function EnrollMember(props) {
         <DialogContent>
           <DialogContentText>인증번호를 아래 입력하세요</DialogContentText>
           <TextField
+            id="certNumber"
             autoFocus
             margin="dense"
             id="name"
             type="text"
             style={{ width: '400px' }}
+            onChange={onChangeCertNumber}
             fullWidth
           />
         </DialogContent>
