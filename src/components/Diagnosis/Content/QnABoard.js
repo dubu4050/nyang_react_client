@@ -56,43 +56,28 @@ export default function QnABoard(props) {
   var [qnaSearchBoardList, setQnaSearchBoardList] = useState([]);
   const ip = process.env.REACT_APP_API_IP;
   const [question, setQuestion] = useState('');
-  var [qnaBoardList, setQnaBoardList] = useState([]);
+  const [boardCardState, setBoardCardState] = useState('total');
   const onChangeQuestion = (e) => {
     setQuestion(e.target.value);
   };
 
-  // 전체 게시글 요청
-  const totalQnaBoard = () => {
-    // axios
-    // .get(ip + '/question')
-    // .then((res) => {
-    //   alert('qna list 요청 성공');
-    //   setQnaBoardList(); // server 받은 데이터를 param으로 적용
-    // })
-    // .catch((err) => {
-    //   alert('qna list 요청 실패');
-    // });
-  };
-
-  totalQnaBoard();
   // 상세 검색
   const searchQnaBoard = () => {
     if (question == '') {
       alert('글 제목을 입력해주세요');
     } else {
       const body = {
-        content: question,
+        keyword: question,
       };
-      alert(question);
-      // axios
-      //   .get(ip + '/question', body)
-      //   .then((res) => {
-      //     alert('검색 성공');
-      //     setQnaBoardList();
-      //   })
-      //   .catch((err) => {
-      //     alert('검색 실패');
-      //   });
+      axios
+        .post(ip + '/question/search', body)
+        .then((res) => {
+          setQnaSearchBoardList(res.data.data.questionInfo);
+          setBoardCardState('search');
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
   return (
@@ -119,8 +104,9 @@ export default function QnABoard(props) {
           <CreateIcon className={classes.icon} />
         </IconButton>
       </Container>
-      <QnACard />
-      {/* <QnACard list={qnaBoardList} /> */}
+      {(boardCardState == 'total' && <QnACard list={props.list} />) || (
+        <QnACard list={qnaSearchBoardList} />
+      )}
     </Container>
   );
 }
