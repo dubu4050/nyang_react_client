@@ -8,7 +8,9 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import axios from 'axios';
 
-axios.defaults.headers.head['token'] = localStorage.getItem('token');
+//axios.defaults.headers.head['token'] = localStorage.getItem('token');
+axios.defaults.headers.common['Authorization'] =
+  'Bearer ' + localStorage.getItem('token');
 const theme = createMuiTheme({
   typographys: {
     fontFamily: '"Noto Sans KR",serif',
