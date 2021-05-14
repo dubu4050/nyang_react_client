@@ -43,6 +43,12 @@ const useStyles = makeStyles({
 
 export default function QnACards(props) {
   const classes = useStyles();
+  var [contentHtml] = useState([]);
+  console.log(props.list);
+  const tempValue = props.list;
+  tempValue.forEach((element) => {
+    contentHtml[element.identifier] = element.content;
+  });
   return (
     <div className={classes.root}>
       {props.list.map((qna) => (
@@ -65,7 +71,11 @@ export default function QnACards(props) {
                 color="textSecondary"
                 className={classes.content}
               >
-                {qna.content}
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: contentHtml[qna.identifier],
+                  }}
+                ></div>
               </Typography>
             </Grid>
             <Grid item className={classes.footer}>

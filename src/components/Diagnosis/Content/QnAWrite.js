@@ -20,7 +20,7 @@ import editor from '@toast-ui/editor';
 
 //종, 품종, 나이, 제목, 게시글 전역 변수 지정
 var { genus } = '';
-var { kind } = '';
+var { species } = '';
 var { age } = '';
 var { title } = '';
 var { content } = '';
@@ -80,7 +80,6 @@ function QnAWrite() {
   });
   return (
     <ThemeProvider theme={theme}>
-      <Header />
       <Container className={classes.wrap}>
         <FunComp />
         <EditComp></EditComp>
@@ -95,8 +94,8 @@ function FunComp() {
   const onChangeGenus = (e) => {
     genus = e.target.value;
   };
-  const onChangeKind = (e) => {
-    kind = e.target.value;
+  const onChangeSpecies = (e) => {
+    species = e.target.value;
   };
   const onChangeAge = (e) => {
     age = e.target.value;
@@ -141,8 +140,8 @@ function FunComp() {
           label="품종"
           size="small"
           variant="outlined"
-          value={kind}
-          onChange={onChangeKind}
+          value={species}
+          onChange={onChangeSpecies}
         />
         <TextField
           type="number"
@@ -209,7 +208,7 @@ class EditComp extends React.Component {
     const insertQnaBoard = () => {
       if (
         genus == undefined ||
-        kind == '' ||
+        species == '' ||
         age == '' ||
         title == '' ||
         content == ''
@@ -222,26 +221,26 @@ class EditComp extends React.Component {
           content = this.editorRef.current.getInstance().getHtml();
           alert('게시글 등록 요청');
           console.log(genus);
-          console.log(kind);
+          console.log(species);
           console.log(age);
           console.log(title);
           console.log(this.editorRef.current.getInstance().getHtml());
           const body = {
             genus: genus,
-            species: kind,
+            species: species,
             age: age,
             title: title,
             content: content,
           };
           console.log(body);
-          // axios
-          //   .post(ip + '/question', body)
-          //   .then((res) => {
-          //     alert('글 등록에 성공했습니다.');
-          //   })
-          //   .catch((err) => {
-          //     alert('글 등록에 실패했습니다.');
-          //   });
+          axios
+            .post(ip + '/question', body)
+            .then((res) => {
+              alert('글 등록에 성공했습니다.');
+            })
+            .catch((err) => {
+              alert('글 등록에 실패했습니다.');
+            });
         }
       }
     };
@@ -281,7 +280,7 @@ class EditComp extends React.Component {
           <Button
             variant="contained"
             size="large"
-            href="/diagnosis/qna"
+            // href="/diagnosis/qna"
             onClick={insertQnaBoard}
             style={classes.okbtn}
           >

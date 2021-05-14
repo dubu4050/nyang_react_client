@@ -25,7 +25,7 @@ export default function ReadQnA(props) {
     axios
       .get(ip + '/question/' + match.params.no)
       .then((res) => {
-        setQnaPost(res.data.data.questionInfo);
+        setQnaPost(res.data.data);
         // setQnaPostComment();
       })
       .catch((err) => {

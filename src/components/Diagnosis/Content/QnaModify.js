@@ -18,7 +18,7 @@ import editor from '@toast-ui/editor';
 
 //종, 품종, 나이, 제목, 게시글 전역 변수 지정
 var { genus } = '';
-var { kind } = '';
+var { species } = '';
 var { age } = '';
 var { title } = '';
 var { content } = '';
@@ -79,7 +79,7 @@ function QnAModify(props) {
   });
   console.log(props.location.state);
   title = props.location.state.title;
-  kind = props.location.state.kind;
+  species = props.location.state.species;
   content = props.location.state.question;
   age = props.location.state.age;
   qnaNo = props.location.state.no;
@@ -99,8 +99,8 @@ function FunComp(props) {
   const onChangeGenus = (e) => {
     genus = e.target.value;
   };
-  const onChangeKind = (e) => {
-    kind = e.target.value;
+  const onChangeSpecies = (e) => {
+    species = e.target.value;
   };
   const onChangeAge = (e) => {
     age = e.target.value;
@@ -143,9 +143,9 @@ function FunComp(props) {
           id="species"
           label="품종"
           size="small"
-          defaultValue={kind}
+          defaultValue={species}
           variant="outlined"
-          onChange={onChangeKind}
+          onChange={onChangeSpecies}
         />
         <TextField
           type="number"
@@ -211,7 +211,7 @@ class EditComp extends React.Component {
     const modifyQnaBoard = () => {
       if (
         genus == undefined ||
-        kind == '' ||
+        species == '' ||
         age == '' ||
         title == '' ||
         content == ''
@@ -223,13 +223,13 @@ class EditComp extends React.Component {
         } else {
           alert('게시글 수정 요청');
           console.log(genus);
-          console.log(kind);
+          console.log(species);
           console.log(age);
           console.log(title);
           console.log(this.editorRef.current.getInstance().getHtml());
           const body = {
             genus: genus,
-            species: kind,
+            species: species,
             age: age,
             title: title,
             content: this.editorRef.current.getInstance().getHtml(),

@@ -123,7 +123,6 @@ export default function ComplexGrid() {
                   </Avatar>
                 }
                 title={BoardData.writer}
-                // subheader=" @dubu4050 고양이 키워본적 없습니다.111111"
                 action={
                   <>{currentAccessId == postWriterId && <PostFuncButton />}</>
                 }

@@ -11,6 +11,7 @@ import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined';
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
 import { Link } from 'react-router-dom';
 import detailqnaboard from '../../db/detailQna.json';
+import axios from 'axios';
 
 const useStyles = makeStyles({
   root: {
@@ -134,7 +135,14 @@ export default function ComplexGrid(props) {
                 }
                 title={detailContent.nickname}
                 action={
-                  <>{currentAccessId == 'issuer' && <PostFuncButton />}</>
+                  <>
+                    {currentAccessId == 'issuer' && (
+                      <PostFuncButton
+                        list={detailContent}
+                        identifier={identifier}
+                      />
+                    )}
+                  </>
                 }
               ></CardHeader>
             </Grid>
@@ -149,31 +157,31 @@ function PostFuncButton(props) {
   const classes = useStyles();
   const detailContent = props.list;
   const identifier = props.identifier;
+  const ip = process.env.REACT_APP_API_IP;
   // 게시글 삭제(권한 검사는 이미 완료된 상태)
   const deleteQnaBoard = () => {
-    <Link to="/diagnosis/qna"></Link>;
-    // axios
-    //   .delete(ip + '/question/' + identifier)
-    //   .then((res) => {
-    //     alert('삭제 완료');
-    //     <Link to="/diagnosis/qna"></Link>;
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    axios
+      .delete(ip + '/question/' + identifier)
+      .then((res) => {
+        alert('삭제 완료');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   return (
     <div>
-      <IconButton className={classes.icon} onClick={deleteQnaBoard}>
-        <DeleteForeverOutlinedIcon />
-        삭제
-      </IconButton>
+      <Link to="/diagnosis/qna">
+        <IconButton className={classes.icon} onClick={deleteQnaBoard}>
+          <DeleteForeverOutlinedIcon />
+          삭제
+        </IconButton>
+      </Link>
       <Link
         to={{
           pathname: '/qnaModify',
           state: {
             no: identifier,
-            genus: detailContent.genus,
             species: detailContent.species,
             age: detailContent.age,
             title: detailContent.title,

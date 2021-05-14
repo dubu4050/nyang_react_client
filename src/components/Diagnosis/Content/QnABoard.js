@@ -80,6 +80,7 @@ export default function QnABoard(props) {
         });
     }
   };
+
   return (
     <Container>
       <Container className={classes.wrapper}>
@@ -100,9 +101,11 @@ export default function QnABoard(props) {
         >
           검색
         </Button>
-        <IconButton href="/qnaWrite">
-          <CreateIcon className={classes.icon} />
-        </IconButton>
+        {axios.defaults.headers.common.Authorization != undefined && (
+          <IconButton href="/qnaWrite">
+            <CreateIcon className={classes.icon} />
+          </IconButton>
+        )}
       </Container>
       {(boardCardState == 'total' && <QnACard list={props.list} />) || (
         <QnACard list={qnaSearchBoardList} />
