@@ -93,7 +93,7 @@ const Home = (props) => {
     axios
       .get(ip + '/question')
       .then((res) => {
-        setQnaBoardList(res.data.data.questions);
+        setQnaBoardList(res.data.data);
       })
       .catch((err) => {
         console.log(err);
