@@ -34,8 +34,12 @@ function UpdatePw() {
   // ip address
   const ip = process.env.REACT_APP_API_IP;
   // 비밀번호 변경 관련 변수
+  const [account, setAccount] = useState('');
   const [changePw, setChangePw] = useState('');
   const [checkPw, setCheckPw] = useState('');
+  const onChangeAccount = (e) => {
+    setAccount(e.target.value);
+  };
   const onChangePw = (e) => {
     setChangePw(e.target.value);
   };
@@ -50,13 +54,14 @@ function UpdatePw() {
       alert('비밀번호가 일치하지 않습니다.');
     } else {
       const body = {
-        account: id,
+        account: account,
         password: changePw,
       };
       axios
-        .patch(ip + '/member/find/password/', body)
+        .patch(ip + '/member/find/password', body)
         .then(() => {
           alert('비밀번호가 변경되었습니다.');
+          window.location.href = '/';
         })
         .catch((err) => {
           console.log(err);
@@ -72,6 +77,16 @@ function UpdatePw() {
           <div>
             <TextField
               required
+              id="account"
+              label="아이디"
+              value={account}
+              onChange={onChangeAccount}
+            />
+          </div>
+          <div>
+            <TextField
+              type="password"
+              required
               id="changePw"
               label="변경할 비밀번호"
               value={changePw}
@@ -80,6 +95,7 @@ function UpdatePw() {
           </div>
           <div>
             <TextField
+              type="password"
               required
               id="checkPw"
               label="비밀번호 확인"

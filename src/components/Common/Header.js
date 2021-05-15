@@ -56,7 +56,8 @@ function Header() {
   // ip address
   const ip = process.env.REACT_APP_API_IP;
   //로그인 확인
-
+  console.log(localStorage.getItem('token'));
+  console.log(axios.defaults);
   const history = useHistory();
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -76,14 +77,14 @@ function Header() {
   };
 
   const memberInfo = () => {
-    window.location.replace('/memberInfo');
+    window.location.href = '/memberInfo';
   };
   const activeMemberInfo = () => {
-    window.location.replace('/activeMemberInfo');
+    window.location.href = '/activeMemberInfo';
   };
   const logout = () => {
     localStorage.clear();
-    history.push('/');
+    window.location.href = '/';
     handleMenuClose();
   };
 

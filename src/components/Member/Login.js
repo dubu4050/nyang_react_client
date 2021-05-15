@@ -103,6 +103,7 @@ function Login() {
           </div>
           <div className={classes.pw}>
             <TextField
+              type="password"
               required
               id="pw"
               label="비밀번호"

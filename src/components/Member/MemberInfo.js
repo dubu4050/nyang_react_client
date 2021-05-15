@@ -6,7 +6,8 @@ import Button from '@material-ui/core/Button';
 import Modal from '@material-ui/core/Modal';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
-
+import UpdatePw from './UpdatePw';
+import { Route } from 'react-router-dom';
 function getModalStyle() {
   const top = 50;
   const left = 50;
@@ -81,11 +82,13 @@ function MemberInfo() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [loading, setLoading] = useState(true);
   const ip = process.env.REACT_APP_API_IP;
+
   useEffect(() => {
     axios
       .get(ip + '/member')
       .then((res) => {
         setMember(res.data.data.memberInfo);
+        console.log(res.data);
         setNickname(res.data.data.memberInfo.nickname);
         setPhoneNumber(res.data.data.memberInfo.phone_number);
         setLoading(false);
@@ -156,16 +159,17 @@ function MemberInfo() {
   };
 
   const deleteMemberInfo = () => {
-    alert('회원 탈퇴 정보 전송');
     axios
-      .delete(ip + '/member/' + id)
+      .delete(ip + '/member')
       .then(() => {
         alert('탈퇴 완료');
-        history.push('/');
+        window.location.href = '/';
+        console.log(err);
       })
       .catch((err) => {
         console.log(err);
         alert('탈퇴 실패');
+        handleClose();
       });
   };
 
@@ -276,35 +280,34 @@ function MemberInfo() {
                 />
                 <Button disabled size="small" className={classes.btn} />
               </div>
-
-              <div className={classes.item}>
-                <Button
-                  variant="contained"
-                  onClick={updateMemberInfo}
-                  className={classes.okbtn}
-                >
-                  프로필 수정
-                </Button>
-                <Button
-                  variant="contained"
-                  href="/updatePW"
-                  className={classes.okbtn}
-                >
-                  비밀번호 수정
-                </Button>
-                <Button
-                  variant="contained"
-                  onClick={handleOpen}
-                  className={classes.okbtn}
-                >
-                  회원 탈퇴
-                </Button>
-                <Modal open={open} onClose={handleClose}>
-                  {modalBody}
-                </Modal>
-              </div>
             </>
           )}
+          <div className={classes.item}>
+            <Button
+              variant="contained"
+              onClick={updateMemberInfo}
+              className={classes.okbtn}
+            >
+              프로필 수정
+            </Button>
+            <Button
+              variant="contained"
+              href="/updatePW"
+              className={classes.okbtn}
+            >
+              비밀번호 수정
+            </Button>
+            <Button
+              variant="contained"
+              onClick={handleOpen}
+              className={classes.okbtn}
+            >
+              회원 탈퇴
+            </Button>
+            <Modal open={open} onClose={handleClose}>
+              {modalBody}
+            </Modal>
+          </div>
         </div>
       </form>
     </div>

@@ -94,23 +94,28 @@ function EnrollMember(props) {
     setOpen(false);
   };
   const OkBtn = () => {
-    const body = { certnumber: certNumber };
-    /*axios
-      .post(ip + '/member/cert/email', body)
-      .then(() => {
+    const body = {
+      type: 'email',
+      contact_info: email,
+      certification_code: certNumber,
+    };
+    axios
+      .post(ip + '/member/cert/email/', body)
+      .then((res) => {
         setCertState(true);
         handleClose();
+        console.log(res);
       })
       .catch((err) => {
         console.log(err);
         alert('인증번호 확인 실패');
-      });*/
-    if (certNumber == '1234') {
+      });
+    /*if (certNumber == '1234') {
       setCertState(true);
       console.log(certNumber);
       console.log(certState);
       handleClose();
-    }
+    }*/
   };
 
   const onChangeId = (e) => {
@@ -180,6 +185,7 @@ function EnrollMember(props) {
       .post(ip + '/member', body)
       .then(() => {
         alert('회원 가입에 성공하였습니다.');
+        window.location.href = '/';
       })
       .catch((err) => {
         console.log(err);
