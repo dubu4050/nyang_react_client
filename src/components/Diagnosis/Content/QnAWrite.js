@@ -21,7 +21,7 @@ import editor from '@toast-ui/editor';
 //종, 품종, 나이, 제목, 게시글 전역 변수 지정
 var { genus } = '';
 var { species } = '';
-var { age } = '';
+var { age } = 0;
 var { title } = '';
 var { content } = '';
 const useStyles = makeStyles((theme) => ({
@@ -228,7 +228,7 @@ class EditComp extends React.Component {
           const body = {
             genus: genus,
             species: species,
-            age: age,
+            age: parseInt(age),
             title: title,
             content: content,
           };
@@ -280,7 +280,7 @@ class EditComp extends React.Component {
           <Button
             variant="contained"
             size="large"
-            // href="/diagnosis/qna"
+            href="/diagnosis/qna"
             onClick={insertQnaBoard}
             style={classes.okbtn}
           >

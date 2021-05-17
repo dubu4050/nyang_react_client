@@ -99,6 +99,7 @@ const Home = (props) => {
         console.log(err);
       });
   };
+  console.log(axios.defaults.headers.common.Authorization);
   return (
     <div>
       <MuiThemeProvider theme={theme}>

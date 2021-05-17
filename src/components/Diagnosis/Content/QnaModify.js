@@ -166,6 +166,7 @@ function FunComp(props) {
 
 class EditComp extends React.Component {
   editorRef = React.createRef();
+
   constructor() {
     super();
     this.state = {
@@ -209,6 +210,7 @@ class EditComp extends React.Component {
     };
 
     const modifyQnaBoard = () => {
+      const ip = process.env.REACT_APP_API_IP;
       if (
         genus == undefined ||
         species == '' ||
@@ -230,19 +232,19 @@ class EditComp extends React.Component {
           const body = {
             genus: genus,
             species: species,
-            age: age,
+            age: parseInt(age),
             title: title,
             content: this.editorRef.current.getInstance().getHtml(),
           };
           console.log(body);
-          // axios
-          //   .put(ip + '/question' + '/qnaNo', body)
-          //   .then((res) => {
-          //     alert('글 등록에 성공했습니다.');
-          //   })
-          //   .catch((err) => {
-          //     alert('글 등록에 실패했습니다.');
-          //   });
+          axios
+            .put(ip + '/question/' + qnaNo, body)
+            .then((res) => {
+              alert('글 수정에 성공했습니다.');
+            })
+            .catch((err) => {
+              alert('글 수정에 실패했습니다.');
+            });
         }
       }
     };
@@ -284,6 +286,7 @@ class EditComp extends React.Component {
           <Button
             variant="contained"
             size="large"
+            href="/diagnosis/qna"
             onClick={modifyQnaBoard}
             style={classes.okbtn}
           >
