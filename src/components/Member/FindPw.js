@@ -3,7 +3,11 @@ import React, { useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import Header from '../Common/Header.js';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import { SettingsInputSvideo } from '@material-ui/icons';
 import axios from 'axios';
 
@@ -24,9 +28,14 @@ const useStyles = makeStyles((theme) => ({
     padding: '30px 0px 0px 0px',
     textAlign: 'center',
   },
+  btn: {
+    margin: theme.spacing(2.5),
+    width: '15ch',
+  },
   okbtn: {
     width: '50ch',
     marginTop: theme.spacing(4),
+    marginBottom: theme.spacing(4),
   },
 }));
 
@@ -38,7 +47,37 @@ function FindPw() {
   const [id, setId] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-
+    // dialog창 관련 변수
+  const [certNumber, setCertNumber] = useState('');
+  const [open, setOpen] = React.useState(false);
+  const onChangeCertNumber = (e) => {
+    setCertNumber(e.target.value);
+  };
+  const handleClickOpen = () => {
+    setOpen(true);     
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const OkBtn = () => {
+    const body = {
+      type: 'email',
+      contact_info: email,
+      certification_code: certNumber,
+    };
+    axios
+      .post(ip + '/member/cert/email/', body)
+      .then((res) => {
+        setCertState(true);
+        handleClose();
+        window.location.href="/updatePw"
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert('인증번호 확인 실패');
+      });
+    };
   const onChangeId = (e) => {
     setId(e.target.value);
   };
@@ -58,9 +97,10 @@ function FindPw() {
         email: email,
       };
       axios
-        .post(ip + '/member/find/password/', body)
+        .post(ip + '/member/find/password', body)
         .then((res) => {
-          alert('비밀번호는 ' + res.data);
+          alert(res.data.message);
+          handleClickOpen();
         })
         .catch((err) => {
           console.log(err);
@@ -105,8 +145,33 @@ function FindPw() {
             onClick={FindMemberPassword}
             className={classes.okbtn}
           >
-            비밀번호 찾기
+            인증 메일 발송
           </Button>
+          <Dialog open={open} onClose={handleClose}>
+        <DialogTitle id="title">이메일 인증</DialogTitle>
+        <DialogContent>
+          <DialogContentText>인증번호를 아래 입력하세요</DialogContentText>
+          <TextField
+            id="certNumber"
+            autoFocus
+            margin="dense"
+            id="name"
+            type="text"
+            style={{ width: '400px' }}
+            onChange={onChangeCertNumber}
+            fullWidth
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            취소
+          </Button>
+          <Button onClick={OkBtn} color="primary">
+            확인
+          </Button>
+        </DialogActions>
+      </Dialog>
+          
         </div>
       </form>
     </div>

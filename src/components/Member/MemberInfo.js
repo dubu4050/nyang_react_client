@@ -1,13 +1,13 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import member from '../../db/member.json';
-import Header from '../Common/Header.js';
+//import member from '../../db/member.json';
 import Modal from '@material-ui/core/Modal';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
-
+import UpdatePw from './UpdatePw';
+import { Route } from 'react-router-dom';
 function getModalStyle() {
   const top = 50;
   const left = 50;
@@ -75,27 +75,38 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function MemberInfo(props) {
-  const classes = useStyles();
-  // ip address
-  const ip = process.env.REACT_APP_API_IP;
-  const user = props.user;
-  const history = useHistory();
-  console.log(user);
+function MemberInfo() {
   // MemberInfo 관련 변수
-  const [id, setId] = useState(member.id);
-  const [nickName, setNickname] = useState(member.nickName);
-  const [email, setEmail] = useState(member.email);
-  const [phoneNumber, setPhoneNumber] = useState(member.phoneNumber);
-  const [name, setName] = useState(member.name);
-  const [birth, setBirth] = useState(member.birth);
-  // modal창 관련 변수
-  const [modalStyle] = React.useState(getModalStyle);
-  const [open, setOpen] = React.useState(false);
+  const [member, setMember] = useState({});
+  const [nickName, setNickname] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [loading, setLoading] = useState(true);
+  const ip = process.env.REACT_APP_API_IP;
+
+  useEffect(() => {
+    axios
+      .get(ip + '/member')
+      .then((res) => {
+        setMember(res.data.data.memberInfo);
+        console.log(res.data);
+        setNickname(res.data.data.memberInfo.nickname);
+        setPhoneNumber(res.data.data.memberInfo.phone_number);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+  const classes = useStyles();
+  const history = useHistory();
 
   // 프로필 이미지 관련 변수
   const [img, setImage] = useState(null);
   const [previewURL, setPreviewURL] = useState(null);
+
+  // modal창 관련 변수
+  const [modalStyle] = React.useState(getModalStyle);
+  const [open, setOpen] = React.useState(false);
 
   const handleChangeFile = (e) => {
     let reader = new FileReader();
@@ -119,21 +130,15 @@ function MemberInfo(props) {
     setPhoneNumber('');
   };
   const updateMemberInfo = () => {
-    if (member.nickName == nickName && member.phoneNumber == phoneNumber) {
+    if (member.nickname == nickName && member.phone_number == phoneNumber) {
       alert('변경된 정보가 없습니다.');
-    } else if (
-      member.nickName != nickName &&
-      member.phoneNumber != phoneNumber
-    ) {
-      alert('닉네임 번호');
+    } else {
       const body = {
-        name: name,
         nickname: nickName,
         phone_number: phoneNumber,
-        date_birth: birth,
       };
       axios
-        .put(ip + '/member/' + id, body)
+        .put(ip + '/member', body)
         .then(() => {
           alert('프로필을 수정 완료');
         })
@@ -141,30 +146,6 @@ function MemberInfo(props) {
           console.log(err);
           alert('프로필을 수정 실패');
         });
-    } else {
-      if (member.nickName != nickName) {
-        alert('닉네임');
-        axios
-          .put(ip + '/member/' + id, { nickname: nickName })
-          .then(() => {
-            alert('프로필을 수정 완료');
-          })
-          .catch((err) => {
-            console.log(err);
-            alert('프로필을 수정 실패');
-          });
-      } else {
-        alert('전화번호');
-        axios
-          .put(ip + '/member/' + id, { phone_number: phoneNumber })
-          .then(() => {
-            alert('프로필을 수정 완료');
-          })
-          .catch((err) => {
-            console.log(err);
-            alert('프로필을 수정 실패');
-          });
-      }
     }
   };
 
@@ -178,16 +159,17 @@ function MemberInfo(props) {
   };
 
   const deleteMemberInfo = () => {
-    alert('회원 탈퇴 정보 전송');
     axios
-      .delete(ip + '/member/' + id)
+      .delete(ip + '/member')
       .then(() => {
         alert('탈퇴 완료');
-        history.push('/');
+        window.location.href = '/';
+        console.log(err);
       })
       .catch((err) => {
         console.log(err);
         alert('탈퇴 실패');
+        handleClose();
       });
   };
 
@@ -210,77 +192,96 @@ function MemberInfo(props) {
       <form className={classes.root} noValidate autoComplete="off">
         <div className={classes.table}>
           <h2 className={classes.header}>회원 정보 조회/수정</h2>
-          <div className={classes.profilewrap}>
-            <img className={classes.profile} src={previewURL}></img>
-            <input
-              type="file"
-              name="imgFile"
-              id="imgFile"
-              accept="image/jpg,image/png"
-              onChange={handleChangeFile}
-            />
-          </div>
+          {loading ? null : (
+            <>
+              <div className={classes.profilewrap}>
+                <img className={classes.profile} src={previewURL}></img>
+                <input
+                  type="file"
+                  name="imgFile"
+                  id="imgFile"
+                  accept="image/jpg,image/png"
+                  onChange={handleChangeFile}
+                />
+              </div>
 
-          <div className={classes.item}>
-            <TextField disabled id="id" label="아이디" defaultValue={id} />
-            <Button disabled size="small" className={classes.btn} />
-          </div>
-          <div className={classes.item}>
-            <TextField
-              required
-              id="nickName"
-              label="닉네임"
-              value={nickName}
-              onChange={onChangeNickName}
-            />
-            <Button
-              variant="contained"
-              onClick={nickNameReset}
-              size="small"
-              className={classes.btn}
-            >
-              닉네임 수정
-            </Button>
-          </div>
-          <div className={classes.item}>
-            <TextField
-              disabled
-              id="email"
-              label="이메일"
-              defaultValue={email}
-            />
-            <Button disabled size="small" className={classes.btn} />
-          </div>
-          <div className={classes.item}>
-            <TextField
-              required
-              id="phoneNumber"
-              label="연락처"
-              value={phoneNumber}
-              onChange={onChangePhoneNumber}
-            />
-            <Button
-              variant="contained"
-              onClick={phoneNumberReset}
-              size="small"
-              className={classes.btn}
-            >
-              연락처 수정
-            </Button>
-          </div>
-          <div className={classes.item}>
-            <TextField disabled id="name" label="이름" defaultValue={name} />
-            <Button disabled size="small" className={classes.btn} />
-          </div>
-          <div className={classes.item}>
-            <TextField
-              disabled
-              id="birth"
-              label="생년월일"
-              defaultValue={birth}
-            />
-            <Button disabled size="small" className={classes.btn} />
-          </div>
+              <div className={classes.item}>
+                <TextField
+                  disabled
+                  id="id"
+                  label="아이디"
+                  defaultValue={member.account}
+                />{' '}
+                <Button disabled size="small" className={classes.btn} />
+              </div>
+
+              <div className={classes.item}>
+                <TextField
+                  required
+                  id="nickName"
+                  label="닉네임"
+                  value={nickName}
+                  onChange={onChangeNickName}
+                />
+                <Button
+                  variant="contained"
+                  onClick={nickNameReset}
+                  size="small"
+                  className={classes.btn}
+                >
+                  닉네임 수정
+                </Button>
+              </div>
+
+              <div className={classes.item}>
+                <TextField
+                  disabled
+                  id="email"
+                  label="이메일"
+                  defaultValue={member.email}
+                />
+                <Button disabled size="small" className={classes.btn} />
+              </div>
+
+              <div className={classes.item}>
+                <TextField
+                  required
+                  id="phoneNumber"
+                  label="연락처"
+                  value={phoneNumber}
+                  onChange={onChangePhoneNumber}
+                />
+                <Button
+                  variant="contained"
+                  onClick={phoneNumberReset}
+                  size="small"
+                  className={classes.btn}
+                >
+                  연락처 수정
+                </Button>
+              </div>
+
+              <div className={classes.item}>
+                <TextField
+                  disabled
+                  id="name"
+                  label="이름"
+                  defaultValue={member.name}
+                />
+                <Button disabled size="small" className={classes.btn} />
+              </div>
+
+              <div className={classes.item}>
+                <TextField
+                  disabled
+                  id="birth"
+                  label="생년월일"
+                  defaultValue={member.date_birth}
+                />
+                <Button disabled size="small" className={classes.btn} />
+              </div>
+            </>
+          )}
           <div className={classes.item}>
             <Button
               variant="contained"

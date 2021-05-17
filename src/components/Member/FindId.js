@@ -56,11 +56,11 @@ function MemberInfo() {
         name: name,
       };
       axios
-        .post(ip + '/member/find/account/', body)
+        .post(ip + '/member/find/account', body)
         .then((res) => {
-          setId(res.data[0].account);
-          alert(res.data[0].account);
           console.log(res.data);
+          setId(res.data.data.memberInfo[0].account);
+          alert(res.data.data.memberInfo[0].account);
         })
         .catch((err) => {
           console.log(err);

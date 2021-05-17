@@ -71,9 +71,10 @@ function Login() {
         password: password,
       };
       axios
-        .post(ip + '/auth/login', body)
+        .post(ip + '/login', body)
         .then((res) => {
-          localStorage.setItem('token', res.data);
+          console.log(res.data.data.token);
+          localStorage.setItem('token', res.data.data.token);
           window.location.replace('/');
         })
         .catch((err) => {
@@ -102,6 +103,7 @@ function Login() {
           </div>
           <div className={classes.pw}>
             <TextField
+              type="password"
               required
               id="pw"
               label="비밀번호"
