@@ -10,6 +10,8 @@ import Typography from '@material-ui/core/Typography';
 import qnaboard from '../../db/qna.json';
 import { Link } from 'react-router-dom';
 import ReadQnA from '../Diagnosis/Content/ReadQnA';
+import axios from 'axios';
+
 const useStyles = makeStyles({
   root: {
     alignItems: 'center',
@@ -41,10 +43,15 @@ const useStyles = makeStyles({
 
 export default function QnACards(props) {
   const classes = useStyles();
-  const [temp, setTemp] = useState('담은 정보');
+  var [contentHtml] = useState([]);
+  console.log(props.list);
+  const tempValue = props.list;
+  tempValue.forEach((element) => {
+    contentHtml[element.identifier] = element.content;
+  });
   return (
     <div className={classes.root}>
-      {qnaboard.qnaboard.map((qna) => (
+      {props.list.map((qna) => (
         <Card align="left" className={classes.card} variant="outlined">
           <CardMedia
             className={classes.cover}
@@ -53,7 +60,7 @@ export default function QnACards(props) {
           />
           <CardContent className={classes.contentWrap}>
             <Grid item className={classes.title}>
-              <Link to={`/detailQnA/${qna.no}`} color="inherit">
+              <Link to={`/detailQnA/${qna.identifier}`} color="inherit">
                 <Typography variant="h6">{qna.title}</Typography>
               </Link>
             </Grid>
@@ -64,7 +71,11 @@ export default function QnACards(props) {
                 color="textSecondary"
                 className={classes.content}
               >
-                {qna.question}
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: contentHtml[qna.identifier],
+                  }}
+                ></div>
               </Typography>
             </Grid>
             <Grid item className={classes.footer}>
@@ -72,12 +83,17 @@ export default function QnACards(props) {
                 <Grid item xs={12} sm container>
                   <Grid item xs={12} sm={10}>
                     <Typography noWrap variant="body2" color="textSecondary">
-                      {qna.writer} / {qna.kind}
+                      {qna.nickname} / {qna.species}
                     </Typography>
+                    {qna.state == 'none' && (
+                      <Typography noWrap variant="body2" color="textSecondary">
+                        답변 완료
+                      </Typography>
+                    )}
                   </Grid>
                   <Grid item xs={12} sm={2}>
                     <Typography noWrap variant="body1" color="textSecondary">
-                      답변 개수 : {qna.comment_num}
+                      답변 개수 : {qna.answerNum}
                     </Typography>
                   </Grid>
                 </Grid>

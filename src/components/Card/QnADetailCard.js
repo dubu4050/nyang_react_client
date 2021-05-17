@@ -11,6 +11,7 @@ import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined';
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
 import { Link } from 'react-router-dom';
 import detailqnaboard from '../../db/detailQna.json';
+import axios from 'axios';
 
 const useStyles = makeStyles({
   root: {
@@ -86,14 +87,14 @@ const useStyles = makeStyles({
   },
 });
 
-export default function ComplexGrid() {
+export default function ComplexGrid(props) {
   const classes = useStyles();
-  const modifyData = detailqnaboard.qnaboard[0];
-  const questionContent = modifyData.question;
-  console.log(modifyData);
+  const detailContent = props.list;
+  const identifier = props.identifier;
+  const questionContent = detailContent.content;
 
-  const currentAccessId = 'dubu4050';
-  const postWriterId = modifyData.writer;
+  // 접근권한 여부
+  const currentAccessId = detailContent.isIssuer;
 
   return (
     <div className={classes.root}>
@@ -103,11 +104,11 @@ export default function ComplexGrid() {
             <Grid item xs={12} sm={11} container direction="column" spacing={2}>
               <Grid item xs>
                 <Typography className={classes.title}>
-                  {modifyData.title}
+                  {detailContent.title}
                 </Typography>
                 <Typography variant="body2" color="textSecondary" gutterBottom>
-                  공개 QnA / 동물 :{modifyData.genus} / 종 : {modifyData.kind} /
-                  나이 : {modifyData.age}
+                  공개 QnA / 동물 :{detailContent.genus} / 종 :{' '}
+                  {detailContent.species} / 나이 : {detailContent.age}
                 </Typography>
                 <Typography
                   variant="body1"
@@ -120,9 +121,9 @@ export default function ComplexGrid() {
                 </Typography>
               </Grid>
             </Grid>
-            <Grid item xs={12} sm={1}>
+            <Grid item xs={12} sm={7}>
               <Typography variant="subtitle1" className={classes.date}>
-                작성일 : {modifyData.comment_num}
+                작성일 : {detailContent.createDate}
               </Typography>
             </Grid>
             <Grid item xs={12} sm={12}>
@@ -132,10 +133,16 @@ export default function ComplexGrid() {
                     <img src={nyangImg} className={classes.img} />
                   </Avatar>
                 }
-                title={modifyData.writer}
-                // subheader=" @dubu4050 고양이 키워본적 없습니다."
+                title={detailContent.nickname}
                 action={
-                  <>{currentAccessId == postWriterId && <PostFuncButton />}</>
+                  <>
+                    {currentAccessId == 'issuer' && (
+                      <PostFuncButton
+                        list={detailContent}
+                        identifier={identifier}
+                      />
+                    )}
+                  </>
                 }
               ></CardHeader>
             </Grid>
@@ -146,18 +153,21 @@ export default function ComplexGrid() {
   );
 }
 
-function PostFuncButton() {
+function PostFuncButton(props) {
   const classes = useStyles();
-  const modifyData = detailqnaboard.qnaboard[0];
+  const detailContent = props.list;
+  const identifier = props.identifier;
+  const ip = process.env.REACT_APP_API_IP;
   // 게시글 삭제(권한 검사는 이미 완료된 상태)
   const deleteQnaBoard = () => {
-    // axios.delete(ip+'/question/'+'게시글id').then((res) => {
-    //   alert('삭제 완료');
-    // <Link to="/diagnosis/qna"></Link>;
-    // }).catch((err) => {
-    //   alert('삭제 실패');
-    // });
-    alert('삭제 완료');
+    axios
+      .delete(ip + '/question/' + identifier)
+      .then((res) => {
+        alert('삭제 완료');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   return (
     <div>
@@ -171,12 +181,11 @@ function PostFuncButton() {
         to={{
           pathname: '/qnaModify',
           state: {
-            no: modifyData.no,
-            genus: modifyData.genus,
-            kind: modifyData.kind,
-            age: modifyData.age,
-            title: modifyData.title,
-            question: modifyData.question,
+            no: identifier,
+            species: detailContent.species,
+            age: detailContent.age,
+            title: detailContent.title,
+            content: detailContent.content,
           },
         }}
       >

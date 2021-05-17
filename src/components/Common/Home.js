@@ -86,7 +86,20 @@ const Home = (props) => {
     history.push(`/diagnosis/${tabNameToIndex[newValue]}`);
     setSelectedTab(newValue);
   };
-
+  const ip = process.env.REACT_APP_API_IP;
+  var [qnaBoardList, setQnaBoardList] = useState([]);
+  // 전체 게시글 요청
+  const totalQnaBoard = () => {
+    axios
+      .get(ip + '/question')
+      .then((res) => {
+        setQnaBoardList(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  console.log(axios.defaults.headers.common.Authorization);
   return (
     <div>
       <MuiThemeProvider theme={theme}>
@@ -128,7 +141,11 @@ const Home = (props) => {
                 className={classes.tab}
                 icon={<Avatar src={dogImg} />}
                 label={
-                  <Button variant="contained" className={classes.btn}>
+                  <Button
+                    variant="contained"
+                    className={classes.btn}
+                    onClick={totalQnaBoard}
+                  >
                     공개QnA
                   </Button>
                 }
@@ -136,7 +153,7 @@ const Home = (props) => {
             </Tabs>
           </Container>
           {selectedTab === 0 && <DiseaseSearch {...props} />}
-          {selectedTab === 1 && <QnABoard {...props} />}
+          {selectedTab === 1 && <QnABoard list={qnaBoardList} {...props} />}
         </>
       </MuiThemeProvider>
     </div>
