@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   makeStyles,
   createMuiTheme,
@@ -13,6 +13,8 @@ import {
 import IconButton from '@material-ui/core/IconButton';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import axios from 'axios';
+import { gridColumnsTotalWidthSelector } from '@material-ui/data-grid';
 
 const useStyles = makeStyles({
   root: {
@@ -63,21 +65,32 @@ const useStyles = makeStyles({
   },
 });
 
-export default function ReviewWrite() {
+export default function ReviewWrite(props) {
+  const identifier = props.identifier;
+  const ip = process.env.REACT_APP_API_IP;
   const classes = useStyles();
-  const [values, setValues] = React.useState({
-    writer: '',
-    password: '',
-    showPassword: false,
-  });
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
+  const [content, setContent] = useState('');
+  const onChangeContent = (e) => {
+    setContent(e.target.value);
   };
-  const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword });
-  };
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
+
+  const createComment = () => {
+    if (content == '') {
+      alert('댓글 내용을 입력해 주세요');
+    } else {
+      const body = {
+        postIdentifier: Number(identifier),
+        content: content,
+      };
+      axios
+        .post(ip + '/answer', body)
+        .then((res) => {
+          window.location.replace('/detailQnA/' + identifier);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
   const theme = createMuiTheme({
     palette: {
@@ -89,11 +102,13 @@ export default function ReviewWrite() {
       <div className={classes.root}>
         <form className={classes.form} noValidate autoComplete="off">
           <TextField
+            id="content"
             multiline
-            rows={4}
+            rows={5}
             variant="outlined"
             className={classes.text}
             color="primary"
+            onChange={onChangeContent}
           />
           <div className={classes.writerInfo}>
             <Button
@@ -101,6 +116,7 @@ export default function ReviewWrite() {
               variant="contained"
               color="primary"
               size="large"
+              onClick={createComment}
             >
               댓글 등록
             </Button>

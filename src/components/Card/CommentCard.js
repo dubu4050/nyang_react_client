@@ -89,6 +89,9 @@ const useStyles = makeStyles({
 
 export default function commentCard(props) {
   const classes = useStyles();
+  const commentList = props.list;
+  console.log('댓글목록');
+  console.log(commentList);
   const reviews = {
     id: 1,
     writer: '고양이 집사',
@@ -98,12 +101,57 @@ export default function commentCard(props) {
     img: '/src/images/nyangImg.png',
     adoption: 1,
   };
+
   return (
     <div className={classes.root}>
       <div className={classes.count}>
         <strong>답변 </strong>
         <strong>1</strong>
       </div>
+      {commentList.map((comment) => (
+        <Paper className={classes.paper}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm container>
+              <Grid item xs container direction="column" spacing={2}>
+                <Grid item xs>
+                  <CardHeader
+                    avatar={
+                      <Avatar aria-label="recipe" className={classes.avatar}>
+                        <img src={reviews.img} className={classes.img} />
+                      </Avatar>
+                    }
+                    title={comment.nickname}
+                    subheader={'채택횟수: ' + reviews.adoption}
+                    action={
+                      <CheckOutlinedIcon
+                        fontSize="large"
+                        style={{ color: '#49D7F0' }}
+                      />
+                    }
+                  ></CardHeader>
+                  <Typography variant="body1" className={classes.text}>
+                    {comment.content}
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <IconButton className={classes.icon}>
+                    <DeleteForeverOutlinedIcon />
+                    삭제
+                  </IconButton>
+                  <IconButton className={classes.icon}>
+                    <CreateOutlinedIcon />
+                    수정
+                  </IconButton>
+                  <IconButton className={classes.icon}>
+                    <DoneAllOutlinedIcon />
+                    채택
+                  </IconButton>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Paper>
+      ))}
       <Paper className={classes.paper}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm container>
