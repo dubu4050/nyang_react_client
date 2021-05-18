@@ -80,7 +80,7 @@ function QnAModify(props) {
   console.log(props.location.state);
   title = props.location.state.title;
   species = props.location.state.species;
-  content = props.location.state.question;
+  content = props.location.state.content;
   age = props.location.state.age;
   qnaNo = props.location.state.no;
   return (
@@ -170,7 +170,7 @@ class EditComp extends React.Component {
   constructor() {
     super();
     this.state = {
-      content: '',
+      content: content,
       selectedValue: 'a',
     };
   }
@@ -241,6 +241,7 @@ class EditComp extends React.Component {
             .put(ip + '/question/' + qnaNo, body)
             .then((res) => {
               alert('글 수정에 성공했습니다.');
+              window.location.href = '/';
             })
             .catch((err) => {
               alert('글 수정에 실패했습니다.');
@@ -286,7 +287,6 @@ class EditComp extends React.Component {
           <Button
             variant="contained"
             size="large"
-            href="/diagnosis/qna"
             onClick={modifyQnaBoard}
             style={classes.okbtn}
           >
