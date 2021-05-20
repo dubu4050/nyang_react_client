@@ -158,6 +158,7 @@ function PostFuncButton(props) {
   const detailContent = props.list;
   const identifier = props.identifier;
   const ip = process.env.REACT_APP_API_IP;
+
   // 게시글 삭제(권한 검사는 이미 완료된 상태)
   const deleteQnaBoard = () => {
     axios

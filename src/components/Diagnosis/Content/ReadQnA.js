@@ -11,6 +11,24 @@ const useStyles = makeStyles({
   root: {
     width: '100%',
   },
+  hr: {
+    width: '100%',
+    '@media (min-device-width: 481px)': {
+      // PC
+      height: '30px',
+    },
+    '@media (min-device-width: 320px) and (max-device-width: 480px)': {
+      // Mobile
+      height: '15px',
+    },
+    borderBottom: '0.8px solid #dedede',
+  },
+  count: {
+    overflow: 'auto',
+    width: '70%',
+    margin: '0 auto',
+    padding: '15px 0px 15px 0px',
+  },
 });
 
 export default function ReadQnA(props) {
@@ -49,7 +67,14 @@ export default function ReadQnA(props) {
   return (
     <div className={classes.root}>
       <QnADetailCard list={qnaPost} identifier={match.params.no} />
-      <CommentCard list={qnaCommentList} />
+      <div className={classes.hr}></div>
+      <div className={classes.count}>
+        <strong>답변 </strong>
+        <strong>{qnaCommentList.length}</strong>
+      </div>
+      {qnaCommentList.map((comment) => (
+        <CommentCard comment={comment} postIdentifier={match.params.no} />
+      ))}
       <CommentWrite identifier={match.params.no} />
     </div>
   );
