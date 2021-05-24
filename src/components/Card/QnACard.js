@@ -43,65 +43,63 @@ const useStyles = makeStyles({
 
 export default function QnACards(props) {
   const classes = useStyles();
-  var [contentHtml] = useState([]);
-  console.log(props.list);
-  const tempValue = props.list;
-  tempValue.forEach((element) => {
-    contentHtml[element.identifier] = element.content;
-  });
+  const qna = props.post;
+
   return (
     <div className={classes.root}>
-      {props.list.map((qna) => (
-        <Card align="left" className={classes.card} variant="outlined">
-          <CardMedia
-            className={classes.cover}
-            image={catImg}
-            title="card_cover"
-          />
-          <CardContent className={classes.contentWrap}>
-            <Grid item className={classes.title}>
-              <Link to={`/detailQnA/${qna.identifier}`} color="inherit">
-                <Typography variant="h6">{qna.title}</Typography>
-              </Link>
-            </Grid>
-            <Grid item xs zeroMinWidth>
-              <Typography
-                noWrap
-                variant="body2"
-                color="textSecondary"
-                className={classes.content}
-              >
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: contentHtml[qna.identifier],
-                  }}
-                ></div>
-              </Typography>
-            </Grid>
-            <Grid item className={classes.footer}>
-              <Grid container spacing={1}>
-                <Grid item xs={12} sm container>
-                  <Grid item xs={12} sm={10}>
-                    <Typography noWrap variant="body2" color="textSecondary">
-                      {qna.nickname} / {qna.species}
+      <Card align="left" className={classes.card} variant="outlined">
+        <CardMedia
+          className={classes.cover}
+          image={catImg}
+          title="card_cover"
+        />
+        <CardContent className={classes.contentWrap}>
+          <Grid item className={classes.title}>
+            <Link to={`/detailQnA/${qna.identifier}`} color="inherit">
+              <Typography variant="h6">{qna.title}</Typography>
+            </Link>
+          </Grid>
+          <Grid item xs zeroMinWidth>
+            <Typography
+              noWrap
+              variant="body2"
+              color="textSecondary"
+              className={classes.content}
+            >
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: qna.content,
+                }}
+              ></div>
+            </Typography>
+          </Grid>
+          <Grid item className={classes.footer}>
+            <Grid container spacing={1}>
+              <Grid item xs={12} sm container>
+                <Grid item xs={12} sm={10}>
+                  <Typography noWrap variant="body2" color="textSecondary">
+                    {qna.nickname} / {qna.species}
+                  </Typography>
+                  {qna.state == 'none' ? (
+                    <Typography noWrap variant="subtitle2" color="primary">
+                      대기 중
                     </Typography>
-                    {qna.state == 'none' && (
-                      <Typography noWrap variant="body2" color="textSecondary">
-                        답변 완료
-                      </Typography>
-                    )}
-                  </Grid>
-                  <Grid item xs={12} sm={2}>
-                    <Typography noWrap variant="body1" color="textSecondary">
-                      답변 개수 : {qna.answerNum}
+                  ) : (
+                    <Typography noWrap variant="subtitle2" color="error">
+                      채택 완료
                     </Typography>
-                  </Grid>
+                  )}
+                </Grid>
+                <Grid item xs={12} sm={2}>
+                  <Typography noWrap variant="body1" color="textSecondary">
+                    답변 개수 : {qna.answerNum}
+                  </Typography>
                 </Grid>
               </Grid>
             </Grid>
-          </CardContent>
-        </Card>
-      ))}
+          </Grid>
+        </CardContent>
+      </Card>
     </div>
   );
 }

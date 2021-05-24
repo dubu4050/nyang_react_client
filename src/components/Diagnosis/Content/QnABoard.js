@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
   Container,
@@ -53,45 +53,65 @@ const useStyles = makeStyles((theme) => ({
 
 export default function QnABoard(props) {
   const classes = useStyles();
-  var [qnaSearchBoardList, setQnaSearchBoardList] = useState([]);
-  const ip = process.env.REACT_APP_API_IP;
-  const [question, setQuestion] = useState('');
+  console.log(props.search);
+  const [qnaSearchBoardList, setQnaSearchBoardList] = useState([]);
+  const [qnaBoardList, setQnaBoardList] = useState([]);
+  const [search, setSearch] = useState('');
   const [boardCardState, setBoardCardState] = useState('total');
-  const onChangeQuestion = (e) => {
-    setQuestion(e.target.value);
+  const ip = process.env.REACT_APP_API_IP;
+
+  const onChangeSearch = (e) => {
+    setSearch(e.target.value);
   };
+  // 전체 게시글 요청
+  const totalQnaBoard = () => {
+    axios
+      .get(ip + '/question')
+      .then((res) => {
+        setQnaBoardList(res.data.data);
+        console.log(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    totalQnaBoard();
+  }, []);
 
   // 상세 검색
   const searchQnaBoard = () => {
-    if (question == '') {
-      alert('글 제목을 입력해주세요');
-    } else {
-      const body = {
-        keyword: question,
-      };
-      axios
-        .post(ip + '/question/search', body)
-        .then((res) => {
-          setQnaSearchBoardList(res.data.data.questionInfo);
-          setBoardCardState('search');
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
+    const body = {
+      keyword: search,
+    };
+
+    axios
+      .post(ip + '/question/search?page=1&perPage=10', body)
+      .then((res) => {
+        setQnaSearchBoardList(res.data.data);
+        console.log(res.data.data);
+        console.log(qnaSearchBoardList);
+        setBoardCardState('search');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
     <Container>
       <Container className={classes.wrapper}>
         <InputBase
+          id="search"
+          value={search}
           className={classes.input}
           placeholder="Search…"
           classes={{
             input: classes.placeholderStyle,
           }}
           inputProps={{ 'aria-label': 'search' }}
-          onChange={onChangeQuestion}
+          onChange={onChangeSearch}
         />
         <Button
           variant="contained"
@@ -107,9 +127,9 @@ export default function QnABoard(props) {
           </IconButton>
         )}
       </Container>
-      {(boardCardState == 'total' && <QnACard list={props.list} />) || (
-        <QnACard list={qnaSearchBoardList} />
-      )}
+      {(boardCardState == 'total' &&
+        qnaBoardList.map((post) => <QnACard post={post} />)) ||
+        qnaSearchBoardList.map((post) => <QnACard post={post} />)}
     </Container>
   );
 }
