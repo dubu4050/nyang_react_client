@@ -68,6 +68,7 @@ const useStyles = makeStyles({
 export default function ReviewWrite(props) {
   const identifier = props.identifier;
   const ip = process.env.REACT_APP_API_IP;
+  const type = props.type;
   const classes = useStyles();
   const [content, setContent] = useState('');
   const onChangeContent = (e) => {
@@ -83,7 +84,7 @@ export default function ReviewWrite(props) {
         content: content,
       };
       axios
-        .post(ip + '/answer', body)
+        .post(ip + '/' + type, body)
         .then((res) => {
           window.location.replace('/detailQnA/' + identifier);
         })

@@ -34,6 +34,7 @@ const useStyles = makeStyles({
 export default function ReadQnA(props) {
   const classes = useStyles();
   const { match } = props;
+  const post_state = props.location.state.post_selected_state;
   const ip = process.env.REACT_APP_API_IP;
   // 글, 댓글 정보
   var [qnaPost, setQnaPost] = useState([]);
@@ -73,9 +74,14 @@ export default function ReadQnA(props) {
         <strong>{qnaCommentList.length}</strong>
       </div>
       {qnaCommentList.map((comment) => (
-        <CommentCard comment={comment} postIdentifier={match.params.no} />
+        <CommentCard
+          comment={comment}
+          postIdentifier={match.params.no}
+          post_state={post_state}
+          type="answer"
+        />
       ))}
-      <CommentWrite identifier={match.params.no} />
+      <CommentWrite identifier={match.params.no} type="answer" />
     </div>
   );
 }

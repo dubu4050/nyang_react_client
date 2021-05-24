@@ -55,7 +55,15 @@ export default function QnACards(props) {
         />
         <CardContent className={classes.contentWrap}>
           <Grid item className={classes.title}>
-            <Link to={`/detailQnA/${qna.identifier}`} color="inherit">
+            <Link
+              to={{
+                pathname: `/detailQnA/${qna.identifier}`,
+                state: {
+                  post_selected_state: qna.state,
+                },
+              }}
+              color="inherit"
+            >
               <Typography variant="h6">{qna.title}</Typography>
             </Link>
           </Grid>

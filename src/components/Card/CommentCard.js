@@ -95,8 +95,11 @@ export default function commentCard(props) {
   const ip = process.env.REACT_APP_API_IP;
   const postIdentifier = props.postIdentifier;
   const comment = props.comment;
+  const post_state = props.post_state;
+  const type = props.type;
   const [content, setContent] = useState(comment.content);
   const [update_state, setUpdateState] = useState(false);
+  const [select_state, setSelectState] = useState(comment.select_state);
   const onChangeContent = (e) => {
     setContent(e.target.value);
   };
@@ -111,7 +114,7 @@ export default function commentCard(props) {
   const updateComment = (e) => {
     const body = { content: content };
     axios
-      .put(ip + '/answer/' + comment.identifier, body)
+      .put(ip + '/' + type + '/' + comment.identifier, body)
       .then((res) => {
         window.location.replace('/detailQnA/' + postIdentifier);
       })
@@ -122,7 +125,7 @@ export default function commentCard(props) {
   };
   const deleteComment = (e) => {
     axios
-      .delete(ip + '/answer/' + comment.identifier)
+      .delete(ip + '/' + type + '/' + comment.identifier)
       .then((res) => {
         window.location.replace('/detailQnA/' + postIdentifier);
       })
@@ -131,7 +134,24 @@ export default function commentCard(props) {
         alert('답변 삭제 실패');
       });
   };
-  console.log(comment);
+  const adoptComment = (e) => {
+    if (post_state != 'none') {
+      alert('채택 완료된 질문 입니다.');
+    } else {
+      axios
+        .get(ip + '/answer/adopt/' + postIdentifier, {
+          params: { answerIdentifier: comment.identifier },
+        })
+        .then((res) => {
+          setSelectState('done');
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -168,7 +188,7 @@ export default function commentCard(props) {
 
           <Grid item xs container direction="column" spacing={2}>
             <Grid item xs>
-              {comment.select_state == 'none' ? null : (
+              {select_state == 'none' ? null : (
                 <CheckOutlinedIcon
                   className={classes.select_state}
                   fontSize="large"
@@ -189,9 +209,9 @@ export default function commentCard(props) {
                   <CreateOutlinedIcon />
                   수정
                 </IconButton>
-                <IconButton className={classes.icon}>
+                <IconButton className={classes.icon} onClick={adoptComment}>
                   <DoneAllOutlinedIcon />
-                  {comment.select_state == 'none' ? '채택' : '채택취소'}
+                  {select_state == 'none' ? '채택' : '채택취소'}
                 </IconButton>
               </Grid>
             ) : (
