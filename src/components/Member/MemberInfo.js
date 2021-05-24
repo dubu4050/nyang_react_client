@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-//import member from '../../db/member.json';
+import nyangImg from '../../images/nyangImg.png';
 import Modal from '@material-ui/core/Modal';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
@@ -81,6 +81,10 @@ function MemberInfo() {
   const [nickName, setNickname] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [loading, setLoading] = useState(true);
+  // 프로필 이미지 관련 변수
+  const [img, setImage] = useState(null);
+  const [previewURL, setPreviewURL] = useState(null);
+
   const ip = process.env.REACT_APP_API_IP;
 
   useEffect(() => {
@@ -91,6 +95,7 @@ function MemberInfo() {
         console.log(res.data);
         setNickname(res.data.data.memberInfo.nickname);
         setPhoneNumber(res.data.data.memberInfo.phone_number);
+        setPreviewURL(res.data.data.memberInfo.profile_photo_path);
         setLoading(false);
       })
       .catch((err) => {
@@ -98,11 +103,6 @@ function MemberInfo() {
       });
   }, []);
   const classes = useStyles();
-  const history = useHistory();
-
-  // 프로필 이미지 관련 변수
-  const [img, setImage] = useState(null);
-  const [previewURL, setPreviewURL] = useState(null);
 
   // modal창 관련 변수
   const [modalStyle] = React.useState(getModalStyle);
@@ -129,16 +129,28 @@ function MemberInfo() {
   const phoneNumberReset = () => {
     setPhoneNumber('');
   };
+  console.log(img);
   const updateMemberInfo = () => {
-    if (member.nickname == nickName && member.phone_number == phoneNumber) {
+    if (
+      member.nickname == nickName &&
+      member.phone_number == phoneNumber &&
+      member.previewURL == img
+    ) {
       alert('변경된 정보가 없습니다.');
     } else {
-      const body = {
-        nickname: nickName,
-        phone_number: phoneNumber,
+      const form = new FormData();
+      form.append('name', member.name);
+      form.append('nickname', nickName);
+      form.append('phone_number', phoneNumber);
+      form.append('date_birth', member.date_birth);
+      form.append('profile_picture', img);
+
+      const config = {
+        headers: { 'Content-Type': 'multipart/form-data' },
       };
+
       axios
-        .put(ip + '/member', body)
+        .put(ip + '/member', form, config)
         .then(() => {
           alert('프로필을 수정 완료');
         })
