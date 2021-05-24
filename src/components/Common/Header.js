@@ -56,9 +56,9 @@ function Header() {
   // ip address
   const ip = process.env.REACT_APP_API_IP;
   //로그인 확인
-  console.log(localStorage.getItem('token'));
-  console.log(axios.defaults);
-  const history = useHistory();
+  console.log('---------------토큰: ' + localStorage.getItem('token'));
+  console.log('---------------직책: ' + localStorage.getItem('roleName'));
+
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -82,6 +82,9 @@ function Header() {
   const activeMemberInfo = () => {
     window.location.href = '/activeMemberInfo';
   };
+  const membersInfo = () => {
+    window.location.href = '/admin';
+  };
   const logout = () => {
     localStorage.clear();
     window.location.href = '/';
@@ -103,6 +106,9 @@ function Header() {
         <>
           <MenuItem onClick={memberInfo}>내 정보</MenuItem>
           <MenuItem onClick={activeMemberInfo}>활동 조회</MenuItem>
+          {localStorage.getItem('roleName') == 'admin' && (
+            <MenuItem onClick={membersInfo}>회원 조회</MenuItem>
+          )}
           <MenuItem onClick={logout}>로그아웃</MenuItem>
         </>
       ) : (
