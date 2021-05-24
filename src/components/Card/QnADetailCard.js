@@ -92,7 +92,8 @@ export default function ComplexGrid(props) {
   const detailContent = props.list;
   const identifier = props.identifier;
   const questionContent = detailContent.content;
-
+  const tmp =
+    'https://imgnews.pstatic.net/image/477/2021/05/23/0000300912_001_20210523170308400.jpg?type=w647';
   // 접근권한 여부
   const currentAccessId = detailContent.isIssuer;
 
@@ -130,7 +131,7 @@ export default function ComplexGrid(props) {
               <CardHeader
                 avatar={
                   <Avatar aria-label="recipe" className={classes.avatar}>
-                    <img src={nyangImg} className={classes.img} />
+                    <img src={tmp} className={classes.img} />
                   </Avatar>
                 }
                 title={detailContent.nickname}
@@ -164,6 +165,7 @@ function PostFuncButton(props) {
       .delete(ip + '/question/' + identifier)
       .then((res) => {
         alert('삭제 완료');
+        window.location.href = '/';
       })
       .catch((err) => {
         console.log(err);

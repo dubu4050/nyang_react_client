@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -40,9 +40,15 @@ const useStyles = makeStyles({
 
 export default function BoradCards(props) {
   const classes = useStyles();
+  const tempValue = props.list;
+  console.log(tempValue);
+  var [contentHtml] = useState([]);
+  tempValue.forEach((element) => {
+    contentHtml[element.identifier] = element.content;
+  });
   return (
     <div className={classes.root}>
-      {qnaboard.qnaboard.map((qna) => (
+      {props.list.map((qna) => (
         <Card align="left" className={classes.card} variant="outlined">
           <CardMedia
             className={classes.cover}
@@ -51,7 +57,7 @@ export default function BoradCards(props) {
           />
           <CardContent className={classes.contentWrap}>
             <Grid item className={classes.title}>
-              <Link to={`/detailBoard/${qna.no}`} color="inherit">
+              <Link to={`/detailBoard/${qna.identifier}`} color="inherit">
                 <Typography variant="h6">{qna.title}</Typography>
               </Link>
             </Grid>
@@ -62,7 +68,11 @@ export default function BoradCards(props) {
                 color="textSecondary"
                 className={classes.content}
               >
-                {qna.question}
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: contentHtml[qna.identifier],
+                  }}
+                ></div>
               </Typography>
             </Grid>
             <Grid item className={classes.footer}>
@@ -75,7 +85,7 @@ export default function BoradCards(props) {
                   </Grid>
                   <Grid item xs={12} sm={2}>
                     <Typography noWrap variant="body1" color="textSecondary">
-                      댓글 개수 : {qna.comment_num}
+                      댓글 개수 : {qna.commentNum}
                     </Typography>
                   </Grid>
                 </Grid>

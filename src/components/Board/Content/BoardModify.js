@@ -15,11 +15,11 @@ import {
 } from '@material-ui/core';
 import { AlarmRounded } from '@material-ui/icons';
 
-// 카테고리, 제목, 내용
-var { category } = '';
+// 제목, 내용
 var { title } = '';
 var { content } = '';
 var { postNo } = '';
+var { category } = '';
 
 const useStyles = makeStyles((theme) => ({
   wrap: {
@@ -68,6 +68,7 @@ function BoardModify(props) {
   title = props.location.state.title;
   content = props.location.state.content;
   postNo = props.location.state.no;
+  category = props.location.state.category;
   return (
     <ThemeProvider theme={theme}>
       <Container className={classes.wrap}>
@@ -94,7 +95,8 @@ function FunComp() {
       </div>
       <form className={classes.fieldControl} noValidate autoComplete="off">
         <TextField
-          id="genus"
+          disabled
+          id="fieldes"
           select
           preventValue="free"
           size="small"
@@ -172,20 +174,21 @@ class EditComp extends React.Component {
       },
     };
     const modifyPostBoard = () => {
-      if (category == undefined || title == '' || content == '') {
+      if (title == '' || content == '') {
         alert('모든 항목을 채우지 않았습니다.');
       } else {
         content = this.editorRef.current.getInstance().getHtml();
         const body = {
-          category: category,
           title: title,
           content: content,
         };
         console.log(body);
+        console.log(postNo);
         // axios
-        //   .put(ip + '/board/' + postNo, body)
+        //   .put(ip + '/info/' + postNo, body)
         //   .then((res) => {
         //     alert('글 수정에 성공했습니다.');
+        //     window.location.href = '/';
         //   })
         //   .catch((err) => {
         //     alert('글 등록에 실패했습니다.');
@@ -215,7 +218,6 @@ class EditComp extends React.Component {
           <Button
             variant="contained"
             size="large"
-            href="/board/info"
             onClick={modifyPostBoard}
             style={classes.okbtn}
           >

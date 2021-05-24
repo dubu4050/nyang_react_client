@@ -86,13 +86,14 @@ const useStyles = makeStyles({
   },
 });
 
-export default function ComplexGrid() {
+export default function ComplexGrid(props) {
   const classes = useStyles();
-  const BoardData = detailqnaboard.qnaboard[0];
-
-  const currentAccessId = 'dubu4050';
-  const postWriterId = BoardData.writer;
-  const contentBoard = BoardData.question;
+  const detailContent = props.list;
+  console.log(detailContent);
+  const identifier = props.identifier;
+  const boardContent = detailContent.content;
+  // 접근권한 여부
+  const currentAccessId = detailContent.isIssuer;
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -101,19 +102,24 @@ export default function ComplexGrid() {
             <Grid item xs={12} sm={11} container direction="column" spacing={2}>
               <Grid item xs>
                 <Typography className={classes.title}>
-                  {BoardData.title}
+                  {detailContent.title}
                 </Typography>
-                <Typography variant="body2" color="textSecondary" gutterBottom>
-                  {BoardData.comment_num}
-                </Typography>
+                {/* <Typography variant="body2" color="textSecondary" gutterBottom>
+                  {detailContent.comment_num}
+                </Typography> */}
                 <Typography
                   variant="body1"
                   className={classes.text}
                   gutterBottom
                 >
-                  <div dangerouslySetInnerHTML={{ __html: contentBoard }}></div>
+                  <div dangerouslySetInnerHTML={{ __html: boardContent }}></div>
                 </Typography>
               </Grid>
+            </Grid>
+            <Grid item xs={12} sm={7}>
+              <Typography variant="subtitle1" className={classes.date}>
+                작성일 : {detailContent.createDate}
+              </Typography>
             </Grid>
             <Grid item xs={12} sm={12}>
               <CardHeader
@@ -122,9 +128,16 @@ export default function ComplexGrid() {
                     <img src={nyangImg} className={classes.img} />
                   </Avatar>
                 }
-                title={BoardData.writer}
+                title={detailContent.nickname}
                 action={
-                  <>{currentAccessId == postWriterId && <PostFuncButton />}</>
+                  <>
+                    {currentAccessId == 'issuer' && (
+                      <PostFuncButton
+                        list={detailContent}
+                        identifier={identifier}
+                      />
+                    )}
+                  </>
                 }
               ></CardHeader>
             </Grid>
@@ -134,35 +147,38 @@ export default function ComplexGrid() {
     </div>
   );
 }
-function PostFuncButton() {
+function PostFuncButton(props) {
   const classes = useStyles();
-  const modifyData = detailqnaboard.qnaboard[0];
-
+  const detailContent = props.list;
+  const identifier = props.identifier;
+  const ip = process.env.REACT_APP_API_IP;
   // 게시글 삭제(권한 검사는 이미 완료된 상태)
   const deletePostBoard = () => {
-    // axios.delete(ip+'/question/'+'게시글id').then((res) => {
-    //   alert('삭제 완료');
-    //   <Link href='/diagnosis/qna'></Link>
-    // }).catch((err) => {
-    //   alert('삭제 실패');
-    // });
-    alert('삭제 완료');
+    axios
+      .delete(ip + '/info/' + identifier)
+      .then((res) => {
+        alert('삭제 완료');
+        window.location.href = '/';
+      })
+      .catch((err) => {
+        alert('삭제 실패');
+      });
   };
   return (
     <div>
-      <Link to="/board/info">
-        <IconButton className={classes.icon} onClick={deletePostBoard}>
-          <DeleteForeverOutlinedIcon />
-          삭제
-        </IconButton>
-      </Link>
+      <IconButton className={classes.icon} onClick={deletePostBoard}>
+        <DeleteForeverOutlinedIcon />
+        삭제
+      </IconButton>
+
       <Link
         to={{
           pathname: '/boardModify',
           state: {
-            no: modifyData.no,
-            title: modifyData.title,
-            content: modifyData.question,
+            no: identifier,
+            title: detailContent.title,
+            content: detailContent.content,
+            category: 'free',
           },
         }}
       >

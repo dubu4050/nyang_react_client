@@ -113,7 +113,7 @@ function DiseaseList(props) {
   return (
     <div>
       <MuiThemeProvider theme={theme}>
-        {/* <Table className={classes.table}>
+        <Table className={classes.table}>
           {props.list.map((resultData) => (
             <TableBody>
               <TableRow>
@@ -163,7 +163,7 @@ function DiseaseList(props) {
               </strong>
             </Alert>
           </Collapse>
-        </div> */}
+        </div>
 
         <div className={classes.cardWrap}>
           {props.list.map((resultData) => (
@@ -178,9 +178,6 @@ function DiseaseList(props) {
                   >
                     {resultData.title}
                   </Typography>
-                  {/* <Typography className={classes.pos}>
-                    {disease.writer}
-                  </Typography> */}
                   <Typography variant="h5" component="h2">
                     Q
                   </Typography>

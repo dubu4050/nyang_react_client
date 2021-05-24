@@ -85,9 +85,9 @@ export default function QnACards(props) {
                     <Typography noWrap variant="body2" color="textSecondary">
                       {qna.nickname} / {qna.species}
                     </Typography>
-                    {qna.state == 'none' && (
+                    {qna.state == 'adopted' && (
                       <Typography noWrap variant="body2" color="textSecondary">
-                        답변 완료
+                        채택 완료
                       </Typography>
                     )}
                   </Grid>
