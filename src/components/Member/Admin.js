@@ -54,7 +54,7 @@ const rows = [
   createData('United Kingdom', 'GB', 67545757, '21.04.12', 'editor'),
   createData('Russia', 'RU', 146793744, '21.04.12', 'editor'),
   createData('Nigeria', 'NG', 200962417, '21.04.12', 'editor'),
-  createData('Brazil', 'BR', 210147125, '21.04.12', 'editor'),
+  createData('Brazil', 'BR', 210147125, '21.04.12', 'admin'),
 ];
 
 const useStyles = makeStyles((theme) => ({
@@ -107,7 +107,6 @@ export default function Admin() {
 
   return (
     <div>
-      <Header />
       <form className={classes.root} noValidate autoComplete="off">
         <Toolbar className={classes.titlebox}>
           <Typography
