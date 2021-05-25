@@ -9,10 +9,7 @@ import {
   FormControlLabel,
   RadioGroup,
 } from '@material-ui/core';
-import { validate } from '@material-ui/pickers';
-import { ColumnController } from 'ag-grid-community';
 import React, { useState, useEffect } from 'react';
-import useForm from '../Common/useForm';
 
 const authorityItems = [
   { id: 'admin', title: '관리자' },
@@ -31,9 +28,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function MemberForm(props) {
   const classes = useStyles();
-  const { recordFordEdit } = props;
+  const { recordFordEdit, updateRole } = props;
   const [values, setValues] = useState(recordFordEdit);
-  const [authority, setAuthority] = useState(values.authority);
+  const [authority, setAuthority] = useState(values.role);
 
   useEffect(() => {
     if (recordFordEdit != null)
@@ -53,7 +50,7 @@ export default function MemberForm(props) {
             variant="outlined"
             label="이름"
             name="name"
-            value={values.name}
+            value={values.account}
             InputProps={{
               readOnly: true,
             }}
@@ -61,17 +58,17 @@ export default function MemberForm(props) {
           <TextField
             variant="outlined"
             label="닉네임"
-            name="nick_name"
-            value={values.nick_name}
+            name="nickname"
+            value={values.nickname}
             InputProps={{
               readOnly: true,
             }}
           />
           <TextField
             variant="outlined"
-            label="연락처"
-            name="phone_number"
-            value={values.phone_number}
+            label="가입 날짜"
+            name="date_register"
+            value={values.date_register}
             InputProps={{
               readOnly: true,
             }}
