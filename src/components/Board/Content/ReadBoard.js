@@ -11,6 +11,24 @@ const useStyles = makeStyles({
   root: {
     width: '100%',
   },
+  hr: {
+    width: '100%',
+    '@media (min-device-width: 481px)': {
+      // PC
+      height: '30px',
+    },
+    '@media (min-device-width: 320px) and (max-device-width: 480px)': {
+      // Mobile
+      height: '15px',
+    },
+    borderBottom: '0.8px solid #dedede',
+  },
+  count: {
+    overflow: 'auto',
+    width: '70%',
+    margin: '0 auto',
+    padding: '15px 0px 15px 0px',
+  },
 });
 
 export default function ReadQnA(props) {
@@ -19,28 +37,50 @@ export default function ReadQnA(props) {
   const ip = process.env.REACT_APP_API_IP;
   // 글, 댓글 정보
   var [post, setPost] = useState([]);
-  var [postComment, setPostComment] = useState([]);
+  const [postCommentList, setPostCommentList] = useState([]);
 
   const detailQnaBoard = () => {
     axios
       .get(ip + '/info/' + match.params.no)
       .then((res) => {
         setPost(res.data.data);
-        setPostComment();
       })
       .catch((err) => {
         alert('요청 실패');
       });
   };
+  const commentList = () => {
+    axios
+      .get(ip + '/comment/' + match.params.no)
+      .then((res) => {
+        setPostCommentList(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   useEffect(() => {
     detailQnaBoard();
+    commentList();
   }, []);
 
   return (
     <div className={classes.root}>
       <BoardDetailCard list={post} identifier={match.params.no} />
-      {/* <CommentCard list= {postComment} /> */}
-      <CommentWrite />
+      <div className={classes.hr}></div>
+      <div className={classes.count}>
+        <strong>답변 </strong>
+        <strong>{postCommentList.length}</strong>
+      </div>
+      {postCommentList.map((comment) => (
+        <CommentCard
+          comment={comment}
+          postIdentifier={match.params.no}
+          post_state="done"
+          type="comment"
+        />
+      ))}
+      <CommentWrite identifier={match.params.no} type="comment" />
     </div>
   );
 }
