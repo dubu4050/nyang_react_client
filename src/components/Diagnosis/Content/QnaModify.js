@@ -223,12 +223,6 @@ class EditComp extends React.Component {
         if (age >= 100) {
           alert('나이가 그렇게 많나요?');
         } else {
-          alert('게시글 수정 요청');
-          console.log(genus);
-          console.log(species);
-          console.log(age);
-          console.log(title);
-          console.log(this.editorRef.current.getInstance().getHtml());
           const body = {
             genus: genus,
             species: species,

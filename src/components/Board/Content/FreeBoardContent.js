@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Container,
   InputBase,
@@ -9,6 +9,7 @@ import {
 import SearchIcon from '@material-ui/icons/Search';
 import CreateIcon from '@material-ui/icons/Create';
 import BoardCard from '../../Card/BoardCard';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -55,38 +56,36 @@ export default function FreeBoardContent(props) {
 
   // 전체 자유게시판 리스트 조회
   const totalFreeBoard = () => {
-    // axios
-    //   .get(ip + '/board')
-    //   .then((res) => {
-    //     alert('요청 성공');
-    //     setFreeBoardList();
-    //   })
-    //   .catch((err) => {
-    //     alert('요청 실패');
-    //   });
+    axios
+      .get(ip + '/free')
+      .then((res) => {
+        setFreeBoardList(res.data.data);
+      })
+      .catch((err) => {
+        alert('요청 실패');
+      });
   };
-
+  useEffect(() => {
+    totalFreeBoard();
+  }, []);
   // 자유게시판 검색
   const searchFreeBoard = () => {
     if (question == '') {
       alert('글 제목을 입력해주세요');
     } else {
       const body = {
-        content: question,
+        keyword: question,
       };
-      alert(question);
-      // axios
-      //   .get(ip + '/board', body)
-      //   .then((res) => {
-      //     alert('검색 성공');
-      //     setFreeBoardList();
-      //   })
-      //   .catch((err) => {
-      //     alert('검색 실패');
-      //   });
+      axios
+        .post(ip + '/free/search', body)
+        .then((res) => {
+          setFreeBoardList(res.data.data);
+        })
+        .catch((err) => {
+          alert('검색 실패');
+        });
     }
   };
-  totalFreeBoard();
   return (
     <Container>
       <Container className={classes.wrapper}>
@@ -111,8 +110,7 @@ export default function FreeBoardContent(props) {
           <CreateIcon className={classes.icon} />
         </IconButton>
       </Container>
-      <BoardCard />
-      {/* <BoardCard list={freeBoardList} /> */}
+      <BoardCard list={freeBoardList} />
     </Container>
   );
 }

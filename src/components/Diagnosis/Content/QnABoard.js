@@ -72,7 +72,7 @@ export default function QnABoard(props) {
       axios
         .post(ip + '/question/search', body)
         .then((res) => {
-          setQnaSearchBoardList(res.data.data.questionInfo);
+          setQnaSearchBoardList(res.data.data);
           setBoardCardState('search');
         })
         .catch((err) => {
