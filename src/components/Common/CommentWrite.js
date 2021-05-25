@@ -86,7 +86,11 @@ export default function ReviewWrite(props) {
       axios
         .post(ip + '/' + type, body)
         .then((res) => {
-          window.location.replace('/detailQnA/' + identifier);
+          if (type == 'answer') {
+            window.location.replace('/detailQnA/' + identifier);
+          } else {
+            window.location.replace('/detailBoard/' + identifier);
+          }
         })
         .catch((err) => {
           console.log(err);

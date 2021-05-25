@@ -1,16 +1,12 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
 import catImg from '../../images/cat_icon.png';
 import Typography from '@material-ui/core/Typography';
-import qnaboard from '../../db/qna.json';
 import { Link } from 'react-router-dom';
-import ReadQnA from '../Diagnosis/Content/ReadQnA';
-import axios from 'axios';
 
 const useStyles = makeStyles({
   root: {
@@ -43,8 +39,9 @@ const useStyles = makeStyles({
 
 export default function QnACards(props) {
   const classes = useStyles();
-  var [contentHtml] = useState([]);
   const tempValue = props.list;
+  console.log(tempValue);
+  var [contentHtml] = useState([]);
   tempValue.forEach((element) => {
     contentHtml[element.identifier] = element.content;
   });

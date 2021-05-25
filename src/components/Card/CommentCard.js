@@ -96,6 +96,7 @@ export default function commentCard(props) {
   const postIdentifier = props.postIdentifier;
   const comment = props.comment;
   const post_state = props.post_state;
+  const profile = comment.profile_photo_path;
   const type = props.type;
   const [content, setContent] = useState(comment.content);
   const [update_state, setUpdateState] = useState(false);
@@ -116,7 +117,11 @@ export default function commentCard(props) {
     axios
       .put(ip + '/' + type + '/' + comment.identifier, body)
       .then((res) => {
-        window.location.replace('/detailQnA/' + postIdentifier);
+        if (type == 'answer') {
+          window.location.replace('/detailQnA/' + postIdentifier);
+        } else {
+          window.location.replace('/detailBoard/' + postIdentifier);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -127,7 +132,11 @@ export default function commentCard(props) {
     axios
       .delete(ip + '/' + type + '/' + comment.identifier)
       .then((res) => {
-        window.location.replace('/detailQnA/' + postIdentifier);
+        if (type == 'answer') {
+          window.location.replace('/detailQnA/' + postIdentifier);
+        } else {
+          window.location.replace('/detailBoard/' + postIdentifier);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -160,7 +169,10 @@ export default function commentCard(props) {
             <CardHeader
               avatar={
                 <Avatar aria-label="recipe" className={classes.avatar}>
-                  <img src={nyangImg} className={classes.img} />
+                  <img
+                    src={profile == null ? nyangImg : profile}
+                    className={classes.img}
+                  />
                 </Avatar>
               }
               title={comment.nickname}
@@ -188,7 +200,7 @@ export default function commentCard(props) {
 
           <Grid item xs container direction="column" spacing={2}>
             <Grid item xs>
-              {select_state == 'none' ? null : (
+              {type == 'comment' || select_state == 'none' ? null : (
                 <CheckOutlinedIcon
                   className={classes.select_state}
                   fontSize="large"
@@ -209,10 +221,12 @@ export default function commentCard(props) {
                   <CreateOutlinedIcon />
                   수정
                 </IconButton>
-                <IconButton className={classes.icon} onClick={adoptComment}>
-                  <DoneAllOutlinedIcon />
-                  {select_state == 'none' ? '채택' : '채택취소'}
-                </IconButton>
+                {type == 'comment' ? null : (
+                  <IconButton className={classes.icon} onClick={adoptComment}>
+                    <DoneAllOutlinedIcon />
+                    {select_state == 'none' ? '채택' : '채택취소'}
+                  </IconButton>
+                )}
               </Grid>
             ) : (
               <Grid item>

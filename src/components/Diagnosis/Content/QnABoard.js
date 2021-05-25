@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
   Container,
@@ -53,15 +53,30 @@ const useStyles = makeStyles((theme) => ({
 
 export default function QnABoard(props) {
   const classes = useStyles();
-  var [qnaSearchBoardList, setQnaSearchBoardList] = useState([]);
   const ip = process.env.REACT_APP_API_IP;
   const [question, setQuestion] = useState('');
-  const [boardCardState, setBoardCardState] = useState('total');
+  const [qnaList, setQnaList] = useState([]);
+
   const onChangeQuestion = (e) => {
     setQuestion(e.target.value);
   };
 
-  // 상세 검색
+  // 전체 Qna 리스트 조회
+  const totalQnABoard = () => {
+    axios
+      .get(ip + '/question')
+      .then((res) => {
+        setQnaList(res.data.data);
+      })
+      .catch((err) => {
+        alert('요청 실패');
+      });
+  };
+  useEffect(() => {
+    totalQnABoard();
+  }, []);
+
+  // QnA 검색
   const searchQnaBoard = () => {
     if (question == '') {
       alert('글 제목을 입력해주세요');
@@ -72,11 +87,11 @@ export default function QnABoard(props) {
       axios
         .post(ip + '/question/search', body)
         .then((res) => {
-          setQnaSearchBoardList(res.data.data);
-          setBoardCardState('search');
+          setQnaList(res.data.data);
         })
         .catch((err) => {
           console.log(err);
+          alert('검색 실패');
         });
     }
   };
@@ -107,9 +122,7 @@ export default function QnABoard(props) {
           </IconButton>
         )}
       </Container>
-      {(boardCardState == 'total' && <QnACard list={props.list} />) || (
-        <QnACard list={qnaSearchBoardList} />
-      )}
+      <QnACard list={qnaList} />
     </Container>
   );
 }
