@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import dummy from '../../db/review.json';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -9,24 +9,19 @@ import {
   ButtonBase,
   CardHeader,
   Avatar,
+  TextField,
 } from '@material-ui/core';
 import AddCommentOutlinedIcon from '@material-ui/icons/AddCommentOutlined';
 import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined';
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
 import DoneAllOutlinedIcon from '@material-ui/icons/DoneAllOutlined';
 import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
+import CancelOutlinedIcon from '@material-ui/icons/CancelOutlined';
+import nyangImg from '../../images/nyangImg.png';
+import axios from 'axios';
 const useStyles = makeStyles({
   root: {
     flexGrow: 1,
-    borderTop: '0.8px solid #dedede',
-    '@media (min-device-width: 481px)': {
-      // PC
-      marginTop: '30px',
-    },
-    '@media (min-device-width: 320px) and (max-device-width: 480px)': {
-      // Mobile
-      marginTop: '15px',
-    },
   },
   count: {
     overflow: 'auto',
@@ -56,6 +51,10 @@ const useStyles = makeStyles({
       border: '0.8px solid',
     },
   },
+  text: {
+    width: '100%',
+    margin: '0 auto',
+  },
   date: {
     '@media (min-device-width: 481px)': {
       // PC
@@ -70,11 +69,15 @@ const useStyles = makeStyles({
   writer: {
     fontWeight: 'bold',
   },
+  content: {
+    width: '100%',
+  },
   img: { width: '40px' },
   check: {
     color: 'red',
     width: '40px',
   },
+  select_state: { float: 'right' },
   icon: {
     float: 'right',
     fontSize: '14px',
@@ -89,60 +92,143 @@ const useStyles = makeStyles({
 
 export default function commentCard(props) {
   const classes = useStyles();
-  const reviews = {
-    id: 1,
-    writer: '고양이 집사',
-    text: '구토의 원인은 많아서 병원을 가봐야 할 것 같습니다...',
-    password: '1234',
-    date: '2021.02.01',
-    img: '/src/images/nyangImg.png',
-    adoption: 1,
+  const ip = process.env.REACT_APP_API_IP;
+  const postIdentifier = props.postIdentifier;
+  const comment = props.comment;
+  const post_state = props.post_state;
+  const type = props.type;
+  const [content, setContent] = useState(comment.content);
+  const [update_state, setUpdateState] = useState(false);
+  const [select_state, setSelectState] = useState(comment.select_state);
+  const onChangeContent = (e) => {
+    setContent(e.target.value);
   };
+  const changeUpdateState = (e) => {
+    if (update_state == false) {
+      setUpdateState(true);
+    } else {
+      setUpdateState(false);
+    }
+  };
+  //수정,삭제,채택
+  const updateComment = (e) => {
+    const body = { content: content };
+    axios
+      .put(ip + '/' + type + '/' + comment.identifier, body)
+      .then((res) => {
+        window.location.replace('/detailQnA/' + postIdentifier);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert('답변 수정 실패');
+      });
+  };
+  const deleteComment = (e) => {
+    axios
+      .delete(ip + '/' + type + '/' + comment.identifier)
+      .then((res) => {
+        window.location.replace('/detailQnA/' + postIdentifier);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert('답변 삭제 실패');
+      });
+  };
+  const adoptComment = (e) => {
+    if (post_state != 'none') {
+      alert('채택 완료된 질문 입니다.');
+    } else {
+      axios
+        .get(ip + '/answer/adopt/' + postIdentifier, {
+          params: { answerIdentifier: comment.identifier },
+        })
+        .then((res) => {
+          setSelectState('done');
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
   return (
     <div className={classes.root}>
-      <div className={classes.count}>
-        <strong>답변 </strong>
-        <strong>1</strong>
-      </div>
       <Paper className={classes.paper}>
         <Grid container spacing={2}>
-          <Grid item xs={12} sm container>
-            <Grid item xs container direction="column" spacing={2}>
-              <Grid item xs>
-                <CardHeader
-                  avatar={
-                    <Avatar aria-label="recipe" className={classes.avatar}>
-                      <img src={reviews.img} className={classes.img} />
-                    </Avatar>
-                  }
-                  title={reviews.writer}
-                  subheader={'채택횟수: ' + reviews.adoption}
-                  action={
-                    <CheckOutlinedIcon
-                      fontSize="large"
-                      style={{ color: '#49D7F0' }}
-                    />
-                  }
-                ></CardHeader>
-                <Typography variant="body1" className={classes.text}>
-                  {reviews.text}
-                </Typography>
-              </Grid>
+          <Grid item>
+            <CardHeader
+              avatar={
+                <Avatar aria-label="recipe" className={classes.avatar}>
+                  <img src={nyangImg} className={classes.img} />
+                </Avatar>
+              }
+              title={comment.nickname}
+              subheader={'채택횟수: ' + comment.memberIdentifier}
+            ></CardHeader>
+          </Grid>
+          <Grid item sm={7} container>
+            <Typography variant="body1" className={classes.text}>
+              <Typography variant="body1" className={classes.text}>
+                {update_state == false ? (
+                  comment.content
+                ) : (
+                  <TextField
+                    id="content"
+                    multiline
+                    color="primary"
+                    defaultValue={comment.content}
+                    className={classes.content}
+                    onChange={onChangeContent}
+                  />
+                )}
+              </Typography>
+            </Typography>
+          </Grid>
+
+          <Grid item xs container direction="column" spacing={2}>
+            <Grid item xs>
+              {select_state == 'none' ? null : (
+                <CheckOutlinedIcon
+                  className={classes.select_state}
+                  fontSize="large"
+                  style={{ color: '#49D7F0' }}
+                />
+              )}
+            </Grid>{' '}
+            {update_state == false ? (
               <Grid item>
-                <IconButton className={classes.icon}>
+                <IconButton className={classes.icon} onClick={deleteComment}>
                   <DeleteForeverOutlinedIcon />
                   삭제
                 </IconButton>
-                <IconButton className={classes.icon}>
+                <IconButton
+                  className={classes.icon}
+                  onClick={changeUpdateState}
+                >
                   <CreateOutlinedIcon />
                   수정
                 </IconButton>
-                <IconButton className={classes.icon}>
+                <IconButton className={classes.icon} onClick={adoptComment}>
                   <DoneAllOutlinedIcon />
-                  채택
+                  {select_state == 'none' ? '채택' : '채택취소'}
                 </IconButton>
               </Grid>
-            </Grid>
+            ) : (
+              <Grid item>
+                <IconButton className={classes.icon} onClick={updateComment}>
+                  <CreateOutlinedIcon />
+                  등록
+                </IconButton>
+                <IconButton
+                  className={classes.icon}
+                  onClick={changeUpdateState}
+                >
+                  <CancelOutlinedIcon />
+                  취소
+                </IconButton>
+              </Grid>
+            )}
           </Grid>
         </Grid>
       </Paper>

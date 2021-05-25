@@ -14,7 +14,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import Login from '../Member/Login';
 import axios from 'axios';
-import { useHistory } from 'react-router-dom';
+import ListItemText from '@material-ui/core/ListItemText';
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
@@ -45,6 +45,15 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
+  menuItem: {
+    width: '120px',
+    '&:hover': {
+      backgroundColor: '#49D7F0',
+      '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+        color: theme.palette.common.white,
+      },
+    },
+  },
 }));
 
 function Header() {
@@ -56,9 +65,9 @@ function Header() {
   // ip address
   const ip = process.env.REACT_APP_API_IP;
   //로그인 확인
-  console.log(localStorage.getItem('token'));
-  console.log(axios.defaults);
-  const history = useHistory();
+  console.log('---------------토큰: ' + localStorage.getItem('token'));
+  console.log('---------------직책: ' + localStorage.getItem('roleName'));
+
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -82,6 +91,9 @@ function Header() {
   const activeMemberInfo = () => {
     window.location.href = '/activeMemberInfo';
   };
+  const membersInfo = () => {
+    window.location.href = '/admin';
+  };
   const logout = () => {
     localStorage.clear();
     window.location.href = '/';
@@ -101,9 +113,20 @@ function Header() {
     >
       {localStorage.getItem('token') != null ? (
         <>
-          <MenuItem onClick={memberInfo}>내 정보</MenuItem>
-          <MenuItem onClick={activeMemberInfo}>활동 조회</MenuItem>
-          <MenuItem onClick={logout}>로그아웃</MenuItem>
+          <MenuItem onClick={memberInfo} className={classes.menuItem}>
+            <ListItemText primary="내 정보" />
+          </MenuItem>
+          <MenuItem onClick={activeMemberInfo} className={classes.menuItem}>
+            <ListItemText primary="활동 조회" />
+          </MenuItem>
+          {localStorage.getItem('roleName') == 'admin' && (
+            <MenuItem onClick={membersInfo} className={classes.menuItem}>
+              <ListItemText primary="회원 조회" />
+            </MenuItem>
+          )}
+          <MenuItem onClick={logout} className={classes.menuItem}>
+            <ListItemText primary="로그 아웃" />
+          </MenuItem>
         </>
       ) : (
         <MenuItem onClick={handleMenuClose} component={Login} />

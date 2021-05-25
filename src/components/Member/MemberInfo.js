@@ -307,7 +307,7 @@ function MemberInfo() {
               href="/updatePW"
               className={classes.okbtn}
             >
-              비밀번호 수정
+              비밀번호 수c정
             </Button>
             <Button
               variant="contained"

@@ -73,8 +73,8 @@ function Login() {
       axios
         .post(ip + '/login', body)
         .then((res) => {
-          console.log(res.data.data.token);
           localStorage.setItem('token', res.data.data.token);
+          localStorage.setItem('roleName', res.data.data.roleName);
           window.location.replace('/');
         })
         .catch((err) => {
