@@ -61,7 +61,7 @@ export default class App extends Component {
         <Route path="/enroll" component={EnrollMember} exact />
         <Route path="/findId" component={FindId} exact />
         <Route path="/findPw" component={FindPw} exact />
-        <Route path="/updatePw" render={() => <UpdatePw />} />
+        <Route path="/updatePw" render={(props) => <UpdatePw {...props} />} />
         <Route path="/memberInfo" render={() => <MemberInfo />} />
         <Route path="/activeMemberInfo" render={() => <ActiveMemberInfo />} />
         <Route path="/admin" component={Admin} exact />

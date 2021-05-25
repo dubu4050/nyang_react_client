@@ -29,17 +29,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function UpdatePw() {
+function UpdatePw(props) {
   const classes = useStyles();
+  const account = props.location.state.account;
+
   // ip address
   const ip = process.env.REACT_APP_API_IP;
   // 비밀번호 변경 관련 변수
-  const [account, setAccount] = useState('');
+
   const [changePw, setChangePw] = useState('');
   const [checkPw, setCheckPw] = useState('');
-  const onChangeAccount = (e) => {
-    setAccount(e.target.value);
-  };
+
   const onChangePw = (e) => {
     setChangePw(e.target.value);
   };
@@ -75,13 +75,7 @@ function UpdatePw() {
         <div className={classes.table}>
           <h1>비밀번호 변경</h1>
           <div>
-            <TextField
-              required
-              id="account"
-              label="아이디"
-              value={account}
-              onChange={onChangeAccount}
-            />
+            <TextField id="account" label="아이디" value={account} disabled />
           </div>
           <div>
             <TextField
