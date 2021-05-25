@@ -43,71 +43,76 @@ const useStyles = makeStyles({
 
 export default function QnACards(props) {
   const classes = useStyles();
-  const qna = props.post;
-
+  var [contentHtml] = useState([]);
+  const tempValue = props.list;
+  tempValue.forEach((element) => {
+    contentHtml[element.identifier] = element.content;
+  });
   return (
     <div className={classes.root}>
-      <Card align="left" className={classes.card} variant="outlined">
-        <CardMedia
-          className={classes.cover}
-          image={catImg}
-          title="card_cover"
-        />
-        <CardContent className={classes.contentWrap}>
-          <Grid item className={classes.title}>
-            <Link
-              to={{
-                pathname: `/detailQnA/${qna.identifier}`,
-                state: {
-                  post_selected_state: qna.state,
-                },
-              }}
-              color="inherit"
-            >
-              <Typography variant="h6">{qna.title}</Typography>
-            </Link>
-          </Grid>
-          <Grid item xs zeroMinWidth>
-            <Typography
-              noWrap
-              variant="body2"
-              color="textSecondary"
-              className={classes.content}
-            >
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: qna.content,
+      {props.list.map((qna) => (
+        <Card align="left" className={classes.card} variant="outlined">
+          <CardMedia
+            className={classes.cover}
+            image={catImg}
+            title="card_cover"
+          />
+          <CardContent className={classes.contentWrap}>
+            <Grid item className={classes.title}>
+              <Link
+                to={{
+                  pathname: `/detailQnA/${qna.identifier}`,
+                  state: {
+                    post_selected_state: qna.state,
+                  },
                 }}
-              ></div>
-            </Typography>
-          </Grid>
-          <Grid item className={classes.footer}>
-            <Grid container spacing={1}>
-              <Grid item xs={12} sm container>
-                <Grid item xs={12} sm={10}>
-                  <Typography noWrap variant="body2" color="textSecondary">
-                    {qna.nickname} / {qna.species}
-                  </Typography>
-                  {qna.state == 'none' ? (
-                    <Typography noWrap variant="subtitle2" color="primary">
-                      대기 중
+                color="inherit"
+              >
+                <Typography variant="h6">{qna.title}</Typography>
+              </Link>
+            </Grid>
+            <Grid item xs zeroMinWidth>
+              <Typography
+                noWrap
+                variant="body2"
+                color="textSecondary"
+                className={classes.content}
+              >
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: contentHtml[qna.identifier],
+                  }}
+                ></div>
+              </Typography>
+            </Grid>
+            <Grid item className={classes.footer}>
+              <Grid container spacing={1}>
+                <Grid item xs={12} sm container>
+                  <Grid item xs={12} sm={10}>
+                    <Typography noWrap variant="body2" color="textSecondary">
+                      {qna.nickname} / {qna.species}
                     </Typography>
-                  ) : (
-                    <Typography noWrap variant="subtitle2" color="error">
-                      채택 완료
+                    {qna.state == 'none' ? (
+                      <Typography noWrap variant="subtitle2" color="primary">
+                        대기 중
+                      </Typography>
+                    ) : (
+                      <Typography noWrap variant="subtitle2" color="error">
+                        채택 완료
+                      </Typography>
+                    )}
+                  </Grid>
+                  <Grid item xs={12} sm={2}>
+                    <Typography noWrap variant="body1" color="textSecondary">
+                      답변 개수 : {qna.answerNum}
                     </Typography>
-                  )}
-                </Grid>
-                <Grid item xs={12} sm={2}>
-                  <Typography noWrap variant="body1" color="textSecondary">
-                    답변 개수 : {qna.answerNum}
-                  </Typography>
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
-          </Grid>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      ))}
     </div>
   );
 }

@@ -19,7 +19,9 @@ import axios from 'axios';
 var { category } = '';
 var { title } = '';
 var { content } = '';
-
+const onChangeCategory = (e) => {
+  category = e.target.value;
+};
 const useStyles = makeStyles((theme) => ({
   wrap: {
     marginTop: '3%',
@@ -44,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   field: { width: '20%' },
 }));
 
-const fieldes = [
+const fieldes_a_type = [
   {
     value: 'select',
     label: '선택',
@@ -56,6 +58,17 @@ const fieldes = [
   {
     value: 'info',
     label: '지식 정보',
+  },
+];
+
+const fieldes_b_type = [
+  {
+    value: 'select',
+    label: '선택',
+  },
+  {
+    value: 'free',
+    label: '자유 게시판',
   },
 ];
 
@@ -79,42 +92,17 @@ function BoardWrite() {
 function FunComp() {
   const classes = useStyles();
 
-  const onChangeCategory = (e) => {
-    category = e.target.value;
-  };
   const onChangeTitle = (e) => {
     title = e.target.value;
   };
+  const role = localStorage.getItem('roleName');
   return (
     <div className={classes.infoWrap}>
       <div className={classes.listTilte}>
         <h3>게시판 글쓰기</h3>
       </div>
       <form className={classes.fieldControl} noValidate autoComplete="off">
-        <TextField
-          id="genus"
-          select
-          preventValue="free"
-          size="small"
-          value={category}
-          onChange={onChangeCategory}
-          className={classes.field}
-          SelectProps={{
-            native: true,
-          }}
-          InputProps={{
-            classes: {
-              underline: classes.underline,
-            },
-          }}
-          variant="outlined"
-        >
-          {fieldes.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </TextField>
+        {(role == 'member' && <TypeB />) || <TypeA />}
         <TextField
           id="title"
           variant="outlined"
@@ -133,7 +121,64 @@ function FunComp() {
     </div>
   );
 }
-
+function TypeA() {
+  const classes = useStyles();
+  return (
+    <TextField
+      id="genus"
+      select
+      preventValue="free"
+      size="small"
+      value={category}
+      onChange={onChangeCategory}
+      className={classes.field}
+      SelectProps={{
+        native: true,
+      }}
+      InputProps={{
+        classes: {
+          underline: classes.underline,
+        },
+      }}
+      variant="outlined"
+    >
+      {fieldes_a_type.map((option) => (
+        <option key={option.value} value={option.value}>
+          {option.label}
+        </option>
+      ))}
+    </TextField>
+  );
+}
+function TypeB() {
+  const classes = useStyles();
+  return (
+    <TextField
+      id="genus"
+      select
+      preventValue="free"
+      size="small"
+      value={category}
+      onChange={onChangeCategory}
+      className={classes.field}
+      SelectProps={{
+        native: true,
+      }}
+      InputProps={{
+        classes: {
+          underline: classes.underline,
+        },
+      }}
+      variant="outlined"
+    >
+      {fieldes_b_type.map((option) => (
+        <option key={option.value} value={option.value}>
+          {option.label}
+        </option>
+      ))}
+    </TextField>
+  );
+}
 class EditComp extends React.Component {
   editorRef = React.createRef();
   constructor() {
@@ -176,19 +221,30 @@ class EditComp extends React.Component {
       } else {
         content = this.editorRef.current.getInstance().getHtml();
         const body = {
-          category: category,
           title: title,
           content: content,
         };
-        console.log(body);
-        // axios
-        //   .post(ip + '/board', body)
-        //   .then((res) => {
-        //     alert('글 등록에 성공했습니다.');
-        //   })
-        //   .catch((err) => {
-        //     alert('글 등록에 실패했습니다.');
-        //   });
+        if (category == 'free') {
+          axios
+            .post(ip + '/free', body)
+            .then((res) => {
+              alert('글 등록에 성공했습니다.');
+              window.location.href = '/';
+            })
+            .catch((err) => {
+              alert('글 등록에 실패했습니다.');
+            });
+        } else {
+          axios
+            .post(ip + '/info', body)
+            .then((res) => {
+              alert('글 등록에 성공했습니다.');
+              window.location.href = '/';
+            })
+            .catch((err) => {
+              alert('글 등록에 실패했습니다.');
+            });
+        }
       }
     };
     return (
@@ -213,7 +269,6 @@ class EditComp extends React.Component {
           <Button
             variant="contained"
             size="large"
-            href="/board/info"
             onClick={EnrollPostBoard}
             style={classes.okbtn}
           >

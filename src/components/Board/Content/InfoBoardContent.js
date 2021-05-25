@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Container,
   makeStyles,
@@ -7,8 +7,8 @@ import {
   Button,
 } from '@material-ui/core';
 import BoardCard from '../../Card/BoardCard';
-import SearchIcon from '@material-ui/icons/Search';
 import CreateIcon from '@material-ui/icons/Create';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -54,38 +54,35 @@ export default function InfoBoardContent(props) {
   const onChangeQuestion = (e) => {
     setQuestion(e.target.value);
   };
-
   // 지식정보 게시판 전체 조회
   const totalInfoBoard = () => {
-    // axios
-    //   .get(ip + '/board')
-    //   .then((res) => {
-    //     alert('요청 성공');
-    //     setInfoBoardList();
-    //   })
-    //   .catch((err) => {
-    //     alert('요청 실패');
-    //   });
+    axios
+      .get(ip + '/info')
+      .then((res) => {
+        setInfoBoardList(res.data.data);
+      })
+      .catch((err) => {
+        alert('요청 실패');
+      });
   };
-
-  totalInfoBoard();
+  useEffect(() => {
+    totalInfoBoard();
+  }, []);
   const searchInfoBoard = () => {
     if (question == '') {
       alert('글 제목을 입력해주세요');
     } else {
       const body = {
-        content: question,
+        keyword: question,
       };
-      alert(question);
-      // axios
-      //   .post(ip + '/board', body)
-      //   .then((res) => {
-      //     alert('검색 성공');
-      //     setInfoBoardList();
-      //   })
-      //   .catch((err) => {
-      //     alert('검색 실패');
-      //   });
+      axios
+        .post(ip + '/info/search', body)
+        .then((res) => {
+          setInfoBoardList(res.data.data);
+        })
+        .catch((err) => {
+          alert('검색 실패');
+        });
     }
   };
   return (
@@ -112,8 +109,7 @@ export default function InfoBoardContent(props) {
           <CreateIcon className={classes.icon} />
         </IconButton>
       </Container>
-      <BoardCard />
-      {/* <BoardCard list={infoBoardList}/> */}
+      <BoardCard list={infoBoardList} />
     </Container>
   );
 }

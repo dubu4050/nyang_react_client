@@ -9,22 +9,17 @@ import {
   FormControlLabel,
   RadioGroup,
 } from '@material-ui/core';
+import { validate } from '@material-ui/pickers';
+import { ColumnController } from 'ag-grid-community';
 import React, { useState, useEffect } from 'react';
 import useForm from '../Common/useForm';
 
 const authorityItems = [
-  { id: 'manager', title: '관리자' },
+  { id: 'admin', title: '관리자' },
   { id: 'editor', title: '에디터' },
   { id: 'member', title: '회원' },
 ];
-const initialFValues = {
-  name: 'hj',
-  nick_name: 'hj',
-  phone_number: '010-9250-6527',
-  date: new Date(),
-  authority: 'manager',
-  email: 'jing0318@naver.com',
-};
+
 const useStyles = makeStyles((theme) => ({
   root: {
     '& .MuiFormControl-root': {
@@ -37,15 +32,8 @@ const useStyles = makeStyles((theme) => ({
 export default function MemberForm(props) {
   const classes = useStyles();
   const { recordFordEdit } = props;
-
-  const {
-    values,
-    setValues,
-    errore,
-    setErrore,
-    handleInputChange,
-    resetForm,
-  } = useForm(initialFValues, true);
+  const [values, setValues] = useState(recordFordEdit);
+  const [authority, setAuthority] = useState(values.authority);
 
   useEffect(() => {
     if (recordFordEdit != null)
@@ -54,6 +42,9 @@ export default function MemberForm(props) {
       });
   }, [recordFordEdit]);
 
+  const authorityChange = (e) => {
+    setAuthority(e.target.value);
+  };
   return (
     <form className={classes.root}>
       <Grid container>
@@ -92,8 +83,8 @@ export default function MemberForm(props) {
             <RadioGroup
               row
               name="authority"
-              value={values.authority}
-              onChange={handleInputChange}
+              value={authority}
+              onChange={authorityChange}
             >
               {authorityItems.map((item, index) => (
                 <FormControlLabel
