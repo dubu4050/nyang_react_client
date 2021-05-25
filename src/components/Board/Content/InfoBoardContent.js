@@ -7,7 +7,6 @@ import {
   Button,
 } from '@material-ui/core';
 import BoardCard from '../../Card/BoardCard';
-import SearchIcon from '@material-ui/icons/Search';
 import CreateIcon from '@material-ui/icons/Create';
 import axios from 'axios';
 
@@ -55,13 +54,11 @@ export default function InfoBoardContent(props) {
   const onChangeQuestion = (e) => {
     setQuestion(e.target.value);
   };
-
   // 지식정보 게시판 전체 조회
   const totalInfoBoard = () => {
     axios
       .get(ip + '/info')
       .then((res) => {
-        console.log(res.data.data);
         setInfoBoardList(res.data.data);
       })
       .catch((err) => {
@@ -81,8 +78,7 @@ export default function InfoBoardContent(props) {
       axios
         .post(ip + '/info/search', body)
         .then((res) => {
-          console.log(res.data.data);
-          setInfoBoardList();
+          setInfoBoardList(res.data.data);
         })
         .catch((err) => {
           alert('검색 실패');
@@ -109,11 +105,9 @@ export default function InfoBoardContent(props) {
         >
           검색
         </Button>
-        {axios.defaults.headers.common.Authorization != undefined && (
-          <IconButton href="/boardWrite">
-            <CreateIcon className={classes.icon} />
-          </IconButton>
-        )}
+        <IconButton href="/boardWrite">
+          <CreateIcon className={classes.icon} />
+        </IconButton>
       </Container>
       <BoardCard list={infoBoardList} />
     </Container>

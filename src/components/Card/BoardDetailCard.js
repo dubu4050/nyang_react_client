@@ -11,6 +11,7 @@ import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined';
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
 import { Link } from 'react-router-dom';
 import detailqnaboard from '../../db/detailBoard.json';
+import axios from 'axios';
 
 const useStyles = makeStyles({
   root: {
@@ -92,6 +93,8 @@ export default function ComplexGrid(props) {
   console.log(detailContent);
   const identifier = props.identifier;
   const boardContent = detailContent.content;
+  const tempStr = '+' + detailContent.createDate;
+  const createDate = tempStr.substr(1, 10);
   // 접근권한 여부
   const currentAccessId = detailContent.isIssuer;
   return (
@@ -104,9 +107,6 @@ export default function ComplexGrid(props) {
                 <Typography className={classes.title}>
                   {detailContent.title}
                 </Typography>
-                {/* <Typography variant="body2" color="textSecondary" gutterBottom>
-                  {detailContent.comment_num}
-                </Typography> */}
                 <Typography
                   variant="body1"
                   className={classes.text}
@@ -118,7 +118,7 @@ export default function ComplexGrid(props) {
             </Grid>
             <Grid item xs={12} sm={7}>
               <Typography variant="subtitle1" className={classes.date}>
-                작성일 : {detailContent.createDate}
+                작성일 : {createDate}
               </Typography>
             </Grid>
             <Grid item xs={12} sm={12}>
@@ -152,7 +152,7 @@ function PostFuncButton(props) {
   const detailContent = props.list;
   const identifier = props.identifier;
   const ip = process.env.REACT_APP_API_IP;
-  // 게시글 삭제(권한 검사는 이미 완료된 상태)
+  // 게시글 삭제
   const deletePostBoard = () => {
     axios
       .delete(ip + '/info/' + identifier)
@@ -178,7 +178,7 @@ function PostFuncButton(props) {
             no: identifier,
             title: detailContent.title,
             content: detailContent.content,
-            category: 'free',
+            category: detailContent.category,
           },
         }}
       >

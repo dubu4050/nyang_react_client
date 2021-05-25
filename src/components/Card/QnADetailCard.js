@@ -92,6 +92,9 @@ export default function ComplexGrid(props) {
   const detailContent = props.list;
   const identifier = props.identifier;
   const questionContent = detailContent.content;
+  const tempStr = '+' + detailContent.createDate;
+  const createDate = tempStr.substr(1, 10);
+  // 회원 정보 수정 후 프로필 사진 확인 필요
   const tmp =
     'https://imgnews.pstatic.net/image/477/2021/05/23/0000300912_001_20210523170308400.jpg?type=w647';
   // 접근권한 여부
@@ -124,7 +127,7 @@ export default function ComplexGrid(props) {
             </Grid>
             <Grid item xs={12} sm={7}>
               <Typography variant="subtitle1" className={classes.date}>
-                작성일 : {detailContent.createDate}
+                작성일 : {createDate}
               </Typography>
             </Grid>
             <Grid item xs={12} sm={12}>
@@ -159,7 +162,7 @@ function PostFuncButton(props) {
   const detailContent = props.list;
   const identifier = props.identifier;
   const ip = process.env.REACT_APP_API_IP;
-  // 게시글 삭제(권한 검사는 이미 완료된 상태)
+  // 게시글 삭제
   const deleteQnaBoard = () => {
     axios
       .delete(ip + '/question/' + identifier)

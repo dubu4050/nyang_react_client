@@ -6,7 +6,6 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
 import catImg from '../../images/cat_icon.png';
 import Typography from '@material-ui/core/Typography';
-import qnaboard from '../../db/info.json';
 import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
@@ -41,7 +40,6 @@ const useStyles = makeStyles({
 export default function BoradCards(props) {
   const classes = useStyles();
   const tempValue = props.list;
-  console.log(tempValue);
   var [contentHtml] = useState([]);
   tempValue.forEach((element) => {
     contentHtml[element.identifier] = element.content;
@@ -80,7 +78,7 @@ export default function BoradCards(props) {
                 <Grid item xs={12} sm container>
                   <Grid item xs={12} sm={10}>
                     <Typography noWrap variant="body2" color="textSecondary">
-                      {qna.writer}
+                      {qna.nickname}
                     </Typography>
                   </Grid>
                   <Grid item xs={12} sm={2}>

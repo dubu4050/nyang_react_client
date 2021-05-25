@@ -77,10 +77,9 @@ export default function FreeBoardContent(props) {
         keyword: question,
       };
       axios
-        .get(ip + '/free/search', body)
+        .post(ip + '/free/search', body)
         .then((res) => {
-          console.log(res);
-          setFreeBoardList();
+          setFreeBoardList(res.data.data);
         })
         .catch((err) => {
           alert('검색 실패');

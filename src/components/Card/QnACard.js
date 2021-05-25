@@ -44,7 +44,6 @@ const useStyles = makeStyles({
 export default function QnACards(props) {
   const classes = useStyles();
   var [contentHtml] = useState([]);
-  console.log(props.list);
   const tempValue = props.list;
   tempValue.forEach((element) => {
     contentHtml[element.identifier] = element.content;
@@ -60,7 +59,15 @@ export default function QnACards(props) {
           />
           <CardContent className={classes.contentWrap}>
             <Grid item className={classes.title}>
-              <Link to={`/detailQnA/${qna.identifier}`} color="inherit">
+              <Link
+                to={{
+                  pathname: `/detailQnA/${qna.identifier}`,
+                  state: {
+                    post_selected_state: qna.state,
+                  },
+                }}
+                color="inherit"
+              >
                 <Typography variant="h6">{qna.title}</Typography>
               </Link>
             </Grid>
@@ -85,8 +92,12 @@ export default function QnACards(props) {
                     <Typography noWrap variant="body2" color="textSecondary">
                       {qna.nickname} / {qna.species}
                     </Typography>
-                    {qna.state == 'adopted' && (
-                      <Typography noWrap variant="body2" color="textSecondary">
+                    {qna.state == 'none' ? (
+                      <Typography noWrap variant="subtitle2" color="primary">
+                        대기 중
+                      </Typography>
+                    ) : (
+                      <Typography noWrap variant="subtitle2" color="error">
                         채택 완료
                       </Typography>
                     )}

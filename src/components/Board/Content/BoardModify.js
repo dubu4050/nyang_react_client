@@ -2,7 +2,7 @@ import React from 'react';
 import 'codemirror/lib/codemirror.css';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import { Editor } from '@toast-ui/react-editor';
-import Header from '../../Common/Header';
+import axios from 'axios';
 import {
   Container,
   withStyles,
@@ -47,11 +47,11 @@ const useStyles = makeStyles((theme) => ({
 
 const fieldes = [
   {
-    value: 'free',
+    value: 'free_board',
     label: '자유 게시판',
   },
   {
-    value: 'info',
+    value: 'info_board',
     label: '지식 정보',
   },
 ];
@@ -174,6 +174,7 @@ class EditComp extends React.Component {
       },
     };
     const modifyPostBoard = () => {
+      const ip = process.env.REACT_APP_API_IP;
       if (title == '' || content == '') {
         alert('모든 항목을 채우지 않았습니다.');
       } else {
@@ -184,15 +185,28 @@ class EditComp extends React.Component {
         };
         console.log(body);
         console.log(postNo);
-        // axios
-        //   .put(ip + '/info/' + postNo, body)
-        //   .then((res) => {
-        //     alert('글 수정에 성공했습니다.');
-        //     window.location.href = '/';
-        //   })
-        //   .catch((err) => {
-        //     alert('글 등록에 실패했습니다.');
-        //   });
+        console.log(category);
+        if (category == 'free_board') {
+          axios
+            .put(ip + '/free/' + postNo, body)
+            .then((res) => {
+              alert('글 수정에 성공했습니다.');
+              window.location.href = '/';
+            })
+            .catch((err) => {
+              alert('글 등록에 실패했습니다.');
+            });
+        } else {
+          axios
+            .put(ip + '/info/' + postNo, body)
+            .then((res) => {
+              alert('글 수정에 성공했습니다.');
+              window.location.href = '/';
+            })
+            .catch((err) => {
+              alert('글 등록에 실패했습니다.');
+            });
+        }
       }
     };
     return (

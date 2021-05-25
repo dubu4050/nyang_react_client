@@ -219,12 +219,6 @@ class EditComp extends React.Component {
           alert('나이가 그렇게 많나요?');
         } else {
           content = this.editorRef.current.getInstance().getHtml();
-          alert('게시글 등록 요청');
-          console.log(genus);
-          console.log(species);
-          console.log(age);
-          console.log(title);
-          console.log(this.editorRef.current.getInstance().getHtml());
           const body = {
             genus: genus,
             species: species,
@@ -281,7 +275,6 @@ class EditComp extends React.Component {
           <Button
             variant="contained"
             size="large"
-            // href="/diagnosis/qna"
             onClick={insertQnaBoard}
             style={classes.okbtn}
           >
