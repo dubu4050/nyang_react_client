@@ -2,11 +2,11 @@ import React, { useState, useRef, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom';
 import nyangImg from '../../images/nyangImg.png';
 import Modal from '@material-ui/core/Modal';
 import axios from 'axios';
-import { useHistory } from 'react-router-dom';
-import UpdatePw from './UpdatePw';
+
 import { Route } from 'react-router-dom';
 function getModalStyle() {
   const top = 50;
@@ -143,7 +143,7 @@ function MemberInfo() {
       form.append('nickname', nickName);
       form.append('phone_number', phoneNumber);
       form.append('date_birth', member.date_birth);
-      form.append('profile_picture', img);
+      form.append('file', img);
 
       const config = {
         headers: { 'Content-Type': 'multipart/form-data' },
@@ -302,13 +302,28 @@ function MemberInfo() {
             >
               프로필 수정
             </Button>
+            {/* <Link
+              to={{
+                pathname: `/updatePW`,
+                state: {
+                  account: member.account,
+                },
+              }}
+            > */}
             <Button
               variant="contained"
-              href="/updatePW"
               className={classes.okbtn}
+              component={Link}
+              to={{
+                pathname: `/updatePW`,
+                state: {
+                  account: member.account,
+                },
+              }}
             >
               비밀번호 수c정
             </Button>
+            {/* </Link> */}
             <Button
               variant="contained"
               onClick={handleOpen}

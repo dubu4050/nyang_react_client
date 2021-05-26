@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import Header from '../Common/Header';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -12,51 +11,32 @@ import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import Toolbar from '@material-ui/core/Toolbar';
 import Popup from '../Common/Popup';
-import MemberForm from './MemberForm';
+import axios from 'axios';
+import { InputBase, Button, Paper } from '@material-ui/core';
 const columns = [
-  { id: 'name', label: '이름', minWidth: 170 },
-  { id: 'nick_name', label: '닉네임', miWidth: 170 },
+  { id: 'account', label: '아이디', minWidth: '25%' },
+  { id: 'nickname', label: '닉네임', miWidth: '25%', align: 'center' },
   {
-    id: 'phone_number',
-    label: '연락처',
-    minWidth: 170,
-  },
-  {
-    id: 'date',
+    id: 'date_register',
     label: '가입 날짜',
-    minWidth: 100,
+    minWidth: '25%',
+    align: 'center',
   },
   {
-    id: 'authority',
+    id: 'role',
     label: '권한',
-    minWidth: 170,
+    minWidth: '25%',
     align: 'right',
     format: (value) => value.toFixed(2),
   },
 ];
-
-function createData(name, nick_name, phone_number, date, authority) {
-  return { name, nick_name, phone_number, date, authority };
-}
-
-const rows = [
-  createData('India', 'IN', 1324171354, '21.04.12', 'editor'),
-  createData('China', 'CN', 1403500365, '21.04.12', 'editor'),
-  createData('Italy', 'IT', 60483973, '21.04.12', 'editor'),
-  createData('United States', 'US', 327167434, '21.04.12', 'editor'),
-  createData('Canada', 'CA', 37602103, '21.04.12', 'editor'),
-  createData('Australia', 'AU', 25475400, '21.04.12', 'editor'),
-  createData('Germany', 'DE', 83019200, '21.04.12', 'editor'),
-  createData('Ireland', 'IE', 4857000, '21.04.12', 'editor'),
-  createData('Mexico', 'MX', 126577691, '21.04.12', 'editor'),
-  createData('Japan', 'JP', 126317000, '21.04.12', 'editor'),
-  createData('France', 'FR', 67022000, '21.04.12', 'editor'),
-  createData('United Kingdom', 'GB', 67545757, '21.04.12', 'editor'),
-  createData('Russia', 'RU', 146793744, '21.04.12', 'editor'),
-  createData('Nigeria', 'NG', 200962417, '21.04.12', 'editor'),
-  createData('Brazil', 'BR', 210147125, '21.04.12', 'admin'),
-];
-
+const initialForm = {
+  account: '',
+  date_register: '',
+  identifier: '',
+  nickname: '',
+  role: '',
+};
 const useStyles = makeStyles((theme) => ({
   root: {
     margin: '35px 0 0 0',
@@ -65,33 +45,218 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flex: '1 1 100%',
   },
+  thead: { fontWeight: 'bold' },
+  wrapper: {
+    width: '85%',
+    margin: '0 auto',
+    minHeight: '700px',
+  },
+  inputwrapper: {
+    width: '95%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    marginBottom: '2%',
+    paddingTop: '2%',
+  },
+
   table: {
-    width: '80%',
+    width: '90%',
     margin: '0 auto',
     borderBottom: 'none',
     maxHeight: 440,
     outline: 'none',
   },
+  input: {
+    height: '50px',
+    border: '2px solid #dedede',
+    borderRadius: '25px',
+    marginRight: '0.5%',
+  },
+  placeholderStyle: {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+  },
   pagination: {
-    width: '65%',
+    width: '90%',
+    margin: '0 auto',
+    marginTop: '33px',
+  },
+  pageNumbers: {
+    listStyle: 'none',
+    display: 'flex',
+    margin: '0 auto',
+    width: 'fit-content',
+    '& li': {
+      padding: '15px',
+      cursor: 'pointer',
+      height: '50px',
+      borderRadius: '2rem',
+      margin: '10px',
+      backgroundColor: theme.palette.action.hover,
+      '&.active': { color: '#49D7F0' },
+      '& button': {
+        backgroundColor: 'transparent',
+        border: 'none',
+        color: 'black',
+        cursor: 'pointer',
+        '&:hover': {
+          backgroundColor: 'white',
+          color: '#49D7F0',
+        },
+        '&:focus': {
+          outline: 'none',
+        },
+      },
+    },
   },
 }));
 
 export default function Admin() {
   const classes = useStyles();
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(25);
+  const ip = process.env.REACT_APP_API_IP;
+  const [memberList, setMemberList] = useState([]);
+  const [keyword, setKeyword] = useState('');
+
+  //팝업창 관련
   const [openPopup, setOpenPopup] = useState(false);
-  const [recordFordEdit, setRecordFordEdit] = useState(null);
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+  const [recordFordEdit, setRecordFordEdit] = useState(initialForm);
+
+  //pagination
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setcurrentPage] = useState(1);
+  const [perPage, setPerPage] = useState(1);
+  const [pageNumberLimit, setPageNumberLimit] = useState(3);
+  const [maxPageNumberLimit, setmaxPageNumberLimit] = useState(3);
+  const [minPageNumberLimit, setminPageNumberLimit] = useState(0);
+
+  //멤버리스트 조회
+  const getMemberList = (currentPage = 1) => {
+    axios
+      .get(ip + '/role_member?page=' + currentPage + '&perPage=' + perPage)
+      .then((res) => {
+        console.log(res.data.data);
+        setMemberList(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  useEffect(() => {
+    getTotalPage();
+    getMemberList();
+  }, []);
+
+  const onChangeQuestion = (e) => {
+    setKeyword(e.target.value);
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
+  const search = () => {
+    const body = {
+      keyword: keyword,
+    };
+    axios.post(ip + '/role_member/search', body).then((res) => {
+      console.log(res.data.data);
+      setTotalPages(Math.ceil(res.data.data.length / perPage));
+    });
+    for (let i = 1; i <= totalPages; i++) {
+      pages.push(i);
+    }
+    searchMemberList(1);
   };
 
+  const searchMemberList = (currentPage = 1) => {
+    const body = {
+      keyword: keyword,
+    };
+    axios
+      .post(
+        ip + '/role_member/search?page=' + currentPage + '&perPage=' + perPage,
+        body,
+      )
+      .then((res) => {
+        setMemberList(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  //페이지 설정
+  const getTotalPage = () => {
+    axios.get(ip + '/role_member?').then((res) => {
+      console.log(res.data.data);
+      setTotalPages(Math.ceil(res.data.data.length / perPage));
+    });
+  };
+  const pages = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pages.push(i);
+  }
+
+  const handleClick = (e) => {
+    setcurrentPage(Number(e.target.id));
+    if (keyword != '') {
+      searchMemberList(e.target.id);
+    } else {
+      getMemberList(e.target.id);
+    }
+  };
+
+  const handleNextbtn = () => {
+    if (currentPage != pages[pages.length - 1]) {
+      setcurrentPage(currentPage + 1);
+
+      if (currentPage + 1 > maxPageNumberLimit) {
+        setmaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
+        setminPageNumberLimit(minPageNumberLimit + pageNumberLimit);
+      }
+
+      if (keyword != '') {
+        searchMemberList(currentPage + 1);
+      } else {
+        getMemberList(currentPage + 1);
+      }
+    }
+  };
+
+  const handlePrevbtn = () => {
+    if (currentPage != pages[0]) {
+      setcurrentPage(currentPage - 1);
+
+      if ((currentPage - 1) % pageNumberLimit == 0) {
+        setmaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
+        setminPageNumberLimit(minPageNumberLimit - pageNumberLimit);
+      }
+      if (keyword != '') {
+        searchMemberList(currentPage - 1);
+      } else {
+        getMemberList(currentPage - 1);
+      }
+    }
+  };
+  console.log(pages[0]);
+
+  console.log(pages[pages.length - 1]);
+  const renderPageNumbers = pages.map((number) => {
+    if (number < maxPageNumberLimit + 1 && number > minPageNumberLimit) {
+      return (
+        <li
+          key={number}
+          id={number}
+          onClick={handleClick}
+          className={currentPage == number ? 'active' : null}
+        >
+          {number}
+        </li>
+      );
+    } else return null;
+  });
+
+  //팝업창
   const openInPopup = (item) => {
     setRecordFordEdit(item);
     setOpenPopup(true);
@@ -118,25 +283,43 @@ export default function Admin() {
             회원 조회
           </Typography>
         </Toolbar>
-        <TableContainer>
-          <Table size="small" className={classes.table}>
-            <TableHead className={classes.thead}>
-              <TableRow>
-                {columns.map((column) => (
-                  <TableCell
-                    key={column.id}
-                    align={column.align}
-                    style={{ minWidth: column.minWidth, textWeight: 'bold' }}
-                  >
-                    {column.label}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => {
+        <Paper className={classes.wrapper}>
+          <Toolbar className={classes.inputwrapper}>
+            <InputBase
+              className={classes.input}
+              placeholder="Search…"
+              classes={{
+                input: classes.placeholderStyle,
+              }}
+              inputProps={{ 'aria-label': 'search' }}
+              onChange={onChangeQuestion}
+            />
+            <Button
+              variant="contained"
+              color="default"
+              className={classes.button}
+              onClick={search}
+            >
+              검색
+            </Button>
+          </Toolbar>
+          <TableContainer className={classes.tablewrap}>
+            <Table size="small" className={classes.table}>
+              <TableHead className={classes.thead}>
+                <TableRow>
+                  {columns.map((column) => (
+                    <TableCell
+                      key={column.id}
+                      align={column.align}
+                      style={{ minWidth: column.minWidth, fontWeight: 'bold' }}
+                    >
+                      {column.label}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {memberList.map((row) => {
                   return (
                     <StyledTableRow
                       hover
@@ -158,23 +341,25 @@ export default function Admin() {
                     </StyledTableRow>
                   );
                 })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          className={classes.pagination}
-          rowsPerPageOptions={[10, 25, 100]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <div className={classes.pagination}>
+            <ul className={classes.pageNumbers}>
+              <li onClick={handlePrevbtn}>&nbsp;Prev</li>
+
+              {renderPageNumbers}
+
+              <li onClick={handleNextbtn}>Next&nbsp;</li>
+            </ul>
+          </div>
+        </Paper>
       </form>
-      <Popup openPopup={openPopup} setOpenPopup={setOpenPopup}>
-        <MemberForm recordFordEdit={recordFordEdit} />
-      </Popup>
+      <Popup
+        openPopup={openPopup}
+        setOpenPopup={setOpenPopup}
+        recordFordEdit={recordFordEdit}
+      />
     </div>
   );
 }
