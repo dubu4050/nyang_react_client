@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import Header from '../Common/Header';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -60,15 +59,13 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: '2%',
     paddingTop: '2%',
   },
+
   table: {
     width: '90%',
     margin: '0 auto',
     borderBottom: 'none',
     maxHeight: 440,
     outline: 'none',
-  },
-  pagination: {
-    width: '65%',
   },
   input: {
     height: '50px',
@@ -83,24 +80,63 @@ const useStyles = makeStyles((theme) => ({
     transition: theme.transitions.create('width'),
     width: '100%',
   },
+  pagination: {
+    width: '90%',
+    margin: '0 auto',
+    marginTop: '33px',
+  },
+  pageNumbers: {
+    listStyle: 'none',
+    display: 'flex',
+    margin: '0 auto',
+    width: 'fit-content',
+    '& li': {
+      padding: '15px',
+      cursor: 'pointer',
+      height: '50px',
+      borderRadius: '2rem',
+      margin: '10px',
+      backgroundColor: theme.palette.action.hover,
+      '&.active': { color: '#49D7F0' },
+      '& button': {
+        backgroundColor: 'transparent',
+        border: 'none',
+        color: 'black',
+        cursor: 'pointer',
+        '&:hover': {
+          backgroundColor: 'white',
+          color: '#49D7F0',
+        },
+        '&:focus': {
+          outline: 'none',
+        },
+      },
+    },
+  },
 }));
 
 export default function Admin() {
   const classes = useStyles();
   const ip = process.env.REACT_APP_API_IP;
   const [memberList, setMemberList] = useState([]);
+  const [keyword, setKeyword] = useState('');
+
+  //팝업창 관련
   const [openPopup, setOpenPopup] = useState(false);
   const [recordFordEdit, setRecordFordEdit] = useState(initialForm);
-  const [question, setQuestion] = useState('');
-  console.log(recordFordEdit);
 
-  const onChangeQuestion = (e) => {
-    setQuestion(e.target.value);
-  };
+  //pagination
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setcurrentPage] = useState(1);
+  const [perPage, setPerPage] = useState(1);
+  const [pageNumberLimit, setPageNumberLimit] = useState(3);
+  const [maxPageNumberLimit, setmaxPageNumberLimit] = useState(3);
+  const [minPageNumberLimit, setminPageNumberLimit] = useState(0);
 
-  const getMemberList = () => {
+  //멤버리스트 조회
+  const getMemberList = (currentPage = 1) => {
     axios
-      .get(ip + '/role_member')
+      .get(ip + '/role_member?page=' + currentPage + '&perPage=' + perPage)
       .then((res) => {
         console.log(res.data.data);
         setMemberList(res.data.data);
@@ -110,9 +146,117 @@ export default function Admin() {
       });
   };
   useEffect(() => {
+    getTotalPage();
     getMemberList();
   }, []);
 
+  const onChangeQuestion = (e) => {
+    setKeyword(e.target.value);
+  };
+
+  const search = () => {
+    const body = {
+      keyword: keyword,
+    };
+    axios.post(ip + '/role_member/search', body).then((res) => {
+      console.log(res.data.data);
+      setTotalPages(Math.ceil(res.data.data.length / perPage));
+    });
+    for (let i = 1; i <= totalPages; i++) {
+      pages.push(i);
+    }
+    searchMemberList(1);
+  };
+
+  const searchMemberList = (currentPage = 1) => {
+    const body = {
+      keyword: keyword,
+    };
+    axios
+      .post(
+        ip + '/role_member/search?page=' + currentPage + '&perPage=' + perPage,
+        body,
+      )
+      .then((res) => {
+        setMemberList(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  //페이지 설정
+  const getTotalPage = () => {
+    axios.get(ip + '/role_member?').then((res) => {
+      console.log(res.data.data);
+      setTotalPages(Math.ceil(res.data.data.length / perPage));
+    });
+  };
+  const pages = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pages.push(i);
+  }
+
+  const handleClick = (e) => {
+    setcurrentPage(Number(e.target.id));
+    if (keyword != '') {
+      searchMemberList(e.target.id);
+    } else {
+      getMemberList(e.target.id);
+    }
+  };
+
+  const handleNextbtn = () => {
+    if (currentPage != pages[pages.length - 1]) {
+      setcurrentPage(currentPage + 1);
+
+      if (currentPage + 1 > maxPageNumberLimit) {
+        setmaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
+        setminPageNumberLimit(minPageNumberLimit + pageNumberLimit);
+      }
+
+      if (keyword != '') {
+        searchMemberList(currentPage + 1);
+      } else {
+        getMemberList(currentPage + 1);
+      }
+    }
+  };
+
+  const handlePrevbtn = () => {
+    if (currentPage != pages[0]) {
+      setcurrentPage(currentPage - 1);
+
+      if ((currentPage - 1) % pageNumberLimit == 0) {
+        setmaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
+        setminPageNumberLimit(minPageNumberLimit - pageNumberLimit);
+      }
+      if (keyword != '') {
+        searchMemberList(currentPage - 1);
+      } else {
+        getMemberList(currentPage - 1);
+      }
+    }
+  };
+  console.log(pages[0]);
+
+  console.log(pages[pages.length - 1]);
+  const renderPageNumbers = pages.map((number) => {
+    if (number < maxPageNumberLimit + 1 && number > minPageNumberLimit) {
+      return (
+        <li
+          key={number}
+          id={number}
+          onClick={handleClick}
+          className={currentPage == number ? 'active' : null}
+        >
+          {number}
+        </li>
+      );
+    } else return null;
+  });
+
+  //팝업창
   const openInPopup = (item) => {
     setRecordFordEdit(item);
     setOpenPopup(true);
@@ -154,11 +298,12 @@ export default function Admin() {
               variant="contained"
               color="default"
               className={classes.button}
+              onClick={search}
             >
               검색
             </Button>
           </Toolbar>
-          <TableContainer>
+          <TableContainer className={classes.tablewrap}>
             <Table size="small" className={classes.table}>
               <TableHead className={classes.thead}>
                 <TableRow>
@@ -199,6 +344,15 @@ export default function Admin() {
               </TableBody>
             </Table>
           </TableContainer>
+          <div className={classes.pagination}>
+            <ul className={classes.pageNumbers}>
+              <li onClick={handlePrevbtn}>&nbsp;Prev</li>
+
+              {renderPageNumbers}
+
+              <li onClick={handleNextbtn}>Next&nbsp;</li>
+            </ul>
+          </div>
         </Paper>
       </form>
       <Popup
