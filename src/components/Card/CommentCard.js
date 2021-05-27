@@ -176,7 +176,11 @@ export default function commentCard(props) {
                 </Avatar>
               }
               title={comment.nickname}
-              subheader={'채택횟수: ' + comment.memberIdentifier}
+              subheader={
+                type == 'answer'
+                  ? '채택횟수: ' + comment.memberIdentifier
+                  : null
+              }
             ></CardHeader>
           </Grid>
           <Grid item sm={7} container>
