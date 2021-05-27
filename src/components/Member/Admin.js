@@ -188,7 +188,6 @@ export default function Admin() {
   //페이지 설정
   const getTotalPage = () => {
     axios.get(ip + '/role_member?').then((res) => {
-      console.log(res.data.data);
       setTotalPages(Math.ceil(res.data.data.length / perPage));
     });
   };
@@ -238,9 +237,7 @@ export default function Admin() {
       }
     }
   };
-  console.log(pages[0]);
 
-  console.log(pages[pages.length - 1]);
   const renderPageNumbers = pages.map((number) => {
     if (number < maxPageNumberLimit + 1 && number > minPageNumberLimit) {
       return (
@@ -269,7 +266,7 @@ export default function Admin() {
       },
     },
   }))(TableRow);
-
+  console.log(memberList);
   return (
     <div>
       <form className={classes.root} noValidate autoComplete="off">

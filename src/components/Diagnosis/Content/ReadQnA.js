@@ -2,32 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import QnADetailCard from '../../Card/QnADetailCard';
 import CommentList from '../../Common/CommentList';
-import CommentWrite from '../../Common/CommentWrite';
-import Header from '../../Common/Header';
-import CommentCard from '../../Card/CommentCard';
 import axios from 'axios';
 
 const useStyles = makeStyles({
   root: {
     width: '100%',
-  },
-  hr: {
-    width: '100%',
-    '@media (min-device-width: 481px)': {
-      // PC
-      height: '30px',
-    },
-    '@media (min-device-width: 320px) and (max-device-width: 480px)': {
-      // Mobile
-      height: '15px',
-    },
-    borderBottom: '0.8px solid #dedede',
-  },
-  count: {
-    overflow: 'auto',
-    width: '70%',
-    margin: '0 auto',
-    padding: '15px 0px 15px 0px',
   },
 });
 
@@ -68,20 +47,12 @@ export default function ReadQnA(props) {
   return (
     <div className={classes.root}>
       <QnADetailCard list={qnaPost} identifier={match.params.no} />
-      <div className={classes.hr}></div>
-      <div className={classes.count}>
-        <strong>답변 </strong>
-        <strong>{qnaCommentList.length}</strong>
-      </div>
-      {qnaCommentList.map((comment) => (
-        <CommentCard
-          comment={comment}
-          postIdentifier={match.params.no}
-          post_state={post_state}
-          type="answer"
-        />
-      ))}
-      <CommentWrite identifier={match.params.no} type="answer" />
+      <CommentList
+        postIdentifier={match.params.no}
+        list={qnaCommentList}
+        type="answer"
+        post_state={post_state}
+      />
     </div>
   );
 }

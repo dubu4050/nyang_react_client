@@ -84,7 +84,7 @@ export default function Popup(props) {
     } else {
       const body = {
         identifier: Number(values.identifier),
-        Role: authority,
+        Role: authority.toUpperCase(),
       };
       axios
         .put(ip + '/role_member', body)
