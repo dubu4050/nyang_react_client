@@ -51,6 +51,7 @@ export default function ReadQnA(props) {
         list={postCommentList}
         type="comment"
         post_state="done"
+        writer={post.isIssuer}
       />
     </div>
   );
