@@ -29,6 +29,8 @@ export default function ComplexGrid(props) {
   const postIdentifier = props.postIdentifier;
   const list = props.list;
   const type = props.type;
+  const writer = props.writer;
+  console.log(list);
   const post_state = props.post_state;
   return (
     <div className={classes.root}>
@@ -42,6 +44,7 @@ export default function ComplexGrid(props) {
           postIdentifier={postIdentifier}
           post_state={post_state}
           type={type}
+          writer={writer}
         />
       ))}
       <CommentWrite identifier={postIdentifier} type={type} />

@@ -96,8 +96,10 @@ export default function commentCard(props) {
   const postIdentifier = props.postIdentifier;
   const comment = props.comment;
   const post_state = props.post_state;
-  const profile = comment.profile_photo_path;
+  const writer = props.writer;
   const type = props.type;
+  const profile = comment.profile_photo_path;
+  const editable = comment.isEditable;
   const [content, setContent] = useState(comment.content);
   const [update_state, setUpdateState] = useState(false);
   const [select_state, setSelectState] = useState(comment.select_state);
@@ -111,6 +113,7 @@ export default function commentCard(props) {
       setUpdateState(false);
     }
   };
+  console.log(writer);
   //수정,삭제,채택
   const updateComment = (e) => {
     const body = { content: content };
@@ -211,42 +214,59 @@ export default function commentCard(props) {
                   style={{ color: '#49D7F0' }}
                 />
               )}
-            </Grid>{' '}
-            {update_state == false ? (
-              <Grid item>
-                <IconButton className={classes.icon} onClick={deleteComment}>
-                  <DeleteForeverOutlinedIcon />
-                  삭제
+            </Grid>
+            <Grid item>
+              {editable == true &&
+                (update_state == false ? (
+                  <>
+                    <IconButton
+                      className={classes.icon}
+                      onClick={deleteComment}
+                    >
+                      <DeleteForeverOutlinedIcon />
+                      삭제
+                    </IconButton>
+                    <IconButton
+                      className={classes.icon}
+                      onClick={changeUpdateState}
+                    >
+                      <CreateOutlinedIcon />
+                      수정
+                    </IconButton>
+                    {/* {type == 'comment' || writer != 'isuser' ? null : (
+                    <IconButton className={classes.icon} onClick={adoptComment}>
+                      <DoneAllOutlinedIcon />
+                      {select_state == 'none' ? '채택' : '채택취소'}
+                    </IconButton>
+                  )} */}
+                  </>
+                ) : (
+                  <>
+                    <IconButton
+                      className={classes.icon}
+                      onClick={updateComment}
+                    >
+                      <CreateOutlinedIcon />
+                      등록
+                    </IconButton>
+                    <IconButton
+                      className={classes.icon}
+                      onClick={changeUpdateState}
+                    >
+                      <CancelOutlinedIcon />
+                      취소
+                    </IconButton>
+                  </>
+                ))}
+              {type == 'comment' ||
+              writer != 'issuer' ||
+              update_state == true ? null : (
+                <IconButton className={classes.icon} onClick={adoptComment}>
+                  <DoneAllOutlinedIcon />
+                  {select_state == 'none' ? '채택' : '채택취소'}
                 </IconButton>
-                <IconButton
-                  className={classes.icon}
-                  onClick={changeUpdateState}
-                >
-                  <CreateOutlinedIcon />
-                  수정
-                </IconButton>
-                {type == 'comment' ? null : (
-                  <IconButton className={classes.icon} onClick={adoptComment}>
-                    <DoneAllOutlinedIcon />
-                    {select_state == 'none' ? '채택' : '채택취소'}
-                  </IconButton>
-                )}
-              </Grid>
-            ) : (
-              <Grid item>
-                <IconButton className={classes.icon} onClick={updateComment}>
-                  <CreateOutlinedIcon />
-                  등록
-                </IconButton>
-                <IconButton
-                  className={classes.icon}
-                  onClick={changeUpdateState}
-                >
-                  <CancelOutlinedIcon />
-                  취소
-                </IconButton>
-              </Grid>
-            )}
+              )}
+            </Grid>
           </Grid>
         </Grid>
       </Paper>
