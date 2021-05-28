@@ -231,7 +231,7 @@ class EditComp extends React.Component {
             .post(ip + '/question', body)
             .then((res) => {
               alert('글 등록에 성공했습니다.');
-              window.location.href = '/';
+              window.location.href = '/diagnosis/qna';
             })
             .catch((err) => {
               alert('글 등록에 실패했습니다.');

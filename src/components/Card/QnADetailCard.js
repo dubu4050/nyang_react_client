@@ -94,9 +94,8 @@ export default function ComplexGrid(props) {
   const questionContent = detailContent.content;
   const tempStr = '+' + detailContent.createDate;
   const createDate = tempStr.substr(1, 10);
-  // 회원 정보 수정 후 프로필 사진 확인 필요
-  const tmp =
-    'https://imgnews.pstatic.net/image/477/2021/05/23/0000300912_001_20210523170308400.jpg?type=w647';
+  console.log(detailContent);
+  const writerPhoto = detailContent.profile_photo_path;
   // 접근권한 여부
   const currentAccessId = detailContent.isIssuer;
 
@@ -134,7 +133,7 @@ export default function ComplexGrid(props) {
               <CardHeader
                 avatar={
                   <Avatar aria-label="recipe" className={classes.avatar}>
-                    <img src={tmp} className={classes.img} />
+                    <img src={writerPhoto} className={classes.img} />
                   </Avatar>
                 }
                 title={detailContent.nickname}
@@ -168,7 +167,7 @@ function PostFuncButton(props) {
       .delete(ip + '/question/' + identifier)
       .then((res) => {
         alert('삭제 완료');
-        window.location.href = '/';
+        window.location.href = '/diagnosis/qna';
       })
       .catch((err) => {
         console.log(err);
