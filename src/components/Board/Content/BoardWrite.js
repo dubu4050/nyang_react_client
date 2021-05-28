@@ -229,7 +229,7 @@ class EditComp extends React.Component {
             .post(ip + '/free', body)
             .then((res) => {
               alert('글 등록에 성공했습니다.');
-              window.location.href = '/';
+              window.location.href = '/board/free';
             })
             .catch((err) => {
               alert('글 등록에 실패했습니다.');
@@ -239,7 +239,7 @@ class EditComp extends React.Component {
             .post(ip + '/info', body)
             .then((res) => {
               alert('글 등록에 성공했습니다.');
-              window.location.href = '/';
+              window.location.href = '/board/info';
             })
             .catch((err) => {
               alert('글 등록에 실패했습니다.');

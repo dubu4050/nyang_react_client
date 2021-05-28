@@ -94,6 +94,8 @@ export default function ComplexGrid(props) {
   const identifier = props.identifier;
   const boardContent = detailContent.content;
   const tempStr = '+' + detailContent.createDate;
+  // 회원 정보 수정 후 프로필 사진 확인 필요
+  const writerPhoto = detailContent.profile_photo_path;
   const createDate = tempStr.substr(1, 10);
   // 접근권한 여부
   const currentAccessId = detailContent.isIssuer;
@@ -125,7 +127,7 @@ export default function ComplexGrid(props) {
               <CardHeader
                 avatar={
                   <Avatar aria-label="recipe" className={classes.avatar}>
-                    <img src={nyangImg} className={classes.img} />
+                    <img src={writerPhoto} className={classes.img} />
                   </Avatar>
                 }
                 title={detailContent.nickname}
@@ -154,15 +156,29 @@ function PostFuncButton(props) {
   const ip = process.env.REACT_APP_API_IP;
   // 게시글 삭제
   const deletePostBoard = () => {
-    axios
-      .delete(ip + '/info/' + identifier)
-      .then((res) => {
-        alert('삭제 완료');
-        window.location.href = '/';
-      })
-      .catch((err) => {
-        alert('삭제 실패');
-      });
+    if (detailContent.category == 'free_board') {
+      console.log('free');
+      axios
+        .delete(ip + '/free/' + identifier)
+        .then((res) => {
+          alert('삭제 완료');
+          window.location.href = '/board/free';
+        })
+        .catch((err) => {
+          alert('삭제 실패');
+        });
+    } else {
+      console.log('info');
+      axios
+        .delete(ip + '/info/' + identifier)
+        .then((res) => {
+          alert('삭제 완료');
+          window.location.href = '/board/info';
+        })
+        .catch((err) => {
+          alert('삭제 실패');
+        });
+    }
   };
   return (
     <div>
