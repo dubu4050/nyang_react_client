@@ -118,7 +118,7 @@ function Contents(props) {
       axios
         .post(ip + '/impression', body)
         .then((res) => {
-          setSearchResult(res.data.pet_disease_search_info);
+          setSearchResult(res.data.data.pet_disease_search_info);
           setResultShowState('true');
         })
         .catch((err) => {

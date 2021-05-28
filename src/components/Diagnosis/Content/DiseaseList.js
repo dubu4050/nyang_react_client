@@ -193,12 +193,11 @@ function DiseaseList(props) {
                   <Typography className={classes.pos} color="textSecondary">
                     {resultData.answer}
                   </Typography>
-                  {/* <Typography className={classes.pos}>
-                    {disease.doctor}
-                  </Typography> */}
+                  <Typography className={classes.pos}>
+                    {resultData.percent} %
+                  </Typography>
                 </CardContent>
                 <CardActions>
-                  {/* <Button size="small">더보기</Button> */}
                   <Button
                     size="small"
                     onClick={() => window.open(resultData.url, '_blank')}
