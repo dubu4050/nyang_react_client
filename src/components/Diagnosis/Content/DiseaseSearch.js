@@ -16,6 +16,7 @@ import MapContainer from './MapContainer';
 import Icon from '@material-ui/core/Icon';
 import { AddAlertRounded, PagesSharp } from '@material-ui/icons';
 import item from './DiseaseList';
+import TextField from '@material-ui/core/TextField';
 
 function getModalStyle() {
   const top = 50;
@@ -81,6 +82,12 @@ const useStyles = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(1),
   },
+  root: {
+    '& > *': {
+      margin: theme.spacing(1),
+      width: '25ch',
+    },
+  },
 }));
 function Contents(props) {
   const ip = process.env.REACT_APP_API_IP;
@@ -98,10 +105,37 @@ function Contents(props) {
   const handleClose = () => {
     setOpen(false);
   };
+  const [inputText, setInputText] = useState('');
+  const [place, setPlace] = useState('');
 
+  const onChange = (e) => {
+    setInputText(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setPlace(inputText);
+    setInputText('');
+  };
   const mapModal = (
     <div className={classes.paper}>
-      <MapContainer />
+      <div>
+        <TextField
+          id="standard-basic"
+          label="어디세요?"
+          onChange={onChange}
+          value={inputText}
+        />
+        <Button
+          variant="contained"
+          className={classes.button}
+          color="primary"
+          onClick={handleSubmit}
+        >
+          검색
+        </Button>
+      </div>
+      <MapContainer searchPlace={place} />
     </div>
   );
   const onChangeQuestion = (e) => {
@@ -118,7 +152,7 @@ function Contents(props) {
       axios
         .post(ip + '/impression', body)
         .then((res) => {
-          setSearchResult(res.data.data.pet_disease_search_info);
+          setSearchResult(res.data.pet_disease_search_info);
           setResultShowState('true');
         })
         .catch((err) => {
