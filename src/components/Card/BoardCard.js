@@ -40,9 +40,10 @@ const useStyles = makeStyles({
 export default function BoradCards(props) {
   const classes = useStyles();
   const tempValue = props.list;
+  console.log(tempValue);
   var [contentHtml] = useState([]);
   tempValue.forEach((element) => {
-    contentHtml[element.identifier] = element.content;
+    contentHtml[element.identifier] = element.summary;
   });
   return (
     <div className={classes.root}>

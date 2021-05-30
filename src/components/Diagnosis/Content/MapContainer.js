@@ -64,7 +64,7 @@ const MapContainer = ({ searchPlace }) => {
     }
   }, [searchPlace]);
 
-  return <div id="myMap" style={{ width: '910px', height: '500px' }}></div>;
+  return <div id="myMap" style={{ width: '100%', height: '500px' }}></div>;
 };
 
 export default MapContainer;
