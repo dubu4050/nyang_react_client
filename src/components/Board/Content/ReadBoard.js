@@ -50,7 +50,7 @@ export default function ReadQnA(props) {
         postIdentifier={match.params.no}
         list={postCommentList}
         type="comment"
-        post_state="done"
+        post_state="adopted"
         writer={post.isIssuer}
       />
     </div>
