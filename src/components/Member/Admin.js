@@ -128,7 +128,7 @@ export default function Admin() {
   //pagination
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setcurrentPage] = useState(1);
-  const [perPage, setPerPage] = useState(1);
+  const [perPage, setPerPage] = useState(10);
   const [pageNumberLimit, setPageNumberLimit] = useState(3);
   const [maxPageNumberLimit, setmaxPageNumberLimit] = useState(3);
   const [minPageNumberLimit, setminPageNumberLimit] = useState(0);

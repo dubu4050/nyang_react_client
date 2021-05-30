@@ -96,8 +96,8 @@ function Header() {
   };
   const logout = () => {
     localStorage.clear();
-    window.location.href = '/';
     handleMenuClose();
+    window.location.href = '/';
   };
 
   const menuId = 'primary-search-account-menu';

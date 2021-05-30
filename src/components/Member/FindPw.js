@@ -10,7 +10,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { SettingsInputSvideo } from '@material-ui/icons';
 import axios from 'axios';
-
+import { Link } from 'react-router-dom';
 const useStyles = makeStyles((theme) => ({
   root: {
     '& .MuiTextField-root': {
@@ -50,8 +50,28 @@ function FindPw() {
     // dialog창 관련 변수
   const [certNumber, setCertNumber] = useState('');
   const [open, setOpen] = React.useState(false);
+  const [certState, setCertState] = useState(false);
+  //비밀번호 설정
+  const [changePw, setChangePw] = useState('');
+  const [checkPw, setCheckPw] = useState('');
+
   const onChangeCertNumber = (e) => {
     setCertNumber(e.target.value);
+  };
+  const onChangePw = (e) => {
+    setChangePw(e.target.value);
+  };
+  const onChangeCheckPw = (e) => {
+    setCheckPw(e.target.value);
+  };
+  const onChangeId = (e) => {
+    setId(e.target.value);
+  };
+  const onChangeName = (e) => {
+    setName(e.target.value);
+  };
+  const onChangeEmail = (e) => {
+    setEmail(e.target.value);
   };
   const handleClickOpen = () => {
     setOpen(true);     
@@ -68,25 +88,16 @@ function FindPw() {
     axios
       .post(ip + '/member/cert/email/', body)
       .then((res) => {
-        setCertState(true);
         handleClose();
-        window.location.href="/updatePw"
         console.log(res);
       })
       .catch((err) => {
         console.log(err);
         alert('인증번호 확인 실패');
       });
+    setCertState(true);
     };
-  const onChangeId = (e) => {
-    setId(e.target.value);
-  };
-  const onChangeName = (e) => {
-    setName(e.target.value);
-  };
-  const onChangeEmail = (e) => {
-    setEmail(e.target.value);
-  };
+
   const FindMemberPassword = (e) => {
     if (id == '' || name == '' || email == '') {
       alert('필수 항목을 모두 입력하지 않았습니다.');
@@ -108,9 +119,33 @@ function FindPw() {
         });
     }
   };
+  
+  const UpdateMemberPassword = () => {
+    if (changePw == '' || checkPw == '') {
+      alert('비밀번호를 입력하세요.');
+    } else if (changePw != checkPw) {
+      alert('비밀번호가 일치하지 않습니다.');
+    } else {
+      const body = {
+        account: id,
+        password: changePw,
+      };
+      axios
+        .patch(ip + '/member/find/password', body)
+        .then(() => {
+          alert('비밀번호가 변경되었습니다.');
+          window.location.href = '/';
+        })
+        .catch((err) => {
+          console.log(err);
+          alert('비밀번호 변경에 실패하였습니다.');
+        });
+    }
+  };
   return (
     <div>
       <form className={classes.root} noValidate autoComplete="off">
+        {certState==false&&(        
         <div className={classes.table}>
           <h1>비밀번호 찾기</h1>
           <div>
@@ -170,9 +205,40 @@ function FindPw() {
             확인
           </Button>
         </DialogActions>
-      </Dialog>
-          
-        </div>
+      </Dialog>    
+        </div>)}
+        {certState==true&&( 
+          <div className={classes.table}>
+          <h1>비밀번호 새로 설정하기</h1>
+            <div>
+              <TextField
+                type="password"
+                required
+                id="changePw"
+                label="변경할 비밀번호"
+                 value={changePw}
+                 onChange={onChangePw}
+              />
+            </div>
+            <div>
+              <TextField
+                type="password"
+                required
+                id="checkPw"
+                label="비밀번호 확인"
+                value={checkPw}
+                onChange={onChangeCheckPw}
+              />
+            </div>
+            <Button
+              variant="contained"
+              onClick={UpdateMemberPassword}
+              className={classes.okbtn}
+            >
+              변경
+            </Button>
+          </div>
+          )}
       </form>
     </div>
   );

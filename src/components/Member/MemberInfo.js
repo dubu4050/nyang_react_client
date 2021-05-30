@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import nyangImg from '../../images/nyangImg.png';
 import Modal from '@material-ui/core/Modal';
 import axios from 'axios';
-
+import Typography from '@material-ui/core/Typography';
 import { Route } from 'react-router-dom';
 function getModalStyle() {
   const top = 50;
@@ -109,14 +109,35 @@ function MemberInfo() {
   const [open, setOpen] = React.useState(false);
 
   const handleChangeFile = (e) => {
-    let reader = new FileReader();
-    let img = e.target.files[0];
-    reader.onloadend = () => {
-      setImage(img);
-      setPreviewURL(reader.result);
-    };
-    reader.readAsDataURL(img);
+    const reader = new FileReader();
+    if (e.target.files.length != 0) {
+      let img = e.target.files[0];
+      reader.onloadend = () => {
+        setImage(img);
+        setPreviewURL(reader.result);
+      };
+      reader.readAsDataURL(img);
+    }
   };
+
+  //기본사진으로 변경
+  const handleNullFile = () => {
+    console.log('냥');
+    setPreviewURL(nyangImg);
+    const byteString = atob(nyangImg.split(',')[1]);
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+
+    for (let i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+    const blob = new Blob([ia], { type: 'image/jpeg' });
+    const file = new File([blob], 'image.jpg', {
+      type: blob.type,
+    });
+    setImage(file);
+  };
+
   const onChangeNickName = (e) => {
     setNickname(e.target.value);
   };
@@ -129,12 +150,12 @@ function MemberInfo() {
   const phoneNumberReset = () => {
     setPhoneNumber('');
   };
-  console.log(img);
+
   const updateMemberInfo = () => {
     if (
       member.nickname == nickName &&
       member.phone_number == phoneNumber &&
-      member.previewURL == img
+      member.profile_photo_path == previewURL
     ) {
       alert('변경된 정보가 없습니다.');
     } else {
@@ -175,7 +196,9 @@ function MemberInfo() {
       .delete(ip + '/member')
       .then(() => {
         alert('탈퇴 완료');
-        window.location.href = '/';
+        handleClose();
+        localStorage.clear();
+        window.location.replace('/');
         console.log(err);
       })
       .catch((err) => {
@@ -207,14 +230,36 @@ function MemberInfo() {
           {loading ? null : (
             <>
               <div className={classes.profilewrap}>
-                <img className={classes.profile} src={previewURL}></img>
-                <input
+                <img
+                  className={classes.profile}
+                  src={previewURL == null ? nyangImg : previewURL}
+                ></img>
+                <Button variant="contained" component="label">
+                  <Typography>{'변경'}</Typography>
+                  <input
+                    id="imgFile"
+                    style={{ display: 'none' }}
+                    type="file"
+                    name="imgFile"
+                    accept="image/jpg,image/png"
+                    onChange={handleChangeFile}
+                  />
+                </Button>
+                {/* <input
                   type="file"
                   name="imgFile"
                   id="imgFile"
                   accept="image/jpg,image/png"
                   onChange={handleChangeFile}
-                />
+                /> */}
+                <Button
+                  variant="contained"
+                  component="label"
+                  onClick={handleNullFile}
+                  style={{ marginLeft: '10px' }}
+                >
+                  <Typography>삭제</Typography>
+                </Button>
               </div>
 
               <div className={classes.item}>
@@ -292,49 +337,40 @@ function MemberInfo() {
                 />
                 <Button disabled size="small" className={classes.btn} />
               </div>
+              <div className={classes.item}>
+                <Button
+                  variant="contained"
+                  onClick={updateMemberInfo}
+                  className={classes.okbtn}
+                >
+                  프로필 수정
+                </Button>
+                <Button
+                  variant="contained"
+                  className={classes.okbtn}
+                  component={Link}
+                  to={{
+                    pathname: `/updatePW`,
+                    state: {
+                      account: member.account,
+                    },
+                  }}
+                >
+                  비밀번호 수정
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={handleOpen}
+                  className={classes.okbtn}
+                >
+                  회원 탈퇴
+                </Button>
+                <Modal open={open} onClose={handleClose}>
+                  {modalBody}
+                </Modal>
+              </div>
             </>
           )}
-          <div className={classes.item}>
-            <Button
-              variant="contained"
-              onClick={updateMemberInfo}
-              className={classes.okbtn}
-            >
-              프로필 수정
-            </Button>
-            {/* <Link
-              to={{
-                pathname: `/updatePW`,
-                state: {
-                  account: member.account,
-                },
-              }}
-            > */}
-            <Button
-              variant="contained"
-              className={classes.okbtn}
-              component={Link}
-              to={{
-                pathname: `/updatePW`,
-                state: {
-                  account: member.account,
-                },
-              }}
-            >
-              비밀번호 수c정
-            </Button>
-            {/* </Link> */}
-            <Button
-              variant="contained"
-              onClick={handleOpen}
-              className={classes.okbtn}
-            >
-              회원 탈퇴
-            </Button>
-            <Modal open={open} onClose={handleClose}>
-              {modalBody}
-            </Modal>
-          </div>
         </div>
       </form>
     </div>
