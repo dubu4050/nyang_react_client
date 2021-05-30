@@ -43,7 +43,7 @@ export default function QnACards(props) {
   console.log(tempValue);
   var [contentHtml] = useState([]);
   tempValue.forEach((element) => {
-    contentHtml[element.identifier] = element.content;
+    contentHtml[element.identifier] = element.summary;
   });
   return (
     <div className={classes.root}>
