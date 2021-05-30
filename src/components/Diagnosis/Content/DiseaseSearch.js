@@ -122,7 +122,7 @@ function Contents(props) {
       <div>
         <TextField
           id="standard-basic"
-          label="어디세요?"
+          label="장소 검색"
           onChange={onChange}
           value={inputText}
         />
@@ -152,7 +152,7 @@ function Contents(props) {
       axios
         .post(ip + '/impression', body)
         .then((res) => {
-          setSearchResult(res.data.pet_disease_search_info);
+          setSearchResult(res.data.data.pet_disease_search_info);
           setResultShowState('true');
         })
         .catch((err) => {
