@@ -59,8 +59,7 @@ function MemberInfo() {
         .post(ip + '/member/find/account', body)
         .then((res) => {
           console.log(res.data);
-          setId(res.data.data.memberInfo[0].account);
-          alert(res.data.data.memberInfo[0].account);
+          setId(res.data.data.memberInfo.account);
         })
         .catch((err) => {
           console.log(err);

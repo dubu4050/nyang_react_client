@@ -78,10 +78,10 @@ function EnrollMember(props) {
     if (certState == true) {
       alert('인증을 완료하였습니다.');
     } else {
-      setOpen(true);
       axios
         .get(ip + '/member/cert/email/' + email)
         .then(() => {
+          setOpen(true);
           alert('인증번호 요청');
         })
         .catch((err) => {
@@ -110,12 +110,6 @@ function EnrollMember(props) {
         console.log(err);
         alert('인증번호 확인 실패');
       });
-    /*if (certNumber == '1234') {
-      setCertState(true);
-      console.log(certNumber);
-      console.log(certState);
-      handleClose();
-    }*/
   };
 
   const onChangeId = (e) => {
@@ -220,6 +214,7 @@ function EnrollMember(props) {
           </div>
           <div className={classes.item}>
             <TextField
+              type="password"
               required
               id="password"
               label="비밀번호"
