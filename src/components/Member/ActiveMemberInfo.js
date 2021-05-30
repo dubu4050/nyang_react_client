@@ -5,37 +5,90 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
+import Toolbar from '@material-ui/core/Toolbar';
 import { DataGrid } from '@material-ui/data-grid';
 import Header from '../Common/Header';
 import Box from '@material-ui/core/Box';
 import member from '../../db/member.json';
+import MemberHistory from './MemberHistory';
+import { Paper, createMuiTheme, MuiThemeProvider } from '@material-ui/core';
 
-// tab
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
+const questioncolumns = [
+  { id: 'identifier', label: 'No', minWidth: '10%' },
+  { id: 'title', label: 'TITLE', align: 'center' },
+  {
+    id: 'created_date',
+    label: '작성 날짜',
+    minWidth: '20%',
+    align: 'center',
+  },
+  {
+    id: 'anser_number',
+    label: '답변 개수',
+    minWidth: '20%',
+    align: 'right',
+  },
+  { id: 'state', label: '채택', align: 'center' },
+];
+const postcolumns = [
+  { id: 'identifier', label: 'No', minWidth: '10%' },
+  { id: 'title', label: 'TITLE', align: 'center' },
+  {
+    id: 'created_date',
+    label: '작성 날짜',
+    minWidth: '20%',
+    align: 'center',
+  },
+  {
+    id: 'comment_number',
+    label: '댓글 개수',
+    minWidth: '20%',
+    align: 'right',
+  },
+];
 
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`scrollable-auto-tabpanel-${index}`}
-      aria-labelledby={`scrollable-auto-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
-
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired,
-};
+const answercolumns = [
+  { id: 'question_identifier', label: '질문 No', minWidth: '10%' },
+  { id: 'identifier', label: '답변 No', miWidth: '10%', align: 'center' },
+  {
+    id: 'question_title',
+    label: '질문 내용',
+    minWidth: '25%',
+    align: 'center',
+  },
+  {
+    id: 'content',
+    label: '답변 내용',
+    minWidth: '25%',
+    align: 'center',
+  },
+  {
+    id: 'created_data',
+    label: '작성 날짜',
+    minWidth: '25%',
+    align: 'center',
+  },
+  {
+    id: 'state',
+    label: '채택여부',
+    align: 'right',
+  },
+];
+const commentcolumns = [
+  { id: 'board_identifier', label: '게시글 No', minWidth: '10%' },
+  { id: 'identifier', label: '답변 No', minWidth: '10%' },
+  {
+    id: 'content',
+    label: '답변 내용',
+    align: 'center',
+  },
+  {
+    id: 'created_date',
+    label: '작성 날짜',
+    minWidth: '20%',
+    align: 'center',
+  },
+];
 
 function a11yProps(index) {
   return {
@@ -53,6 +106,24 @@ const useStyles = makeStyles((theme) => ({
     '& > *': {
       margin: theme.spacing(1),
     },
+    margin: '35px 0 0 0',
+  },
+  titlebox: { width: '80%', margin: '0 auto' },
+  title: {
+    flex: '1 1 100%',
+  },
+  wrapper: {
+    width: '85%',
+    margin: '0 auto',
+    minHeight: '700px',
+  },
+  inputwrapper: {
+    width: '95%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    marginBottom: '2%',
+    paddingTop: '2%',
   },
   table: {
     width: '65%',
@@ -62,158 +133,79 @@ const useStyles = makeStyles((theme) => ({
   },
   tab: {
     flexGrow: 1,
-    width: '20ch',
-    backgroundColor: '#49D7F0',
+    width: '85%',
+    margin: '0 auto',
   },
 }));
 
-// table(게시글)
-const postColumns = [
-  { field: 'id', headerName: 'No', width: 80 },
-  { field: 'title', headerName: '제목', width: 330 },
-  { field: 'createDate', headerName: '작성일시', width: 130 },
-  { field: 'category', headerName: '카테고리', width: 130 },
-];
-
-const postRows = [
-  { id: 1, title: 'Snow', createDate: 'Jon', category: 35 },
-  { id: 2, title: 'Snow', createDate: 'Jon', category: 35 },
-  { id: 3, title: 'Snow', createDate: 'Jon', category: 35 },
-  { id: 4, title: 'Snow', createDate: 'Jon', category: 35 },
-  { id: 5, title: 'Snow', createDate: 'Jon', category: 35 },
-];
-
-// table(공개 Q&A)
-const qaContentColumns = [
-  { field: 'id', headerName: 'No', width: 80 },
-  { field: 'qaTitleNo', headerName: '글 번호', width: 130 },
-  { field: 'content', headerName: '댓글', width: 330 },
-  { field: 'createDate', headerName: '작성일시', width: 130 },
-  { field: 'selectState', headerName: '채택 여부', width: 130 },
-];
-
-const qaContentRows = [
-  {
-    id: 1,
-    qaTitleNo: '우리애가 너무 귀엽죠?',
-    content: '치킨',
-    createDate: '오늘',
-    selectState: '후라이드',
-  },
-  {
-    id: 2,
-    qaTitleNo: '우리애가 너무 귀엽죠?',
-    content: '치킨',
-    createDate: '오늘',
-    selectState: '후라이드',
-  },
-  {
-    id: 3,
-    qaTitleNo: '우리애가 너무 귀엽죠?',
-    content: '치킨',
-    createDate: '오늘',
-    selectState: '후라이드',
-  },
-  {
-    id: 4,
-    qaTitleNo: '우리애가 너무 귀엽죠?',
-    content: '치킨',
-    createDate: '오늘',
-    selectState: '후라이드',
-  },
-];
-
-// table(자유게시판)
-const freeContentColumns = [
-  { field: 'id', headerName: 'No', width: 80 },
-  { field: 'qaTitleNo', headerName: '글 번호', width: 130 },
-  { field: 'content', headerName: '댓글', width: 330 },
-  { field: 'createDate', headerName: '작성일시', width: 130 },
-];
-
-const freeContentRows = [
-  { id: 1, qaTitleNo: '치킨', content: '오늘', createDate: '2020-01-01' },
-  { id: 2, qaTitleNo: '피자', content: '내일', createDate: '2020-01-01' },
-  { id: 3, qaTitleNo: '순대', content: '매일', createDate: '2020-01-01' },
-  { id: 4, qaTitleNo: '순대', content: '매일', createDate: '2020-01-01' },
-  { id: 5, qaTitleNo: '순대', content: '매일', createDate: '2020-01-01' },
-  { id: 6, qaTitleNo: '순대', content: '매일', createDate: '2020-01-01' },
-];
-
-function ActiveMemberInfo(props) {
+export default function ActiveMemberInfo(props) {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+  const theme = createMuiTheme({
+    palette: {
+      primary: { main: '#49D7F0' },
+    },
+  });
+  const [selectedTab, setSelectedTab] = React.useState(0);
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    setSelectedTab(newValue);
   };
 
-  const [checkedItems, setCheckedItems] = useState(new Set());
-  const checkedItemHandler = (id, isChecked) => {
-    if (isChecked) {
-      checkedItems.add(id);
-      setCheckedItems(checkedItems);
-    } else if (!isChecked && checkedItems.has(id)) {
-      checkedItems.delete(id);
-      setCheckedItems(checkedItems);
-    }
-  };
-  const [bChecked, setChecked] = useState(false);
-
-  const checkHandler = ({ target }) => {
-    setChecked(!bChecked);
-    checkedItemHandler(postRows.id, target.checked);
-  };
-  console.log(props.user);
-  const DeleteSelectInfo = (props) => {
-    alert(checkedItems);
-  };
   return (
-    <div>
+    <MuiThemeProvider theme={theme}>
       <form className={classes.root} noValidate autoComplete="off">
-        <div className={classes.table}>
-          <h1>회원 활동 조회</h1>
-          <h2>아이디 : {props.user} </h2>
-          <AppBar classNabe={classes.tab} position="static" color="default">
+        <Toolbar className={classes.titlebox}>
+          <Typography
+            className={classes.title}
+            variant="h5"
+            id="tableTitle"
+            component="div"
+          >
+            회원 활동 조회
+          </Typography>
+        </Toolbar>
+        <Paper className={classes.wrapper}>
+          <Toolbar className={classes.inputwrapper}>
+            <Typography
+              variant="h6"
+              id="tableTitle"
+              component="div"
+            ></Typography>
+          </Toolbar>
+          <div className={classes.tab} position="static" color="default">
             <Tabs
-              value={value}
+              value={selectedTab}
               onChange={handleChange}
               indicatorColor="primary"
               variant="scrollable"
               scrollButtons="auto"
               aria-label="scrollable auto tabs example"
             >
-              <Tab label="작성 글" {...a11yProps(0)} />
-              <Tab label="공개QA 댓글" {...a11yProps(1)} />
-              <Tab label="자유게시판 댓글" {...a11yProps(2)} />
+              <Tab label="질문" {...a11yProps(0)} />
+              <Tab label="자유게시판 글" {...a11yProps(1)} />
+              <Tab label="답변" {...a11yProps(2)} />
+              <Tab label="자유게시판 댓글" {...a11yProps(3)} />
+              {localStorage.getItem('roleName') != 'member' && (
+                <Tab label="정보게시판 글" {...a11yProps(4)} />
+              )}
             </Tabs>
-          </AppBar>
-          <TabPanel value={value} index={0}>
-            <div style={{ height: 400, width: '100%' }}>
-              <DataGrid rows={postRows} columns={postColumns} onpageSize={5} />
-            </div>
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-            <div style={{ height: 400, width: '100%' }}>
-              <DataGrid
-                rows={qaContentRows}
-                columns={qaContentColumns}
-                pageSize={5}
-              />
-            </div>
-          </TabPanel>
-          <TabPanel value={value} index={2}>
-            <div style={{ height: 400, width: '100%' }}>
-              <DataGrid
-                rows={freeContentRows}
-                columns={freeContentColumns}
-                pageSize={5}
-              />
-            </div>
-          </TabPanel>
-        </div>
+          </div>
+          {selectedTab === 0 && (
+            <MemberHistory type="question" columns={postcolumns} />
+          )}
+          {selectedTab === 1 && (
+            <MemberHistory type="free" columns={postcolumns} />
+          )}
+          {selectedTab === 2 && (
+            <MemberHistory type="answer" columns={answercolumns} />
+          )}
+          {selectedTab === 3 && (
+            <MemberHistory type="comment" columns={commentcolumns} />
+          )}
+          {selectedTab === 4 && (
+            <MemberHistory type="info" columns={postcolumns} />
+          )}
+        </Paper>
       </form>
-    </div>
+    </MuiThemeProvider>
   );
 }
-
-export default ActiveMemberInfo;

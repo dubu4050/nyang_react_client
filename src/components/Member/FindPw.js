@@ -51,6 +51,7 @@ function FindPw() {
   const [certNumber, setCertNumber] = useState('');
   const [open, setOpen] = React.useState(false);
   const [certState, setCertState] = useState(false);
+  const [token, setToken]= useState('');
   //비밀번호 설정
   const [changePw, setChangePw] = useState('');
   const [checkPw, setCheckPw] = useState('');
@@ -90,6 +91,7 @@ function FindPw() {
       .then((res) => {
         handleClose();
         console.log(res);
+        setToken(res.data.data.token);
       })
       .catch((err) => {
         console.log(err);
@@ -130,8 +132,12 @@ function FindPw() {
         account: id,
         password: changePw,
       };
+   
+      const config={
+        headers:{'Authorization':'Bearer '+token}
+      }
       axios
-        .patch(ip + '/member/find/password', body)
+        .patch(ip + '/member/find/password', body,config)
         .then(() => {
           alert('비밀번호가 변경되었습니다.');
           window.location.href = '/';
