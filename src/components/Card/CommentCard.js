@@ -96,7 +96,6 @@ export default function commentCard(props) {
   const postIdentifier = props.postIdentifier;
   const comment = props.comment;
   const [post_state, setPostState] = useState(props.post_state);
-  console.log(post_state);
   const writer = props.writer;
   const type = props.type;
   const profile = comment.profile_photo_path;
@@ -183,7 +182,7 @@ export default function commentCard(props) {
         });
     }
   };
-
+  console.log(writer);
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -200,9 +199,7 @@ export default function commentCard(props) {
               }
               title={comment.nickname}
               subheader={
-                type == 'answer'
-                  ? '채택횟수: ' + comment.memberIdentifier
-                  : null
+                type == 'answer' ? '채택횟수: ' + comment.adopted_number : null
               }
             ></CardHeader>
           </Grid>
@@ -278,7 +275,8 @@ export default function commentCard(props) {
               ) : null}
               {type == 'comment' ||
               writer != 'issuer' ||
-              update_state == true ? null : (
+              update_state == true ||
+              (writer == 'issuer' && editable == true) ? null : (
                 <IconButton className={classes.icon} onClick={adoptComment}>
                   <DoneAllOutlinedIcon />
                   {select_state == 'none' ? '채택' : '채택취소'}
