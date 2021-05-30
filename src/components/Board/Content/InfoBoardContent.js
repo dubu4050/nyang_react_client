@@ -7,6 +7,7 @@ import {
   Button,
 } from '@material-ui/core';
 import BoardCard from '../../Card/BoardCard';
+import SearchIcon from '@material-ui/icons/Search';
 import CreateIcon from '@material-ui/icons/Create';
 import axios from 'axios';
 
