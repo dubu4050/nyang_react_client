@@ -140,13 +140,13 @@ export default function Admin() {
       .then((res) => {
         console.log(res.data.data);
         setMemberList(res.data.data);
+        setTotalPages(res.data.totalPage);
       })
       .catch((err) => {
         console.log(err);
       });
   };
   useEffect(() => {
-    getTotalPage();
     getMemberList();
   }, []);
 
@@ -155,17 +155,10 @@ export default function Admin() {
   };
 
   const search = () => {
-    const body = {
-      keyword: keyword,
-    };
-    axios.post(ip + '/role_member/search', body).then((res) => {
-      console.log(res.data.data);
-      setTotalPages(Math.ceil(res.data.data.length / perPage));
-    });
+    searchMemberList(1);
     for (let i = 1; i <= totalPages; i++) {
       pages.push(i);
     }
-    searchMemberList(1);
   };
 
   const searchMemberList = (currentPage = 1) => {
@@ -179,6 +172,7 @@ export default function Admin() {
       )
       .then((res) => {
         setMemberList(res.data.data);
+        setTotalPages(res.data.totalPage);
       })
       .catch((err) => {
         console.log(err);
@@ -186,11 +180,6 @@ export default function Admin() {
   };
 
   //페이지 설정
-  const getTotalPage = () => {
-    axios.get(ip + '/role_member?').then((res) => {
-      setTotalPages(Math.ceil(res.data.data.length / perPage));
-    });
-  };
   const pages = [];
   for (let i = 1; i <= totalPages; i++) {
     pages.push(i);
