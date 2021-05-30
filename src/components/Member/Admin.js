@@ -280,14 +280,9 @@ export default function Admin() {
               inputProps={{ 'aria-label': 'search' }}
               onChange={onChangeQuestion}
             />
-            <Button
-              variant="contained"
-              color="default"
-              className={classes.button}
-              onClick={search}
-            >
-              검색
-            </Button>
+            <IconButton aria-label="serach" onClick={search}>
+              <SearchIcon className={classes.icon} />
+            </IconButton>
           </Toolbar>
           <TableContainer className={classes.tablewrap}>
             <Table size="small" className={classes.table}>

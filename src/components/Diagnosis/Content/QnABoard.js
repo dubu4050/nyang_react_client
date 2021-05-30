@@ -108,14 +108,9 @@ export default function QnABoard(props) {
           inputProps={{ 'aria-label': 'search' }}
           onChange={onChangeQuestion}
         />
-        <Button
-          variant="contained"
-          color="default"
-          className={classes.button}
-          onClick={searchQnaBoard}
-        >
-          검색
-        </Button>
+        <IconButton aria-label="serach" onClick={searchQnaBoard}>
+          <SearchIcon className={classes.icon} />
+        </IconButton>
         {axios.defaults.headers.common.Authorization != undefined && (
           <IconButton href="/qnaWrite">
             <CreateIcon className={classes.icon} />
