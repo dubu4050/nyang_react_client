@@ -12,7 +12,8 @@ import Typography from '@material-ui/core/Typography';
 import Toolbar from '@material-ui/core/Toolbar';
 import Popup from '../Common/Popup';
 import axios from 'axios';
-import { InputBase, Button, Paper } from '@material-ui/core';
+import { InputBase, Button, Paper, IconButton } from '@material-ui/core';
+import SearchIcon from '@material-ui/icons/Search';
 const columns = [
   { id: 'account', label: '아이디', minWidth: '25%' },
   { id: 'nickname', label: '닉네임', miWidth: '25%', align: 'center' },
