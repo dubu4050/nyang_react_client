@@ -199,7 +199,6 @@ function MemberInfo() {
         handleClose();
         localStorage.clear();
         window.location.replace('/');
-        console.log(err);
       })
       .catch((err) => {
         console.log(err);

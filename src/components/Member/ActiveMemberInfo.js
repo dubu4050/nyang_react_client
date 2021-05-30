@@ -14,78 +14,73 @@ import MemberHistory from './MemberHistory';
 import { Paper, createMuiTheme, MuiThemeProvider } from '@material-ui/core';
 
 const questioncolumns = [
-  { id: 'identifier', label: 'No', minWidth: '10%' },
+  { id: 'identifier', label: 'No', width: '10%' },
   { id: 'title', label: 'TITLE', align: 'center' },
   {
     id: 'created_date',
     label: '작성 날짜',
-    minWidth: '20%',
+    width: '20%',
     align: 'center',
   },
   {
-    id: 'anser_number',
+    id: 'answer_number',
     label: '답변 개수',
-    minWidth: '20%',
-    align: 'right',
+    width: '20%',
+    align: 'center',
   },
   { id: 'state', label: '채택', align: 'center' },
 ];
 const postcolumns = [
-  { id: 'identifier', label: 'No', minWidth: '10%' },
+  { id: 'identifier', label: 'No', width: '10%' },
   { id: 'title', label: 'TITLE', align: 'center' },
   {
     id: 'created_date',
     label: '작성 날짜',
-    minWidth: '20%',
+    width: '20%',
     align: 'center',
   },
   {
     id: 'comment_number',
     label: '댓글 개수',
-    minWidth: '20%',
+    width: '20%',
     align: 'right',
   },
 ];
 
 const answercolumns = [
-  { id: 'question_identifier', label: '질문 No', minWidth: '10%' },
-  { id: 'identifier', label: '답변 No', miWidth: '10%', align: 'center' },
+  { id: 'question_identifier', label: '질문 No', width: '10%' },
+  { id: 'identifier', label: '답변 No', width: '10%', align: 'center' },
   {
     id: 'question_title',
     label: '질문 내용',
-    minWidth: '25%',
+    width: '25%',
     align: 'center',
   },
   {
     id: 'content',
     label: '답변 내용',
-    minWidth: '25%',
+    width: '25%',
     align: 'center',
   },
   {
     id: 'created_data',
     label: '작성 날짜',
-    minWidth: '25%',
+    width: '20%',
     align: 'center',
   },
   {
     id: 'state',
     label: '채택여부',
     align: 'right',
+    width: '10%',
   },
 ];
 const commentcolumns = [
-  { id: 'board_identifier', label: '게시글 No', minWidth: '10%' },
-  { id: 'identifier', label: '답변 No', minWidth: '10%' },
+  { id: 'board_identifier', label: '게시글 No', width: '10%' },
+  { id: 'identifier', label: '답변 No', width: '10%' },
   {
     id: 'content',
-    label: '답변 내용',
-    align: 'center',
-  },
-  {
-    id: 'created_date',
-    label: '작성 날짜',
-    minWidth: '20%',
+    label: '댓글',
     align: 'center',
   },
 ];
@@ -183,14 +178,14 @@ export default function ActiveMemberInfo(props) {
               <Tab label="질문" {...a11yProps(0)} />
               <Tab label="자유게시판 글" {...a11yProps(1)} />
               <Tab label="답변" {...a11yProps(2)} />
-              <Tab label="자유게시판 댓글" {...a11yProps(3)} />
+              <Tab label="댓글" {...a11yProps(3)} />
               {localStorage.getItem('roleName') != 'member' && (
                 <Tab label="정보게시판 글" {...a11yProps(4)} />
               )}
             </Tabs>
           </div>
           {selectedTab === 0 && (
-            <MemberHistory type="question" columns={postcolumns} />
+            <MemberHistory type="question" columns={questioncolumns} />
           )}
           {selectedTab === 1 && (
             <MemberHistory type="free" columns={postcolumns} />
