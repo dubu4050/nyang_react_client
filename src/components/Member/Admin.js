@@ -12,7 +12,8 @@ import Typography from '@material-ui/core/Typography';
 import Toolbar from '@material-ui/core/Toolbar';
 import Popup from '../Common/Popup';
 import axios from 'axios';
-import { InputBase, Button, Paper } from '@material-ui/core';
+import { InputBase, Button, Paper, IconButton } from '@material-ui/core';
+import SearchIcon from '@material-ui/icons/Search';
 const columns = [
   { id: 'account', label: '아이디', minWidth: '25%' },
   { id: 'nickname', label: '닉네임', miWidth: '25%', align: 'center' },
@@ -280,14 +281,9 @@ export default function Admin() {
               inputProps={{ 'aria-label': 'search' }}
               onChange={onChangeQuestion}
             />
-            <Button
-              variant="contained"
-              color="default"
-              className={classes.button}
-              onClick={search}
-            >
-              검색
-            </Button>
+            <IconButton aria-label="serach" onClick={search}>
+              <SearchIcon className={classes.icon} />
+            </IconButton>
           </Toolbar>
           <TableContainer className={classes.tablewrap}>
             <Table size="small" className={classes.table}>

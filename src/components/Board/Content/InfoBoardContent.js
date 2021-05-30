@@ -97,14 +97,9 @@ export default function InfoBoardContent(props) {
           inputProps={{ 'aria-label': 'search' }}
           onChange={onChangeQuestion}
         />
-        <Button
-          variant="contained"
-          color="default"
-          className={classes.button}
-          onClick={searchInfoBoard}
-        >
-          검색
-        </Button>
+        <IconButton aria-label="serach" onClick={searchInfoBoard}>
+          <SearchIcon className={classes.icon} />
+        </IconButton>
         <IconButton href="/boardWrite">
           <CreateIcon className={classes.icon} />
         </IconButton>
