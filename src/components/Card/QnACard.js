@@ -65,11 +65,18 @@ export default function QnACards(props) {
                 }}
                 color="inherit"
                 style={{
-                  textDecorationLine: 'none',
-                  color: 'black',
+                  textDecoration: 'none',
                 }}
               >
-                <Typography variant="h6">{qna.title}</Typography>
+                <Typography
+                  variant="h6"
+                  style={{
+                    color: '#48484d',
+                    fontWeight: 'bold',
+                  }}
+                >
+                  {qna.title}
+                </Typography>
               </Link>
             </Grid>
             <Grid item xs zeroMinWidth>
@@ -86,29 +93,34 @@ export default function QnACards(props) {
                 ></div>
               </Typography>
             </Grid>
-            <Grid item className={classes.footer}>
-              <Grid container spacing={1}>
-                <Grid item xs={12} sm container>
-                  <Grid item xs={12} sm={10}>
-                    <Typography noWrap variant="body1" color="black">
-                      {qna.nickname} / {qna.species}
-                    </Typography>
-                    {qna.state == 'none' ? (
-                      <Typography noWrap variant="subtitle2" color="primary">
-                        대기 중
-                      </Typography>
-                    ) : (
-                      <Typography noWrap variant="subtitle2" color="error">
-                        채택 완료
-                      </Typography>
-                    )}
-                  </Grid>
-                  <Grid item xs={12} sm={2}>
-                    <Typography noWrap variant="body1" color="primary">
-                      답변 개수 : {qna.answerNum}
-                    </Typography>
-                  </Grid>
-                </Grid>
+            <Grid item xs={12} sm container className={classes.footer}>
+              <Grid item xs={12} sm={10}>
+                <Typography
+                  noWrap
+                  variant="body1"
+                  style={{ color: '#807D7D', fontWeight: '500' }}
+                >
+                  {qna.nickname} / {qna.species}
+                </Typography>
+                {qna.state == 'none' ? (
+                  <Typography noWrap variant="subtitle2" color="primary">
+                    대기 중
+                  </Typography>
+                ) : (
+                  <Typography noWrap variant="subtitle2" color="error">
+                    채택 완료
+                  </Typography>
+                )}
+              </Grid>
+              <Grid item xs={12} sm={2}>
+                <Typography
+                  color="primary"
+                  style={{
+                    fontWeight: 'bold',
+                  }}
+                >
+                  답변 개수 : {qna.answerNum}
+                </Typography>
               </Grid>
             </Grid>
           </CardContent>

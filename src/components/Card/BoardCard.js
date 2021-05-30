@@ -60,11 +60,16 @@ export default function BoradCards(props) {
                 to={`/detailBoard/${qna.identifier}`}
                 color="inherit"
                 style={{
-                  textDecorationLine: 'none',
-                  color: 'black',
+                  textDecoration: 'none',
                 }}
               >
-                <Typography variant="h6" color="black">
+                <Typography
+                  variant="h6"
+                  style={{
+                    color: '#48484d',
+                    fontWeight: 'bold',
+                  }}
+                >
                   {qna.title}
                 </Typography>
               </Link>
@@ -83,20 +88,25 @@ export default function BoradCards(props) {
                 ></div>
               </Typography>
             </Grid>
-            <Grid item className={classes.footer}>
-              <Grid container spacing={1}>
-                <Grid item xs={12} sm container>
-                  <Grid item xs={12} sm={10}>
-                    <Typography noWrap variant="body1" color="rgb(51, 51, 51)">
-                      {qna.nickname}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={12} sm={2}>
-                    <Typography noWrap variant="body1" color="primary">
-                      댓글 개수 : {qna.commentNum}
-                    </Typography>
-                  </Grid>
-                </Grid>
+            <Grid item xs={12} sm container className={classes.footer}>
+              <Grid item xs={12} sm={10}>
+                <Typography
+                  noWrap
+                  variant="body1"
+                  style={{ color: '#807D7D', fontWeight: '500' }}
+                >
+                  {qna.nickname}
+                </Typography>
+              </Grid>
+              <Grid item xs={12} sm={2}>
+                <Typography
+                  color="primary"
+                  style={{
+                    fontWeight: 'bold',
+                  }}
+                >
+                  댓글 개수 : {qna.commentNum}
+                </Typography>
               </Grid>
             </Grid>
           </CardContent>
