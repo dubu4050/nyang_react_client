@@ -236,43 +236,46 @@ export default function commentCard(props) {
               )}
             </Grid>
             <Grid item>
-              {(editable == true ||
-                localStorage.getItem('roleName') == 'admin') &&
-                (update_state == false ? (
-                  <>
-                    <IconButton
-                      className={classes.icon}
-                      onClick={deleteComment}
-                    >
-                      <DeleteForeverOutlinedIcon />
-                      삭제
-                    </IconButton>
-                    <IconButton
-                      className={classes.icon}
-                      onClick={changeUpdateState}
-                    >
-                      <CreateOutlinedIcon />
-                      수정
-                    </IconButton>
-                  </>
-                ) : (
-                  <>
-                    <IconButton
-                      className={classes.icon}
-                      onClick={updateComment}
-                    >
-                      <CreateOutlinedIcon />
-                      등록
-                    </IconButton>
-                    <IconButton
-                      className={classes.icon}
-                      onClick={changeUpdateState}
-                    >
-                      <CancelOutlinedIcon />
-                      취소
-                    </IconButton>
-                  </>
-                ))}
+              {editable == true ||
+              localStorage.getItem('roleName') == 'admin' ? (
+                <>
+                  {update_state == true ? (
+                    <>
+                      <IconButton
+                        className={classes.icon}
+                        onClick={updateComment}
+                      >
+                        <CreateOutlinedIcon />
+                        등록
+                      </IconButton>
+                      <IconButton
+                        className={classes.icon}
+                        onClick={changeUpdateState}
+                      >
+                        <CancelOutlinedIcon />
+                        취소
+                      </IconButton>
+                    </>
+                  ) : (
+                    <>
+                      <IconButton
+                        className={classes.icon}
+                        onClick={deleteComment}
+                      >
+                        <DeleteForeverOutlinedIcon />
+                        삭제
+                      </IconButton>
+                      <IconButton
+                        className={classes.icon}
+                        onClick={changeUpdateState}
+                      >
+                        <CreateOutlinedIcon />
+                        수정
+                      </IconButton>
+                    </>
+                  )}
+                </>
+              ) : null}
               {type == 'comment' ||
               writer != 'issuer' ||
               update_state == true ? null : (
