@@ -56,8 +56,17 @@ export default function BoradCards(props) {
           />
           <CardContent className={classes.contentWrap}>
             <Grid item className={classes.title}>
-              <Link to={`/detailBoard/${qna.identifier}`} color="inherit">
-                <Typography variant="h6">{qna.title}</Typography>
+              <Link
+                to={`/detailBoard/${qna.identifier}`}
+                color="inherit"
+                style={{
+                  textDecorationLine: 'none',
+                  color: 'black',
+                }}
+              >
+                <Typography variant="h6" color="black">
+                  {qna.title}
+                </Typography>
               </Link>
             </Grid>
             <Grid item xs zeroMinWidth>
@@ -78,12 +87,12 @@ export default function BoradCards(props) {
               <Grid container spacing={1}>
                 <Grid item xs={12} sm container>
                   <Grid item xs={12} sm={10}>
-                    <Typography noWrap variant="body2" color="textSecondary">
+                    <Typography noWrap variant="body1" color="rgb(51, 51, 51)">
                       {qna.nickname}
                     </Typography>
                   </Grid>
                   <Grid item xs={12} sm={2}>
-                    <Typography noWrap variant="body1" color="textSecondary">
+                    <Typography noWrap variant="body1" color="primary">
                       댓글 개수 : {qna.commentNum}
                     </Typography>
                   </Grid>

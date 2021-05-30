@@ -64,6 +64,10 @@ export default function QnACards(props) {
                   },
                 }}
                 color="inherit"
+                style={{
+                  textDecorationLine: 'none',
+                  color: 'black',
+                }}
               >
                 <Typography variant="h6">{qna.title}</Typography>
               </Link>
@@ -86,7 +90,7 @@ export default function QnACards(props) {
               <Grid container spacing={1}>
                 <Grid item xs={12} sm container>
                   <Grid item xs={12} sm={10}>
-                    <Typography noWrap variant="body2" color="textSecondary">
+                    <Typography noWrap variant="body1" color="black">
                       {qna.nickname} / {qna.species}
                     </Typography>
                     {qna.state == 'none' ? (
@@ -100,7 +104,7 @@ export default function QnACards(props) {
                     )}
                   </Grid>
                   <Grid item xs={12} sm={2}>
-                    <Typography noWrap variant="body1" color="textSecondary">
+                    <Typography noWrap variant="body1" color="primary">
                       답변 개수 : {qna.answerNum}
                     </Typography>
                   </Grid>
