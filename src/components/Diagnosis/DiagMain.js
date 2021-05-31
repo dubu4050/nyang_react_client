@@ -43,6 +43,27 @@ const useStyles = makeStyles({
       color: 'white',
     },
   },
+  btnactive: {
+    marginTop: '5%',
+    marginBottom: '5%',
+    marginRight: '2%',
+    marginLeft: '2%',
+    borderRadius: '50rem',
+    fontWeight: 'bold',
+    border: '0px',
+    height: '5%',
+    background: '#49D7F0',
+    color: 'white',
+    opacity: '0.8',
+    '&:focus': {
+      background: '#49D7F0',
+      color: 'white',
+    },
+    '&:selected': {
+      background: '#49D7F0',
+      color: 'white',
+    },
+  },
 });
 
 const DiagMain = (props) => {
@@ -62,9 +83,11 @@ const DiagMain = (props) => {
 
   const classes = useStyles();
   const [selectedTab, setSelectedTab] = React.useState(indexToTabName[page]);
+  const [state, setState] = { activedTab: selectedTab };
   const handleChange = (event, newValue) => {
     history.push(`/${tabNameToIndex[newValue]}`);
     setSelectedTab(newValue);
+    setState({ activedTab: newValue });
   };
 
   return (
@@ -82,7 +105,12 @@ const DiagMain = (props) => {
               className={classes.tab}
               icon={<Avatar src={catImg} />}
               label={
-                <Button variant="contained" className={classes.btn}>
+                <Button
+                  variant="contained"
+                  className={
+                    state.activedTab == 0 ? classes.btnactive : classes.btn
+                  }
+                >
                   자동질병진단
                 </Button>
               }
@@ -91,7 +119,12 @@ const DiagMain = (props) => {
               className={classes.tab}
               icon={<Avatar src={dogImg} />}
               label={
-                <Button variant="contained" className={classes.btn}>
+                <Button
+                  variant="contained"
+                  className={
+                    state.activedTab == 1 ? classes.btnactive : classes.btn
+                  }
+                >
                   공개QnA
                 </Button>
               }

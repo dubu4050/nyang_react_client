@@ -57,6 +57,27 @@ const useStyles = makeStyles({
       color: 'white',
     },
   },
+  btnactive: {
+    marginTop: '5%',
+    marginBottom: '5%',
+    marginRight: '2%',
+    marginLeft: '2%',
+    borderRadius: '50rem',
+    fontWeight: 'bold',
+    border: '0px',
+    height: '5%',
+    background: '#49D7F0',
+    color: 'white',
+    opacity: '0.8',
+    '&:focus': {
+      background: '#49D7F0',
+      color: 'white',
+    },
+    '&:selected': {
+      background: '#49D7F0',
+      color: 'white',
+    },
+  },
 });
 
 const BoardMain = (props) => {
@@ -73,9 +94,11 @@ const BoardMain = (props) => {
     free: 1,
   };
   const [selectedTab, setSelectedTab] = React.useState(indexToTabName[page]);
+  const [state, setState] = React.useState({ activedTab: selectedTab });
   const handleChange = (event, newValue) => {
     history.push(`/board/${tabNameToIndex[newValue]}`);
     setSelectedTab(newValue);
+    setState({ activedTab: newValue });
   };
   const classes = useStyles();
   const theme = createMuiTheme({
@@ -116,7 +139,12 @@ const BoardMain = (props) => {
                 className={classes.tab}
                 icon={<Avatar src={catImg} />}
                 label={
-                  <Button variant="contained" className={classes.btn}>
+                  <Button
+                    variant="contained"
+                    className={
+                      state.activedTab == 0 ? classes.btnactive : classes.btn
+                    }
+                  >
                     지식정보
                   </Button>
                 }
@@ -125,7 +153,12 @@ const BoardMain = (props) => {
                 className={classes.tab}
                 icon={<Avatar src={dogImg} />}
                 label={
-                  <Button variant="contained" className={classes.btn}>
+                  <Button
+                    variant="contained"
+                    className={
+                      state.activedTab == 1 ? classes.btnactive : classes.btn
+                    }
+                  >
                     자유게시판
                   </Button>
                 }
