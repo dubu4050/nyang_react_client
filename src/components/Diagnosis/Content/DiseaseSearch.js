@@ -7,6 +7,7 @@ import {
   Modal,
   Fade,
   Button,
+  IconButton,
 } from '@material-ui/core';
 import DiseaseList from './DiseaseList';
 import SearchIcon from '@material-ui/icons/Search';
@@ -43,16 +44,16 @@ const useStyles = makeStyles((theme) => ({
     border: '2px solid #dedede',
     borderRadius: '10px',
   },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    position: 'absolute',
+  icon: {
     pointerEvents: 'none',
     alignItems: 'center',
     justifyContent: 'center',
     height: '46px',
+    width: '1.5em',
     opacity: '0.8',
     border: 'none',
     background: 'none',
+    color: 'black',
   },
   placeholderStyle: {
     padding: theme.spacing(1, 1, 1, 0),
@@ -69,6 +70,7 @@ const useStyles = makeStyles((theme) => ({
     float: 'right',
     paddingTop: '20px',
     paddingBottom: '20px',
+    color: 'rgba(0,0,0,.54)',
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
@@ -176,14 +178,10 @@ function Contents(props) {
           inputProps={{ 'aria-label': 'search' }}
           onChange={onChangeQuestion}
         />
-        <Button
-          variant="contained"
-          color="default"
-          className={classes.button}
-          onClick={RequestQuestion}
-        >
-          검색
-        </Button>
+
+        <IconButton aria-label="serach" onClick={RequestQuestion}>
+          <SearchIcon className={classes.icon} />
+        </IconButton>
       </div>
 
       <div className={classes.map}>
