@@ -95,7 +95,7 @@ export default function commentCard(props) {
   const ip = process.env.REACT_APP_API_IP;
   const postIdentifier = props.postIdentifier;
   const comment = props.comment;
-  const post_state = props.post_state;
+  const [post_state, setPostState] = useState(props.post_state);
   const writer = props.writer;
   const type = props.type;
   const profile = comment.profile_photo_path;
@@ -113,7 +113,6 @@ export default function commentCard(props) {
       setUpdateState(false);
     }
   };
-  console.log(writer);
   //수정,삭제,채택
   const updateComment = (e) => {
     const body = { content: content };
@@ -147,23 +146,43 @@ export default function commentCard(props) {
       });
   };
   const adoptComment = (e) => {
-    if (post_state != 'none') {
-      alert('채택 완료된 질문 입니다.');
+    console.log('글 상태' + post_state);
+    console.log('답변 상태' + select_state);
+    if (post_state == 'adopted') {
+      if (select_state == 'none') {
+        alert('채택이 완료된 글입니다.');
+      } else {
+        //채택취소
+        axios
+          .get(ip + '/answer/adopt/relegation/' + postIdentifier, {
+            params: { answerIdentifier: comment.identifier },
+          })
+          .then((res) => {
+            setSelectState('none');
+            setPostState('none');
+            window.location.replace('/detailQnA/' + postIdentifier);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     } else {
+      //post_state=none 답변은 무조건 none
       axios
         .get(ip + '/answer/adopt/' + postIdentifier, {
           params: { answerIdentifier: comment.identifier },
         })
         .then((res) => {
-          setSelectState('done');
-          console.log(res);
+          setSelectState('selected');
+          setPostState('adopted');
+          window.location.replace('/detailQnA/' + postIdentifier);
         })
         .catch((err) => {
           console.log(err);
         });
     }
   };
-
+  console.log(writer);
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -180,9 +199,7 @@ export default function commentCard(props) {
               }
               title={comment.nickname}
               subheader={
-                type == 'answer'
-                  ? '채택횟수: ' + comment.memberIdentifier
-                  : null
+                type == 'answer' ? '채택횟수: ' + comment.adopted_number : null
               }
             ></CardHeader>
           </Grid>
@@ -216,51 +233,50 @@ export default function commentCard(props) {
               )}
             </Grid>
             <Grid item>
-              {editable == true &&
-                (update_state == false ? (
-                  <>
-                    <IconButton
-                      className={classes.icon}
-                      onClick={deleteComment}
-                    >
-                      <DeleteForeverOutlinedIcon />
-                      삭제
-                    </IconButton>
-                    <IconButton
-                      className={classes.icon}
-                      onClick={changeUpdateState}
-                    >
-                      <CreateOutlinedIcon />
-                      수정
-                    </IconButton>
-                    {/* {type == 'comment' || writer != 'isuser' ? null : (
-                    <IconButton className={classes.icon} onClick={adoptComment}>
-                      <DoneAllOutlinedIcon />
-                      {select_state == 'none' ? '채택' : '채택취소'}
-                    </IconButton>
-                  )} */}
-                  </>
-                ) : (
-                  <>
-                    <IconButton
-                      className={classes.icon}
-                      onClick={updateComment}
-                    >
-                      <CreateOutlinedIcon />
-                      등록
-                    </IconButton>
-                    <IconButton
-                      className={classes.icon}
-                      onClick={changeUpdateState}
-                    >
-                      <CancelOutlinedIcon />
-                      취소
-                    </IconButton>
-                  </>
-                ))}
+              {editable == true ||
+              localStorage.getItem('roleName') == 'admin' ? (
+                <>
+                  {update_state == true ? (
+                    <>
+                      <IconButton
+                        className={classes.icon}
+                        onClick={updateComment}
+                      >
+                        <CreateOutlinedIcon />
+                        등록
+                      </IconButton>
+                      <IconButton
+                        className={classes.icon}
+                        onClick={changeUpdateState}
+                      >
+                        <CancelOutlinedIcon />
+                        취소
+                      </IconButton>
+                    </>
+                  ) : (
+                    <>
+                      <IconButton
+                        className={classes.icon}
+                        onClick={deleteComment}
+                      >
+                        <DeleteForeverOutlinedIcon />
+                        삭제
+                      </IconButton>
+                      <IconButton
+                        className={classes.icon}
+                        onClick={changeUpdateState}
+                      >
+                        <CreateOutlinedIcon />
+                        수정
+                      </IconButton>
+                    </>
+                  )}
+                </>
+              ) : null}
               {type == 'comment' ||
               writer != 'issuer' ||
-              update_state == true ? null : (
+              update_state == true ||
+              (writer == 'issuer' && editable == true) ? null : (
                 <IconButton className={classes.icon} onClick={adoptComment}>
                   <DoneAllOutlinedIcon />
                   {select_state == 'none' ? '채택' : '채택취소'}

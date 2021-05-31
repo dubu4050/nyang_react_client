@@ -67,6 +67,7 @@ export default function BoradCards(props) {
     <div className={classes.root}>
       {props.list.map((qna) => (
         <Card align="left" className={classes.card} variant="outlined">
+
           <CardContent
             className={classes.contentWrap}
             style={{ paddingBottom: '0' }}
@@ -84,6 +85,7 @@ export default function BoradCards(props) {
                   textDecoration: 'none',
                 }}
               >
+
                 <Typography variant="h6" className={classes.title}>
                   {qna.title}
                 </Typography>
@@ -103,6 +105,7 @@ export default function BoradCards(props) {
                 ></div>
               </Typography>
             </Grid>
+
             <Grid item className={classes.footer}>
               <CardHeader
                 className={classes.writer}
@@ -120,6 +123,7 @@ export default function BoradCards(props) {
               >
                 답변 개수 : {qna.commentNum}
               </Typography>
+
             </Grid>
           </CardContent>
         </Card>

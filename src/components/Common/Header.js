@@ -25,7 +25,8 @@ const useStyles = makeStyles((theme) => ({
   },
   nyangImg: {
     marginRight: theme.spacing(2),
-    width: '60px',
+    width: '35px',
+    height: '35px',
   },
   title: {
     fontWeight: '600',

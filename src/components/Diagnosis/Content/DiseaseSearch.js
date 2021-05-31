@@ -7,6 +7,7 @@ import {
   Modal,
   Fade,
   Button,
+  IconButton,
 } from '@material-ui/core';
 import DiseaseList from './DiseaseList';
 import SearchIcon from '@material-ui/icons/Search';
@@ -16,6 +17,7 @@ import MapContainer from './MapContainer';
 import Icon from '@material-ui/core/Icon';
 import { AddAlertRounded, PagesSharp } from '@material-ui/icons';
 import item from './DiseaseList';
+import TextField from '@material-ui/core/TextField';
 
 function getModalStyle() {
   const top = 50;
@@ -42,16 +44,16 @@ const useStyles = makeStyles((theme) => ({
     border: '2px solid #dedede',
     borderRadius: '10px',
   },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    position: 'absolute',
+  icon: {
     pointerEvents: 'none',
     alignItems: 'center',
     justifyContent: 'center',
     height: '46px',
+    width: '1.5em',
     opacity: '0.8',
     border: 'none',
     background: 'none',
+    color: 'black',
   },
   placeholderStyle: {
     padding: theme.spacing(1, 1, 1, 0),
@@ -68,6 +70,7 @@ const useStyles = makeStyles((theme) => ({
     float: 'right',
     paddingTop: '20px',
     paddingBottom: '20px',
+    color: 'rgba(0,0,0,.54)',
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
@@ -80,6 +83,12 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     margin: theme.spacing(1),
+  },
+  root: {
+    '& > *': {
+      margin: theme.spacing(1),
+      width: '25ch',
+    },
   },
 }));
 function Contents(props) {
@@ -98,10 +107,37 @@ function Contents(props) {
   const handleClose = () => {
     setOpen(false);
   };
+  const [inputText, setInputText] = useState('');
+  const [place, setPlace] = useState('');
 
+  const onChange = (e) => {
+    setInputText(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setPlace(inputText);
+    setInputText('');
+  };
   const mapModal = (
     <div className={classes.paper}>
-      <MapContainer />
+      <div>
+        <TextField
+          id="standard-basic"
+          label="장소 검색"
+          onChange={onChange}
+          value={inputText}
+        />
+        <Button
+          variant="contained"
+          className={classes.button}
+          color="primary"
+          onClick={handleSubmit}
+        >
+          검색
+        </Button>
+      </div>
+      <MapContainer searchPlace={place} />
     </div>
   );
   const onChangeQuestion = (e) => {
@@ -142,14 +178,10 @@ function Contents(props) {
           inputProps={{ 'aria-label': 'search' }}
           onChange={onChangeQuestion}
         />
-        <Button
-          variant="contained"
-          color="default"
-          className={classes.button}
-          onClick={RequestQuestion}
-        >
-          검색
-        </Button>
+
+        <IconButton aria-label="serach" onClick={RequestQuestion}>
+          <SearchIcon className={classes.icon} />
+        </IconButton>
       </div>
 
       <div className={classes.map}>

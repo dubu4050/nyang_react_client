@@ -91,8 +91,9 @@ export default function QnACards(props) {
                   textDecoration: 'none',
                 }}
               >
+
                 <Typography variant="h6" className={classes.title}>
-                  {qna.title}
+        {qna.title}
                 </Typography>
               </Link>
             </Grid>
@@ -110,6 +111,7 @@ export default function QnACards(props) {
                 ></div>
               </Typography>
             </Grid>
+
             <Grid item className={classes.footer}>
               <CardHeader
                 className={classes.writer}
