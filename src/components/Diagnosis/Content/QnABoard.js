@@ -12,17 +12,15 @@ import CreateIcon from '@material-ui/icons/Create';
 import QnACard from '../../Card/QnACard';
 
 const useStyles = makeStyles((theme) => ({
+  wrap: {},
   wrapper: {
     display: 'flex',
-    alignItems: 'center',
     justifyContent: 'flex-end',
+    alignItems: 'center',
     marginBottom: '2%',
   },
   chipList: {
     display: 'flex',
-  },
-  chip: {
-    marginRight: '10px',
   },
   input: {
     height: '50px',
@@ -97,7 +95,7 @@ export default function QnABoard(props) {
   };
 
   return (
-    <Container>
+    <Container className={classes.wrap}>
       <Container className={classes.wrapper}>
         <InputBase
           className={classes.input}

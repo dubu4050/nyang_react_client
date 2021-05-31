@@ -87,7 +87,7 @@ export default function FreeBoardContent(props) {
     }
   };
   return (
-    <Container>
+    <Container className={classes.wrap}>
       <Container className={classes.wrapper}>
         <InputBase
           className={classes.input}

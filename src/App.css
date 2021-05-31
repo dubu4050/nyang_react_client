@@ -1,12 +1,14 @@
-html,body{
-  padding : 0;
-  margin : 0;
+html,
+body {
+  padding: 0;
+  margin: 0;
   min-width: 100vw;
   min-height: 100vh;
   max-width: 100vw;
   max-height: 100vh;
+  overflow-x: hidden;
 }
-.App{
+.App {
   display: flex;
   flex-direction: column;
 }

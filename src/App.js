@@ -36,6 +36,7 @@ export default class App extends Component {
           minHeight: '100vh',
           maxWidth: '100vw',
           maxHeight: '100vh',
+          overflowX: 'hidden',
         },
         '*::-webkit-scrollbar': {
           width: '0.5rem',
