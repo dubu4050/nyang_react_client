@@ -63,7 +63,7 @@ const answercolumns = [
     align: 'center',
   },
   {
-    id: 'created_data',
+    id: 'created_date',
     label: '작성 날짜',
     width: '20%',
     align: 'center',
