@@ -8,6 +8,7 @@ import {
 } from '@material-ui/core';
 import BoardCard from '../../Card/BoardCard';
 import CreateIcon from '@material-ui/icons/Create';
+import SearchIcon from '@material-ui/icons/Search';
 import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
