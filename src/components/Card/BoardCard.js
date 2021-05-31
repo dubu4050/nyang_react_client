@@ -74,7 +74,7 @@ export default function BoradCards(props) {
             <Grid item className={classes.titlewrap}>
               <Link
                 to={{
-                  pathname: `/detailQnA/${qna.identifier}`,
+                  pathname: `/detailBoard/${qna.identifier}`,
                   state: {
                     post_selected_state: qna.state,
                   },
