@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
+import Avatar from '@material-ui/core/Avatar';
 import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
-import catImg from '../../images/cat_icon.png';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
 
@@ -18,29 +19,46 @@ const useStyles = makeStyles({
     alignItems: 'center',
     margin: '0 auto',
     marginBottom: '2%',
-    paddingRight: '5%',
+    paddingRight: '2%',
     width: 'fit-content',
   },
-  cover: {
-    height: 200,
-    width: 200,
+  contentWrap: {
+    width: '1000px',
+    paddingLeft: '2%',
+    paddingBottom: '0',
   },
-  contentWrap: { width: '800px', height: '180px' },
-  title: {
+  titlewrap: {
     height: '20%',
     verticalAlign: 'middle',
+    paddingLeft: '2%',
+  },
+  title: {
+    color: '#48484d',
+    fontWeight: 'bold',
+    fontSize: '22px',
   },
   content: {
-    height: '100px',
     verticalAlign: 'middle',
-    lineHeight: '100px',
+    paddingLeft: '3%',
+    paddingTop: '2%',
+    paddingBottom: '1%',
+    fontSize: '18px',
+  },
+  img: { width: '40px' },
+  footer: { display: 'flex' },
+  writer: { width: '85%' },
+  comment: {
+    fontWeight: 'bold',
+    padding: '16px',
+    alignItems: 'center',
+    verticalAlign: 'middle',
+    paddingBlockStart: '30px',
   },
 });
 
 export default function QnACards(props) {
   const classes = useStyles();
   const tempValue = props.list;
-  console.log(tempValue);
   var [contentHtml] = useState([]);
   tempValue.forEach((element) => {
     contentHtml[element.identifier] = element.summary;
@@ -49,13 +67,18 @@ export default function QnACards(props) {
     <div className={classes.root}>
       {props.list.map((qna) => (
         <Card align="left" className={classes.card} variant="outlined">
-          <CardMedia
-            className={classes.cover}
-            image={catImg}
-            title="card_cover"
-          />
-          <CardContent className={classes.contentWrap}>
-            <Grid item className={classes.title}>
+          <CardContent
+            className={classes.contentWrap}
+            style={{ paddingBottom: '0' }}
+          >
+            <Grid item className={classes.titlewrap}>
+              <Typography
+                variant="subtitle2"
+                color="primary"
+                style={{ fontWeight: 'bold' }}
+              >
+                {qna.genus}
+              </Typography>
               <Link
                 to={{
                   pathname: `/detailQnA/${qna.identifier}`,
@@ -68,14 +91,9 @@ export default function QnACards(props) {
                   textDecoration: 'none',
                 }}
               >
-                <Typography
-                  variant="h6"
-                  style={{
-                    color: '#48484d',
-                    fontWeight: 'bold',
-                  }}
-                >
-                  {qna.title}
+
+                <Typography variant="h6" className={classes.title}>
+        {qna.title}
                 </Typography>
               </Link>
             </Grid>
@@ -93,35 +111,37 @@ export default function QnACards(props) {
                 ></div>
               </Typography>
             </Grid>
-            <Grid item xs={12} sm container className={classes.footer}>
-              <Grid item xs={12} sm={10}>
-                <Typography
-                  noWrap
-                  variant="body1"
-                  style={{ color: '#807D7D', fontWeight: '500' }}
-                >
-                  {qna.nickname} / {qna.species}
-                </Typography>
-                {qna.state == 'none' ? (
-                  <Typography noWrap variant="subtitle2" color="primary">
-                    대기 중
-                  </Typography>
-                ) : (
-                  <Typography noWrap variant="subtitle2" color="error">
-                    채택 완료
-                  </Typography>
-                )}
-              </Grid>
-              <Grid item xs={12} sm={2}>
-                <Typography
-                  color="primary"
-                  style={{
-                    fontWeight: 'bold',
-                  }}
-                >
-                  답변 개수 : {qna.answerNum}
-                </Typography>
-              </Grid>
+
+            <Grid item className={classes.footer}>
+              <CardHeader
+                className={classes.writer}
+                avatar={
+                  <Avatar aria-label="recipe" className={classes.avatar}>
+                    <img src={qna.profile_photo_path} className={classes.img} />
+                  </Avatar>
+                }
+                title={qna.nickname}
+                subheader={
+                  <>
+                    {qna.state == 'none' ? (
+                      <Typography noWrap variant="subtitle2" color="primary">
+                        대기 중
+                      </Typography>
+                    ) : (
+                      <Typography noWrap variant="subtitle2" color="error">
+                        채택 완료
+                      </Typography>
+                    )}
+                  </>
+                }
+              ></CardHeader>
+              <Typography
+                color="primary"
+                className={classes.comment}
+                align="center"
+              >
+                답변 개수 : {qna.answerNum}
+              </Typography>
             </Grid>
           </CardContent>
         </Card>
