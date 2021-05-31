@@ -9,7 +9,6 @@ import {
 import BoardCard from '../../Card/BoardCard';
 import SearchIcon from '@material-ui/icons/Search';
 import CreateIcon from '@material-ui/icons/Create';
-import SearchIcon from '@material-ui/icons/Search';
 import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({

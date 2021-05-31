@@ -91,9 +91,8 @@ export default function QnACards(props) {
                   textDecoration: 'none',
                 }}
               >
-
                 <Typography variant="h6" className={classes.title}>
-        {qna.title}
+                  {qna.title}
                 </Typography>
               </Link>
             </Grid>
