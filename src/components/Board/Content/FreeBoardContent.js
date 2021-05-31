@@ -101,9 +101,11 @@ export default function FreeBoardContent(props) {
         <IconButton aria-label="serach" onClick={searchFreeBoard}>
           <SearchIcon className={classes.icon} />
         </IconButton>
-        <IconButton href="/boardWrite">
-          <CreateIcon className={classes.icon} />
-        </IconButton>
+        {axios.defaults.headers.common.Authorization != undefined && (
+          <IconButton href="/boardWrite">
+            <CreateIcon className={classes.icon} />
+          </IconButton>
+        )}
       </Container>
       <BoardCard list={freeBoardList} />
     </Container>
